@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dementia Types · NeuroViz</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="breadcrumb">Reference / Groups</div>
+        <h1>Dementia Type Groups</h1>
+      </div>
+      <div class="meta">
+        ${0} TYPES INDEXED<br/>
+        Updated weekly
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Category</label>
+        <select id="filterCat">
+          <option value="all">All</option>
+          <option value="ad">AD spectrum</option>
+          <option value="vasc">Vascular</option>
+          <option value="lewy">Lewy body</option>
+          <option value="ftd">FTD spectrum</option>
+          <option value="other">Other / rare</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Age of onset</label>
+        <select id="filterAge">
+          <option value="all">Any</option>
+          <option value="young">Under 65 (early-onset)</option>
+          <option value="late">65+</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Min prevalence</label>
+        <select id="filterPrev">
+          <option value="0">Any</option>
+          <option value="1">≥1%</option>
+          <option value="5">≥5%</option>
+          <option value="10">≥10%</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Sort by</label>
+        <select id="sortBy">
+          <option value="prev">Prevalence</option>
+          <option value="name">Name</option>
+          <option value="stage">Severity stage</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn" id="applyFilter">Apply</button>
+        <button class="btn btn-ghost" id="resetFilter">Reset</button>
+      </div>
+    </div>
+
+    <!-- Types grid -->
+    <div id="typeGrid"></div>
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    NV_LAYOUT.mount('groups');
+
+    function renderTypes(types) {
+      const grid = document.getElementById('typeGrid');
+      grid.innerHTML = types.map(t => `
+        <div class="panel" id="${t.id}" style="margin-bottom:14px;">
+          <div class="panel-head">
+            <div style="display:flex; gap:10px; align-items:baseline;">
+              <span class="type-chip type-${t.typeClass}">${t.code}</span>
+              <h2 style="font-style:italic;">${t.name}</h2>
+            </div>
+            <div class="panel-actions">
+              <span class="mono tiny muted">PREVALENCE</span>
+              <span class="mono" style="color:var(--ink-primary); font-weight:600;">${t.prevalencePct}%</span>
+              ·
+              <span class="mono tiny muted">STAGE</span>
+              <span class="mono" style="color:var(--ink-primary); font-weight:600;">${t.stage}/5</span>
+            </div>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0;">
+              <div style="padding:14px 16px; border-right:1px solid var(--rule);">
+                <div class="mono tiny muted uppercase mb-8">Pathology</div>
+                <div style="font-size:13px; line-height:1.5; margin-bottom:14px;">${t.hallmark}</div>
+
+                <div class="mono tiny muted uppercase mb-8">Age of onset</div>
+                <div style="font-size:13px; margin-bottom:14px;">${t.ageOnset}</div>
+
+                <div class="mono tiny muted uppercase mb-8">Progression</div>
+                <div style="font-size:13px; line-height:1.5;">${t.progression}</div>
+              </div>
+              <div style="padding:14px 16px; background: var(--bg-cell);">
+                <div class="mono tiny muted uppercase mb-8">Prevalence</div>
+                <div style="font-size:13px; margin-bottom:14px;">${t.prevalenceText}</div>
+
+                <div class="mono tiny muted uppercase mb-8">Key clinical features</div>
+                <ul style="font-size:12px; line-height:1.55; list-style:none;">
+                  ${t.keyFeatures.map(f => `
+                    <li style="padding:3px 0; padding-left:14px; position:relative;">
+                      <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">›</span>${f}
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+            </div>
+            <div style="padding: 8px 14px; background:var(--bg-rail); color:var(--ink-inverse); display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase;">
+              <span>Severity gradient</span>
+              <div style="flex:1; max-width:300px; height:6px; margin:0 14px; background:linear-gradient(to right, var(--sev-0), var(--sev-1), var(--sev-2), var(--sev-3), var(--sev-4), var(--sev-5)); position:relative; border:1px solid var(--bg-strip);">
+                <div style="position:absolute; left:${t.stage * 20}%; top:-3px; bottom:-3px; width:2px; background:white; border:1px solid var(--bg-rail);"></div>
+              </div>
+              <a href="diagnosis.html" style="color:var(--accent);">DIAGNOSTIC PATH →</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let current = [...NV_DATA.dementiaTypes];
+
+    function applyFilters() {
+      const cat = document.getElementById('filterCat').value;
+      const age = document.getElementById('filterAge').value;
+      const prev = +document.getElementById('filterPrev').value;
+      const sort = document.getElementById('sortBy').value;
+
+      current = NV_DATA.dementiaTypes.filter(t => {
+        if (cat !== 'all' && t.typeClass !== cat) return false;
+        if (age === 'young' && !t.ageOnset.match(/4[5-9]|5[0-9]|<65|<60/i)) return false;
+        if (age === 'late' && t.ageOnset.match(/^4|<60/)) return false;
+        if (t.prevalencePct < prev) return false;
+        return true;
+      });
+
+      if (sort === 'prev') current.sort((a,b) => b.prevalencePct - a.prevalencePct);
+      else if (sort === 'name') current.sort((a,b) => a.name.localeCompare(b.name));
+      else if (sort === 'stage') current.sort((a,b) => b.stage - a.stage);
+
+      renderTypes(current);
+      // jump to anchor if hash present
+      if (location.hash) {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    document.getElementById('applyFilter').addEventListener('click', applyFilters);
+    document.getElementById('resetFilter').addEventListener('click', () => {
+      ['filterCat','filterAge','filterPrev'].forEach(id => document.getElementById(id).value = id === 'filterPrev' ? '0' : 'all');
+      document.getElementById('sortBy').value = 'prev';
+      applyFilters();
+    });
+
+    applyFilters();
+  </script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Care · NeuroViz</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="breadcrumb">Support / Community Care</div>
+        <h1>Community Care Services</h1>
+      </div>
+      <div class="meta">
+        Cost ranges · Insurance coverage<br/>
+        US-focused · 2025 estimates
+      </div>
+    </div>
+
+    <!-- Subnav -->
+    <div class="subnav">
+      <a href="#services" data-tab="services" class="is-active">Service Types</a>
+      <a href="#costs" data-tab="costs">Cost & Coverage</a>
+      <a href="#decisions" data-tab="decisions">Decision Guide</a>
+      <a href="#payors" data-tab="payors">Paying for Care</a>
+    </div>
+
+    <!-- ===== TAB: SERVICES ===== -->
+    <section id="tab-services" class="tab-pane">
+      <div class="grid-sidebar">
+        <div>
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Care continuum</h2>
+              <div class="panel-actions"><span class="muted">From least to most intensive</span></div>
+            </div>
+            <div class="panel-body tight">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Description</th>
+                    <th>Best for</th>
+                    <th class="num">Typical cost</th>
+                    <th>Medicaid</th>
+                  </tr>
+                </thead>
+                <tbody id="servicesRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:14px;">
+            <div class="panel-head">
+              <h2>Finding services</h2>
+            </div>
+            <div class="panel-body">
+              <div class="toolkit-grid">
+                <div class="toolkit-card">
+                  <div class="tk-meta">N A T I O N A L</div>
+                  <h4>Eldercare Locator</h4>
+                  <p>Federal service connecting older adults and caregivers to local services. Searchable by ZIP code.</p>
+                  <div class="mono tiny" style="color:var(--accent);">eldercare.acl.gov · 1-800-677-1116</div>
+                </div>
+                <div class="toolkit-card">
+                  <div class="tk-meta">N A T I O N A L</div>
+                  <h4>Area Agencies on Aging (AAA)</h4>
+                  <p>State-level network providing service coordination, meals, transportation, and caregiver support. Free assessments.</p>
+                  <div class="mono tiny" style="color:var(--accent);">n4a.org</div>
+                </div>
+                <div class="toolkit-card">
+                  <div class="tk-meta">DEMENTIA-SPECIFIC</div>
+                  <h4>Alzheimer's Association Community Resource Finder</h4>
+                  <p>Searchable database of memory care, day programs, hospice, support groups, and more, by ZIP.</p>
+                  <div class="mono tiny" style="color:var(--accent);">communityresourcefinder.org</div>
+                </div>
+                <div class="toolkit-card">
+                  <div class="tk-meta">M E D I C A R E</div>
+                  <h4>Medicare Care Compare</h4>
+                  <p>Quality ratings (1–5 stars) for nursing homes, home health agencies, and hospice providers.</p>
+                  <div class="mono tiny" style="color:var(--accent);">medicare.gov/care-compare</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">GUIDE Model (CMS 2024)</div>
+            <div class="ap-body">
+              <p class="ap-line">CMS GUIDE program offers comprehensive dementia care including 24/7 access line, care navigator, respite benefit ($2,500/yr).</p>
+              <p class="ap-line muted">Available through participating practices through 2032. See <b>guide.cms.gov</b> for participating sites.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">PACE programs</div>
+            <div class="ap-body">
+              <p class="ap-line">All-inclusive comprehensive elderly care for dual-eligible (Medicare + Medicaid). Combines day program, medical, social, and home care.</p>
+              <p class="ap-line muted">Available in 32 states + DC at 175+ sites. Find at <b>npaonline.org</b>.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Memory care vs. assisted living</div>
+            <div class="ap-body">
+              <p class="ap-line"><b>Assisted living</b> — for moderate ADL needs, generally not secured.</p>
+              <p class="ap-line"><b>Memory care</b> — secured unit, dementia-trained staff, structured activities, locked exits, higher staff ratios. Typically $1,500–3,000/mo more.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: COSTS ===== -->
+    <section id="tab-costs" class="tab-pane" hidden>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Cost vs. coverage matrix</h2>
+          <div class="panel-actions"><span class="muted">National median; rural to high-cost-of-living regions vary 2-3×</span></div>
+        </div>
+        <div class="panel-body">
+          <div class="cost-cov-grid" id="costGrid"></div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <div class="panel-head">
+          <h2>Lifetime costs of dementia care (US)</h2>
+          <div class="panel-actions"><span class="muted">Alz Association Facts & Figures 2024</span></div>
+        </div>
+        <div class="panel-body">
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+            <div style="padding: 16px; background: var(--bg-cell); border: 1px solid var(--rule);">
+              <div class="mono tiny muted">TOTAL LIFETIME COST</div>
+              <div style="font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--ink-primary); margin-top: 4px;">$392,874</div>
+              <div class="muted" style="font-size:11px; margin-top:4px;">avg per person with dementia</div>
+            </div>
+            <div style="padding: 16px; background: var(--bg-cell); border: 1px solid var(--rule);">
+              <div class="mono tiny muted">FAMILY OUT-OF-POCKET</div>
+              <div style="font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--ink-primary); margin-top: 4px;">70%</div>
+              <div class="muted" style="font-size:11px; margin-top:4px;">share borne by family</div>
+            </div>
+            <div style="padding: 16px; background: var(--bg-cell); border: 1px solid var(--rule);">
+              <div class="mono tiny muted">UNPAID CARE / YR</div>
+              <div style="font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--ink-primary); margin-top: 4px;">$346.6B</div>
+              <div class="muted" style="font-size:11px; margin-top:4px;">value of family caregiving</div>
+            </div>
+            <div style="padding: 16px; background: var(--bg-cell); border: 1px solid var(--rule);">
+              <div class="mono tiny muted">CAREGIVER HOURS</div>
+              <div style="font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--ink-primary); margin-top: 4px;">18.4B</div>
+              <div class="muted" style="font-size:11px; margin-top:4px;">hours/yr (US)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: DECISIONS ===== -->
+    <section id="tab-decisions" class="tab-pane" hidden>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Choosing a level of care — decision aid</h2>
+        </div>
+        <div class="panel-body">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>If the person…</th>
+                <th>Consider</th>
+                <th>Why</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Lives alone, mostly independent, but lonely</td><td><b>Senior center + memory café</b></td><td>Social engagement reduces decline; low cost</td></tr>
+              <tr><td>Needs companionship + medication reminders during day</td><td><b>Adult day program</b> 2–5 days/wk</td><td>Structured engagement; respite for caregiver</td></tr>
+              <tr><td>Needs help with bathing, dressing, but caregiver available evenings</td><td><b>Part-time in-home aide</b> (4–8 hrs)</td><td>Maintains familiar environment</td></tr>
+              <tr><td>Wandering or unsafe alone; caregiver works full-time</td><td><b>Memory care assisted living</b> OR <b>full-time aide</b></td><td>Safety; structured environment</td></tr>
+              <tr><td>Caregiver burned out; family unable to continue</td><td><b>Respite first</b>, then <b>memory care</b></td><td>Crisis prevention; sustainable plan</td></tr>
+              <tr><td>Skilled needs (wounds, IV, complex meds) + dementia</td><td><b>Skilled nursing facility w/ dementia unit</b></td><td>Both medical and cognitive needs</td></tr>
+              <tr><td>End-stage; comfort-focused</td><td><b>Hospice</b> (home or facility)</td><td>FAST 7; weight loss; recurrent infections</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <div class="panel-head">
+          <h2>Touring a facility — what to look for</h2>
+        </div>
+        <div class="panel-body">
+          <div class="toolkit-grid">
+            <div class="toolkit-card">
+              <div class="tk-meta">VISIT</div>
+              <h4>Visit unannounced</h4>
+              <p>Drop in at meal-time. Are residents engaged? Do staff greet residents by name? Is the unit calm or chaotic?</p>
+            </div>
+            <div class="toolkit-card">
+              <div class="tk-meta">STAFF</div>
+              <h4>Ask about staff ratios</h4>
+              <p>Day shift 1:6 or better; night 1:10 or better is ideal. Ask about turnover (high turnover = warning sign).</p>
+            </div>
+            <div class="toolkit-card">
+              <div class="tk-meta">TRAINING</div>
+              <h4>Dementia-specific training</h4>
+              <p>What programs (Teepa Snow's GEMS, Alzheimer's Association essentiALZ)? How many hours required for new hires?</p>
+            </div>
+            <div class="toolkit-card">
+              <div class="tk-meta">ACTIVITIES</div>
+              <h4>Engagement program</h4>
+              <p>Look for tailored activities, music, intergenerational visits, outdoor access. Avoid TV-as-default.</p>
+            </div>
+            <div class="toolkit-card">
+              <div class="tk-meta">M E D I C A T I O N</div>
+              <h4>Antipsychotic rates</h4>
+              <p>Ask: what % of residents are on antipsychotics? National benchmark <b>~14%</b>; lower is generally better for dementia care quality.</p>
+            </div>
+            <div class="toolkit-card">
+              <div class="tk-meta">D I S C H A R G E</div>
+              <h4>Discharge policies</h4>
+              <p>Under what conditions would they ask the resident to leave? Watch for places that quickly transfer when behaviors escalate.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: PAYORS ===== -->
+    <section id="tab-payors" class="tab-pane" hidden>
+      <div class="grid-sidebar">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Who pays for what?</h2>
+            <div class="panel-actions"><span class="muted">Common misconception: Medicare does NOT cover long-term custodial care</span></div>
+          </div>
+          <div class="panel-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Payor</th>
+                  <th>Covers</th>
+                  <th>Does NOT cover</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Medicare A</b></td>
+                  <td>Hospital, short-term rehab (≤100 days post-hospital), hospice, some home health</td>
+                  <td>Long-term custodial care, assisted living, memory care</td>
+                </tr>
+                <tr>
+                  <td><b>Medicare B</b></td>
+                  <td>Doctor visits, MoCA, cognitive assessments, lecanemab/donanemab infusion, amyloid PET (with criteria)</td>
+                  <td>Dental, hearing aids (until 2026 per IRA), most LTSS</td>
+                </tr>
+                <tr>
+                  <td><b>Medicare D</b></td>
+                  <td>Outpatient prescription drugs (donepezil, rivastigmine, etc.); $2,000 OOP cap (2025)</td>
+                  <td>Drugs not on plan formulary</td>
+                </tr>
+                <tr>
+                  <td><b>Medicaid</b></td>
+                  <td>Nursing home (after spend-down), HCBS waivers (vary by state), dual-eligible PACE</td>
+                  <td>Some assisted living (varies); income/asset limits apply</td>
+                </tr>
+                <tr>
+                  <td><b>VA Benefits</b></td>
+                  <td>Comprehensive care for veterans (priority for service-connected); Aid & Attendance pension</td>
+                  <td>Non-veterans (some spouse benefits)</td>
+                </tr>
+                <tr>
+                  <td><b>Long-term care insurance</b></td>
+                  <td>Varies by policy: in-home, assisted living, nursing home; typically with elimination period</td>
+                  <td>Pre-existing if not disclosed; cognitive trigger varies</td>
+                </tr>
+                <tr>
+                  <td><b>Out-of-pocket</b></td>
+                  <td>Most adult day programs, assisted living, memory care (until Medicaid spend-down)</td>
+                  <td>—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">Spend-down for Medicaid</div>
+            <div class="ap-body">
+              <p class="ap-line">Medicaid eligibility requires meeting income and asset limits (vary by state; typically ~$2,000 in countable assets for individuals).</p>
+              <p class="ap-line">Many families spend savings on care until eligible. <b>Consult an elder-law attorney</b> for legal asset protection — there is a 5-year look-back on transfers.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">VA Aid & Attendance</div>
+            <div class="ap-body">
+              <p class="ap-line">Wartime veterans (or surviving spouses) needing help with ADLs may qualify for up to <b>$2,727/mo</b> (single vet, 2025) tax-free.</p>
+              <p class="ap-line muted">Apply through VA-accredited claims agent or VSO. Free help; avoid paid-for-application services.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Tax considerations</div>
+            <div class="ap-body">
+              <p class="ap-line">Medical expense deduction: amounts above 7.5% of AGI may be deductible. Includes nursing home, assisted living (if primarily medical), in-home care.</p>
+              <p class="ap-line">Dependent care credit if claiming the relative as a dependent.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    NV_LAYOUT.mount('community');
+
+    // Tab switch
+    const tabs = document.querySelectorAll('.subnav a');
+    tabs.forEach(t => {
+      t.addEventListener('click', e => {
+        e.preventDefault();
+        const k = t.dataset.tab;
+        tabs.forEach(x => x.classList.toggle('is-active', x === t));
+        document.querySelectorAll('.tab-pane').forEach(p => p.hidden = p.id !== 'tab-' + k);
+        history.replaceState(null, '', '#' + k);
+      });
+    });
+    if (location.hash) {
+      const tgt = document.querySelector(`.subnav a[data-tab="${location.hash.slice(1)}"]`);
+      if (tgt) tgt.click();
+    }
+
+    // Best-for mapping per service
+    const bestFor = {
+      'Adult Day Programs': 'Mild–moderate; caregiver works',
+      'In-Home Care (Personal)': 'Mild–severe in own home',
+      'In-Home Care (Skilled)': 'Post-acute; complex meds',
+      'Memory Care Assisted Living': 'Moderate, wandering risk',
+      'Skilled Nursing Facility': 'Severe; medical complexity',
+      'Hospice Care': 'End-stage (FAST 7)',
+      'Respite Care': 'Caregiver burnout prevention',
+      'Geriatric Care Manager': 'Family far away; complex coordination',
+      'PACE Program': 'Dual-eligible; ≥55; nursing-home eligible',
+      'Senior Centers': 'Early stage; mild MCI'
+    };
+
+    function medPill(m) {
+      if (m === 'Yes') return '<span class="pill pill-pos">Yes</span>';
+      if (m === 'N/A') return '<span class="pill pill-info">N/A</span>';
+      if (/Limited|Some/.test(m)) return '<span class="pill pill-watch">' + m + '</span>';
+      return '<span class="pill pill-info">' + m + '</span>';
+    }
+
+    document.getElementById('servicesRows').innerHTML = NV_DATA.communityServices.map(s => `
+      <tr>
+        <td><b>${s.type}</b></td>
+        <td class="muted">${s.desc}</td>
+        <td>${bestFor[s.type] || ''}</td>
+        <td class="num"><b>${s.costRange}</b></td>
+        <td>${medPill(s.medicaid)}</td>
+      </tr>
+    `).join('');
+
+    // Cost grid (cards)
+    document.getElementById('costGrid').innerHTML = NV_DATA.communityServices.map(s => `
+      <div class="cost-cov-row">
+        <div><b>${s.type}</b><div class="mono tiny muted">${bestFor[s.type] || ''}</div></div>
+        <div class="muted" style="font-size:12px;">${s.desc}</div>
+        <div class="mono" style="font-size:12px; font-weight:600; color: var(--accent-deep);">${s.costRange}</div>
+        <div>${medPill(s.medicaid)}</div>
+      </div>
+    `).join('');
+  </script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maps · NeuroViz</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="breadcrumb">Visualization / Maps</div>
+        <h1>Anatomical & Epidemiological Maps</h1>
+      </div>
+      <div class="meta">
+        Brain regions · Prevalence · Risk gradients
+      </div>
+    </div>
+
+    <!-- Subnav -->
+    <div class="subnav">
+      <a href="#brain" data-tab="brain" class="is-active">Brain Atlas</a>
+      <a href="#geo" data-tab="geo">Geographic Prevalence</a>
+      <a href="#riskmap" data-tab="riskmap">Risk Factor Map</a>
+    </div>
+
+    <!-- ===== TAB: BRAIN ATLAS ===== -->
+    <section id="tab-brain" class="tab-pane">
+      <div class="grid-sidebar">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Where each dementia hits first</h2>
+            <div class="panel-actions">
+              <span class="muted">Click a region to highlight; click a type to see affected regions</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <!-- Schematic lateral brain SVG with major lobes -->
+            <svg class="brain-svg" viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" aria-label="Lateral view brain regions">
+              <defs>
+                <pattern id="hatchAd" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="6" stroke="#7d4f30" stroke-width="2" />
+                </pattern>
+              </defs>
+
+              <!-- Brain outline (simplified lateral view) -->
+              <path d="M 100 220
+                       Q 80 130, 180 90
+                       Q 280 50, 400 60
+                       Q 540 70, 600 130
+                       Q 660 180, 640 240
+                       Q 620 290, 560 310
+                       L 540 350
+                       Q 480 370, 380 360
+                       L 320 360
+                       Q 220 360, 160 320
+                       Q 110 290, 100 220 Z"
+                    fill="#f5f2ec" stroke="#3d4d4d" stroke-width="2" />
+
+              <!-- Cerebellum -->
+              <ellipse cx="610" cy="320" rx="55" ry="35" fill="#ede8dc" stroke="#3d4d4d" stroke-width="1.5" />
+              <text x="610" y="324" font-family="IBM Plex Mono" font-size="10" text-anchor="middle" fill="#3d4d4d">Cerebellum</text>
+
+              <!-- Brainstem -->
+              <path d="M 540 340 Q 545 380, 555 410 L 575 410 Q 585 380, 580 340 Z" fill="#ede8dc" stroke="#3d4d4d" stroke-width="1.5" />
+
+              <!-- FRONTAL LOBE -->
+              <path class="region" data-region="frontal" d="M 130 215 Q 110 130, 200 95 Q 290 65, 360 75 L 360 220 Z" />
+              <text x="240" y="160" font-family="Fraunces" font-size="14" font-weight="600" text-anchor="middle" fill="#3d4d4d" pointer-events="none">FRONTAL</text>
+              <text x="240" y="175" font-family="IBM Plex Mono" font-size="9" text-anchor="middle" fill="#5a6a6a" pointer-events="none">FTD primary site</text>
+
+              <!-- TEMPORAL LOBE -->
+              <path class="region" data-region="temporal" d="M 160 240 Q 150 320, 230 350 Q 320 365, 380 350 L 380 245 Z" />
+              <text x="270" y="305" font-family="Fraunces" font-size="14" font-weight="600" text-anchor="middle" fill="#3d4d4d" pointer-events="none">TEMPORAL</text>
+              <text x="270" y="320" font-family="IBM Plex Mono" font-size="9" text-anchor="middle" fill="#5a6a6a" pointer-events="none">AD origin / svPPA</text>
+
+              <!-- HIPPOCAMPUS (zoomed inset) -->
+              <ellipse class="region" data-region="hippocampus" cx="290" cy="260" rx="32" ry="14" />
+              <text x="290" y="263" font-family="IBM Plex Mono" font-size="9" text-anchor="middle" fill="#3d4d4d" pointer-events="none">Hippocampus</text>
+
+              <!-- PARIETAL -->
+              <path class="region" data-region="parietal" d="M 365 75 L 525 80 L 525 220 L 360 220 Z" />
+              <text x="445" y="155" font-family="Fraunces" font-size="14" font-weight="600" text-anchor="middle" fill="#3d4d4d" pointer-events="none">PARIETAL</text>
+              <text x="445" y="170" font-family="IBM Plex Mono" font-size="9" text-anchor="middle" fill="#5a6a6a" pointer-events="none">PCA, late AD</text>
+
+              <!-- OCCIPITAL -->
+              <path class="region" data-region="occipital" d="M 530 85 Q 615 110, 635 200 Q 640 230, 590 240 L 530 230 Z" />
+              <text x="580" y="170" font-family="Fraunces" font-size="13" font-weight="600" text-anchor="middle" fill="#3d4d4d" pointer-events="none">OCCIPITAL</text>
+              <text x="580" y="185" font-family="IBM Plex Mono" font-size="9" text-anchor="middle" fill="#5a6a6a" pointer-events="none">DLB, PCA</text>
+
+              <!-- BASAL GANGLIA (deep, semitransparent) -->
+              <ellipse class="region" data-region="basalganglia" cx="385" cy="200" rx="40" ry="22" opacity="0.85" />
+              <text x="385" y="203" font-family="IBM Plex Mono" font-size="9" text-anchor="middle" fill="#3d4d4d" pointer-events="none">Basal ganglia</text>
+
+              <!-- INSULA / cingulate -->
+              <ellipse class="region" data-region="cingulate" cx="370" cy="140" rx="60" ry="18" opacity="0.6" />
+              <text x="370" y="144" font-family="IBM Plex Mono" font-size="9" text-anchor="middle" fill="#3d4d4d" pointer-events="none">Cingulate / Insula</text>
+
+              <!-- Hover labels -->
+              <g id="brainTooltip" transform="translate(10, 395)">
+                <text font-family="IBM Plex Mono" font-size="10" fill="#5a6a6a">Hover a region for affected dementias →</text>
+              </g>
+            </svg>
+
+            <div class="legend" style="margin-top:14px;">
+              <span>Affected by:</span>
+              <span class="legend-item"><span class="swatch" style="background:#a04848"></span>Alzheimer's</span>
+              <span class="legend-item"><span class="swatch" style="background:#3a5a78"></span>FTD spectrum</span>
+              <span class="legend-item"><span class="swatch" style="background:#5d4a73"></span>Lewy body / PDD</span>
+              <span class="legend-item"><span class="swatch" style="background:#777"></span>Vascular (variable)</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">Filter by dementia type</div>
+            <div class="ap-body">
+              <div id="dementiaList" style="display:flex; flex-direction: column; gap: 4px;"></div>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Region details</div>
+            <div class="ap-body" id="regionDetail">
+              <p class="ap-line muted">Click a brain region for affected dementias and clinical signs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: GEO ===== -->
+    <section id="tab-geo" class="tab-pane" hidden>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>US Alzheimer's prevalence — by state (≥65 yrs)</h2>
+          <div class="panel-actions">
+            <span class="muted">Source: Alzheimer's Association Facts & Figures 2024</span>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="usPrev"></div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <div class="panel-head">
+          <h2>Global age-standardized prevalence — by region</h2>
+          <div class="panel-actions"><span class="muted">GBD 2019</span></div>
+        </div>
+        <div class="panel-body">
+          <div id="globalPrev"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: RISK MAP ===== -->
+    <section id="tab-riskmap" class="tab-pane" hidden>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>14 modifiable risk factors — Lancet Commission 2024</h2>
+          <div class="panel-actions"><span class="muted">PAR = Population-attributable risk</span></div>
+        </div>
+        <div class="panel-body">
+          <p style="font-size:13px; line-height:1.6; margin-bottom:14px;">
+            The Lancet Commission identifies 14 modifiable factors that, if eliminated, could prevent or delay <b>up to 45% of dementia cases globally</b>. Bars show population-attributable risk by life stage.
+          </p>
+
+          <div id="riskBars"></div>
+
+          <div style="margin-top: 24px; padding: 14px; background: var(--bg-cell); border-left: 3px solid var(--accent);">
+            <div class="mono tiny" style="color:var(--accent-deep); letter-spacing:0.06em; margin-bottom: 6px;">CLINICAL TAKEAWAY</div>
+            <p style="font-size:13px; line-height:1.6; margin: 0;">
+              Mid-life (45–65 years) is the highest-leverage window. Hearing loss, hypertension, and elevated LDL together account for ~16% of population-attributable risk — all directly modifiable.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    NV_LAYOUT.mount('maps');
+
+    // Tabs
+    const tabs = document.querySelectorAll('.subnav a');
+    tabs.forEach(t => {
+      t.addEventListener('click', e => {
+        e.preventDefault();
+        const k = t.dataset.tab;
+        tabs.forEach(x => x.classList.toggle('is-active', x === t));
+        document.querySelectorAll('.tab-pane').forEach(p => p.hidden = p.id !== 'tab-' + k);
+        history.replaceState(null, '', '#' + k);
+      });
+    });
+    if (location.hash) {
+      const tgt = document.querySelector(`.subnav a[data-tab="${location.hash.slice(1)}"]`);
+      if (tgt) tgt.click();
+    }
+
+    // ===== Brain regions data =====
+    const regionData = {
+      'frontal': {
+        name: 'Frontal lobe',
+        affected: ['bvFTD', 'PSP', 'Late AD', 'Vascular'],
+        signs: 'Executive dysfunction, disinhibition, apathy, planning failure, primitive reflexes',
+        color: '#3a5a78'
+      },
+      'temporal': {
+        name: 'Temporal lobe',
+        affected: ['Alzheimer\'s', 'svPPA (FTD)', 'HSV encephalitis'],
+        signs: 'Episodic memory loss, semantic memory loss, language comprehension difficulty, naming deficits',
+        color: '#a04848'
+      },
+      'hippocampus': {
+        name: 'Hippocampus',
+        affected: ['Alzheimer\'s (early)', 'Limbic-predominant AD', 'Hippocampal sclerosis'],
+        signs: 'Earliest AD signature: short-term memory loss, difficulty learning new information, repetitive questioning',
+        color: '#a04848'
+      },
+      'parietal': {
+        name: 'Parietal lobe',
+        affected: ['PCA (Posterior Cortical Atrophy)', 'Late AD', 'CBD'],
+        signs: 'Visuospatial deficits, getting lost, dressing apraxia, Gerstmann\'s syndrome (parietal)',
+        color: '#a04848'
+      },
+      'occipital': {
+        name: 'Occipital lobe',
+        affected: ['DLB', 'PCA', 'CJD'],
+        signs: 'Visual hallucinations (DLB), visual recognition difficulty (PCA), cortical blindness',
+        color: '#5d4a73'
+      },
+      'basalganglia': {
+        name: 'Basal ganglia',
+        affected: ['Vascular (lacunar)', 'PDD', 'HD', 'PSP'],
+        signs: 'Parkinsonism, chorea (HD), bradyphrenia, gait apraxia, motor symptoms',
+        color: '#5d4a73'
+      },
+      'cingulate': {
+        name: 'Cingulate / insula',
+        affected: ['bvFTD', 'AD (mid-stage)'],
+        signs: 'Disinhibition, social cognition deficits, apathy, lack of empathy (bvFTD signature)',
+        color: '#3a5a78'
+      }
+    };
+
+    // Map dementias to regions
+    const dementiaRegions = {
+      'AD': ['hippocampus', 'temporal', 'parietal'],
+      'FTD': ['frontal', 'temporal', 'cingulate'],
+      'DLB': ['occipital', 'basalganglia', 'temporal'],
+      'PDD': ['basalganglia', 'frontal'],
+      'VAD': ['basalganglia', 'frontal'],
+      'PCA': ['parietal', 'occipital'],
+      'PPA': ['temporal', 'frontal'],
+      'PSP': ['frontal', 'basalganglia'],
+      'HD': ['basalganglia']
+    };
+
+    // Brain interactivity
+    const tooltip = document.getElementById('brainTooltip');
+    document.querySelectorAll('.region').forEach(r => {
+      r.addEventListener('click', () => {
+        document.querySelectorAll('.region').forEach(x => x.classList.remove('is-active'));
+        r.classList.add('is-active');
+        const d = regionData[r.dataset.region];
+        if (d) {
+          r.style.fill = d.color;
+          r.style.fillOpacity = '0.5';
+          document.getElementById('regionDetail').innerHTML = `
+            <div style="font-family:var(--font-display); font-weight:600; font-size:16px; color:var(--ink-primary); margin-bottom:6px;">${d.name}</div>
+            <p class="ap-line"><b>Affected by:</b> ${d.affected.join(', ')}</p>
+            <p class="ap-line"><b>Clinical signs:</b> ${d.signs}</p>
+          `;
+          tooltip.querySelector('text').textContent = `${d.name} — ${d.affected.join(', ')}`;
+        }
+      });
+      r.addEventListener('mouseenter', () => {
+        const d = regionData[r.dataset.region];
+        if (d) tooltip.querySelector('text').textContent = `${d.name}: ${d.signs.slice(0,80)}…`;
+      });
+    });
+
+    // Dementia list with interactive highlighting
+    const dList = document.getElementById('dementiaList');
+    const types = [
+      { id: 'AD', name: 'Alzheimer\'s' },
+      { id: 'FTD', name: 'FTD (behavioral)' },
+      { id: 'DLB', name: 'Lewy body' },
+      { id: 'PDD', name: 'Parkinson dementia' },
+      { id: 'VAD', name: 'Vascular' },
+      { id: 'PCA', name: 'Posterior cortical' },
+      { id: 'PPA', name: 'Primary prog. aphasia' },
+      { id: 'PSP', name: 'Progressive supranuclear palsy' },
+      { id: 'HD', name: 'Huntington\'s' }
+    ];
+    dList.innerHTML = types.map(t => `
+      <button data-dementia="${t.id}" class="btn btn-ghost" style="text-align:left; font-size:11px; padding:6px 8px;">
+        ${t.name}
+      </button>
+    `).join('');
+
+    dList.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-dementia]');
+      if (!btn) return;
+      const id = btn.dataset.dementia;
+      const regs = dementiaRegions[id] || [];
+
+      // reset
+      document.querySelectorAll('.region').forEach(r => {
+        r.style.fill = '';
+        r.style.fillOpacity = '';
+        r.classList.remove('is-active');
+      });
+      regs.forEach(rid => {
+        const el = document.querySelector(`.region[data-region="${rid}"]`);
+        if (el) {
+          el.style.fill = 'var(--accent)';
+          el.style.fillOpacity = '0.4';
+          el.classList.add('is-active');
+        }
+      });
+      tooltip.querySelector('text').textContent = `${btn.textContent.trim()} — affecting: ${regs.join(', ')}`;
+    });
+
+    // ===== US Prevalence (selected states, illustrative) =====
+    const usPrev = [
+      ['DC',13.6],['FL',13.0],['MD',12.9],['NY',12.7],['MS',12.5],
+      ['SC',12.0],['LA',11.9],['NJ',11.8],['HI',11.7],['CA',11.6],
+      ['TX',11.5],['GA',11.4],['NC',11.0],['IL',10.9],['MA',10.8],
+      ['PA',10.6],['MI',10.5],['OH',10.4],['VA',10.3],['WI',9.9],
+      ['MN',9.7],['CO',9.5],['WA',9.3],['OR',9.1],['UT',8.5],['AK',8.2]
+    ];
+    const maxP = 14;
+    document.getElementById('usPrev').innerHTML = `
+      <div class="us-prev-row" style="font-weight:600; color:var(--ink-primary); border-bottom:1px solid var(--rule); background:var(--bg-cell);">
+        <div>STATE</div><div style="text-align:left;">% OF AGE 65+ WITH AD</div><div style="text-align:right;">VALUE</div>
+      </div>
+      ${usPrev.map(([s, p]) => `
+        <div class="us-prev-row">
+          <div><b>${s}</b></div>
+          <div class="us-prev-bar"><span style="width:${(p / maxP) * 100}%; background: var(--accent);"></span></div>
+          <div style="text-align:right;"><b>${p}%</b></div>
+        </div>
+      `).join('')}
+    `;
+
+    // Global region prevalence (age-standardized rate per 100k, illustrative)
+    const globalPrev = [
+      ['North America', 1010],
+      ['Western Europe', 920],
+      ['Latin America (high-income)', 880],
+      ['East Asia', 740],
+      ['Australasia', 730],
+      ['Eastern Europe', 685],
+      ['North Africa & Middle East', 650],
+      ['South Asia', 590],
+      ['Sub-Saharan Africa', 550],
+      ['Southeast Asia', 510]
+    ];
+    const maxG = 1100;
+    document.getElementById('globalPrev').innerHTML = `
+      <div class="us-prev-row" style="grid-template-columns: 200px 1fr 90px; font-weight:600; color:var(--ink-primary); border-bottom:1px solid var(--rule); background:var(--bg-cell);">
+        <div>REGION</div><div>RATE / 100K</div><div style="text-align:right;">VALUE</div>
+      </div>
+      ${globalPrev.map(([r, n]) => `
+        <div class="us-prev-row" style="grid-template-columns: 200px 1fr 90px;">
+          <div><b>${r}</b></div>
+          <div class="us-prev-bar"><span style="width:${(n / maxG) * 100}%; background: var(--accent);"></span></div>
+          <div style="text-align:right;"><b>${n.toLocaleString()}</b></div>
+        </div>
+      `).join('')}
+    `;
+
+    // ===== Risk factor bars =====
+    const periodColor = {
+      'Early life': '#7a8a8a',
+      'Mid-life': '#a04848',
+      'Late life': '#3a5a78'
+    };
+    const sortedRisk = NV_DATA.riskFactors.slice().sort((a, b) => b.popAttrRisk - a.popAttrRisk);
+    const maxR = sortedRisk[0].popAttrRisk;
+    document.getElementById('riskBars').innerHTML = `
+      <div class="us-prev-row" style="grid-template-columns: 180px 1fr 100px 60px; font-weight:600; color:var(--ink-primary); border-bottom:1px solid var(--rule); background:var(--bg-cell);">
+        <div>FACTOR</div><div>POPULATION-ATTRIB. RISK</div><div>LIFE STAGE</div><div style="text-align:right;">PAR %</div>
+      </div>
+      ${sortedRisk.map(r => `
+        <div class="us-prev-row" style="grid-template-columns: 180px 1fr 100px 60px;">
+          <div><b>${r.factor}</b></div>
+          <div class="us-prev-bar"><span style="width:${(r.popAttrRisk / maxR) * 100}%; background: ${periodColor[r.period] || '#777'};"></span></div>
+          <div class="mono tiny" style="color:${periodColor[r.period] || '#777'};">${r.period}</div>
+          <div style="text-align:right;"><b>${r.popAttrRisk}%</b></div>
+        </div>
+      `).join('')}
+      <div class="legend" style="margin-top:14px;">
+        <span>Life stage:</span>
+        <span class="legend-item"><span class="swatch" style="background:#7a8a8a"></span>Early life</span>
+        <span class="legend-item"><span class="swatch" style="background:#a04848"></span>Mid-life (highest leverage)</span>
+        <span class="legend-item"><span class="swatch" style="background:#3a5a78"></span>Late life</span>
+      </div>
+    `;
+  </script>
+</body>
+</html>

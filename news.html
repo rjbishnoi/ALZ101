@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News · NeuroViz</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="breadcrumb">Daily / News</div>
+        <h1>NeuroViz News Feed</h1>
+      </div>
+      <div class="meta">
+        Latest from peer-reviewed journals & regulators<br/>
+        Updated continuously
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Category</label>
+        <select id="filterCat">
+          <option value="all">All categories</option>
+          <option value="Trials">Trials</option>
+          <option value="Regulatory">Regulatory</option>
+          <option value="Policy">Policy</option>
+          <option value="Research">Research</option>
+          <option value="Treatment">Treatment</option>
+          <option value="Diagnostics">Diagnostics</option>
+          <option value="Care">Care</option>
+          <option value="Genetics">Genetics</option>
+          <option value="Caregiving">Caregiving</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Tag</label>
+        <select id="filterTag">
+          <option value="all">All tags</option>
+          <option value="AD">Alzheimer's</option>
+          <option value="DLB">Lewy body</option>
+          <option value="Diagnostics">Diagnostics</option>
+          <option value="Imaging">Imaging</option>
+          <option value="Prevention">Prevention</option>
+          <option value="Biomarkers">Biomarkers</option>
+          <option value="Non-Pharm">Non-pharm</option>
+          <option value="APOE">APOE</option>
+          <option value="Sleep">Sleep</option>
+          <option value="Access">Access</option>
+          <option value="Policy">Policy</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Search</label>
+        <input id="filterSearch" type="text" placeholder="Search headlines, sources..." />
+      </div>
+      <div class="filter-actions">
+        <button class="btn" id="apply">Apply</button>
+        <button class="btn btn-ghost" id="reset">Reset</button>
+      </div>
+    </div>
+
+    <div class="grid-sidebar">
+      <!-- Main: news feed -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>News feed</h2>
+          <div class="panel-actions">
+            <span class="muted" id="newsCount">—</span>
+          </div>
+        </div>
+        <div class="panel-body tight">
+          <div class="news-list" id="newsList"></div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        <div class="aside-panel">
+          <div class="ap-head">Category breakdown</div>
+          <div class="ap-body" id="catBreakdown"></div>
+        </div>
+
+        <div class="aside-panel">
+          <div class="ap-head">Trusted sources</div>
+          <div class="ap-body">
+            <p class="ap-line"><b>Peer-reviewed</b><br/>NEJM, Lancet, JAMA, BMJ, Nature, Cochrane, Alzheimer's & Dementia, JAMA Neurology</p>
+            <p class="ap-line"><b>Regulatory & gov</b><br/>FDA, CMS, NIH/NIA, HRSA, CDC</p>
+            <p class="ap-line"><b>Reporting</b><br/>STAT News, Reuters Health, MedPage Today</p>
+          </div>
+        </div>
+
+        <div class="aside-panel">
+          <div class="ap-head">For different audiences</div>
+          <div class="ap-body">
+            <p class="ap-line"><b>Clinicians</b> — UpToDate, Practice Update, Annual Reviews</p>
+            <p class="ap-line"><b>Patients & families</b> — Alzheimer's Association, BrightFocus, AlzForum</p>
+            <p class="ap-line"><b>Researchers</b> — AlzForum (signature), bioRxiv, medRxiv</p>
+            <p class="ap-line muted">Always check source quality before sharing.</p>
+          </div>
+        </div>
+
+        <div class="aside-panel">
+          <div class="ap-head">⚠ Be skeptical of</div>
+          <div class="ap-body">
+            <p class="ap-line">Claims of "cures," "reversals," or "memory pills" — particularly via supplements, social media ads, or self-published sites.</p>
+            <p class="ap-line muted">If a treatment isn't on PubMed or in a registered trial, treat with caution.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    NV_LAYOUT.mount('news');
+
+    function catColor(c) {
+      const m = {
+        'Trials': 'pill-info',
+        'Regulatory': 'pill-conc',
+        'Policy': 'pill-watch',
+        'Research': 'pill-pos',
+        'Treatment': 'pill-info',
+        'Diagnostics': 'pill-pos',
+        'Care': 'pill-info',
+        'Genetics': 'pill-watch',
+        'Caregiving': 'pill-info'
+      };
+      return m[c] || 'pill-info';
+    }
+
+    function render(list) {
+      document.getElementById('newsCount').textContent = list.length + ' items';
+      document.getElementById('newsList').innerHTML = list.length === 0
+        ? '<div style="padding: 30px; text-align:center; color: var(--ink-faint); font-size: 12px;">No items match these filters.</div>'
+        : list.map(n => `
+          <div class="news-row">
+            <div class="news-time">${n.time}</div>
+            <div class="news-headline">${n.title} <span class="chip" style="margin-left:6px;">${n.tag}</span></div>
+            <div class="news-source">${n.source}</div>
+            <div class="news-cat"><span class="pill ${catColor(n.cat)}">${n.cat}</span></div>
+          </div>
+        `).join('');
+    }
+
+    function applyFilters() {
+      const cat = document.getElementById('filterCat').value;
+      const tag = document.getElementById('filterTag').value;
+      const q = document.getElementById('filterSearch').value.toLowerCase().trim();
+
+      let rows = NV_DATA.news.slice();
+      if (cat !== 'all') rows = rows.filter(r => r.cat === cat);
+      if (tag !== 'all') rows = rows.filter(r => r.tag === tag);
+      if (q) rows = rows.filter(r =>
+        r.title.toLowerCase().includes(q) || r.source.toLowerCase().includes(q)
+      );
+      render(rows);
+    }
+
+    document.getElementById('apply').addEventListener('click', applyFilters);
+    document.getElementById('filterSearch').addEventListener('input', applyFilters);
+    document.getElementById('reset').addEventListener('click', () => {
+      document.getElementById('filterCat').value = 'all';
+      document.getElementById('filterTag').value = 'all';
+      document.getElementById('filterSearch').value = '';
+      applyFilters();
+    });
+
+    // Category breakdown sidebar
+    const counts = {};
+    NV_DATA.news.forEach(n => { counts[n.cat] = (counts[n.cat] || 0) + 1; });
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    const max = Math.max(...Object.values(counts));
+    document.getElementById('catBreakdown').innerHTML = sorted.map(([c, n]) => `
+      <div class="us-prev-row" style="grid-template-columns: 90px 1fr 30px;">
+        <div>${c}</div>
+        <div class="us-prev-bar"><span style="width:${(n / max) * 100}%; background: var(--accent);"></span></div>
+        <div style="text-align:right;"><b>${n}</b></div>
+      </div>
+    `).join('');
+
+    render(NV_DATA.news);
+  </script>
+</body>
+</html>

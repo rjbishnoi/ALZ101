@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cognitive Screener · NeuroViz</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="breadcrumb">Tools / Screener</div>
+        <h1>Cognitive Risk Screener</h1>
+      </div>
+      <div class="meta">
+        Pattern recognition · Educational use<br/>
+        Not diagnostic
+      </div>
+    </div>
+
+    <div class="subnav" id="subnav">
+      <button class="is-active" data-tab="quiz">Risk Assessment Tool</button>
+      <button data-tab="tools">Validated Screening Instruments</button>
+      <button data-tab="protocols">Clinical Protocols</button>
+    </div>
+
+    <!-- TAB 1: QUIZ -->
+    <div id="tab-quiz" class="tab-panel">
+      <div class="grid-sidebar">
+        <div>
+          <div class="panel">
+            <div class="panel-head">
+              <h2>NeuroViz Risk Assessment</h2>
+              <div class="panel-actions"><span class="mono tiny muted">12 ITEMS · ~3 MIN</span></div>
+            </div>
+            <div class="panel-body">
+              <p style="margin-bottom:14px; font-size:12px; line-height:1.55; color:var(--ink-muted);">
+                A multi-domain risk-pattern tool combining demographic, lifestyle, cognitive, and behavioral factors.
+                Generates pattern signals (AD / vascular / Lewy body / FTD) and recommends next steps.
+                <strong style="color:var(--ink-primary);">Educational only</strong> — formal diagnosis requires clinician evaluation with validated instruments.
+              </p>
+              <div id="screenerMount"></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">When to Screen</div>
+            <div class="ap-body" style="font-size:12px; line-height:1.55;">
+              <strong>Annual:</strong> All adults 65+ at Medicare AWV<br/><br/>
+              <strong>Targeted:</strong>
+              <ul style="margin-top:6px; padding-left:16px;">
+                <li>Subjective memory concern</li>
+                <li>Family history</li>
+                <li>Functional decline</li>
+                <li>Mood / personality change</li>
+                <li>Down syndrome (annual ≥40)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Differential Patterns</div>
+            <div class="ap-body">
+              <ul>
+                <li><span class="item-name">Memory + functional</span><span class="item-val">→ AD</span></li>
+                <li><span class="item-name">Stepwise + vascular RFs</span><span class="item-val">→ VaD</span></li>
+                <li><span class="item-name">Hallucinations + RBD</span><span class="item-val">→ DLB</span></li>
+                <li><span class="item-name">Behavior, younger age</span><span class="item-val">→ FTD</span></li>
+                <li><span class="item-name">Gait + UI + cog</span><span class="item-val">→ NPH</span></li>
+                <li><span class="item-name">Mood predominant</span><span class="item-val">→ Depression</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Reversible Mimics</div>
+            <div class="ap-body" style="font-size:12px; line-height:1.6;">
+              <p>Always rule out:</p>
+              <div style="font-family:var(--font-mono); font-size:11px; margin-top:6px; line-height:1.7;">
+                · Hypothyroidism<br/>
+                · B12 / folate deficiency<br/>
+                · Depression<br/>
+                · Medication side effects<br/>
+                · Sleep apnea<br/>
+                · NPH<br/>
+                · Subdural hematoma<br/>
+                · Neurosyphilis (RPR)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: TOOLS -->
+    <div id="tab-tools" class="tab-panel" style="display:none;">
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Setting</label>
+          <select id="toolSetting">
+            <option value="all">All</option>
+            <option value="primary">Primary care</option>
+            <option value="specialty">Specialty</option>
+            <option value="annual">Annual wellness</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Max time (min)</label>
+          <select id="toolTime">
+            <option value="60">Any</option>
+            <option value="5">≤5 min</option>
+            <option value="10">≤10 min</option>
+            <option value="15">≤15 min</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Domain focus</label>
+          <select id="toolDomain">
+            <option value="all">All</option>
+            <option value="multi">Multi-domain</option>
+            <option value="memory">Memory + Executive</option>
+            <option value="functional">Functional</option>
+            <option value="staging">Global staging</option>
+            <option value="mood">Mood (rule-out)</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button class="btn" id="filterTools">Apply</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Screening Instruments</h2>
+          <div class="panel-actions"><span class="mono tiny muted">SORTABLE · CLICK COLUMNS</span></div>
+        </div>
+        <div class="panel-body tight scroll-x">
+          <table class="data-table" id="toolsTable">
+            <thead>
+              <tr>
+                <th data-sort="code">Tool</th>
+                <th>Full Name</th>
+                <th data-sort="minutes" class="num">Time</th>
+                <th data-sort="sensitivity" class="num">Sens.</th>
+                <th data-sort="specificity" class="num">Spec.</th>
+                <th>Cutoff</th>
+                <th>Domain</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody id="toolsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2 mt-16">
+        <div class="panel">
+          <div class="panel-head"><h2>Sensitivity vs Specificity</h2></div>
+          <div class="panel-body">
+            <div id="sensSpecChart"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Time vs Detection</h2></div>
+          <div class="panel-body">
+            <div style="font-size:12px; line-height:1.6;">
+              Brief tools (Mini-Cog, AD8) trade some sensitivity for primary-care feasibility.
+              MoCA + informant interview offers the best office-based balance.
+              CDR remains the gold standard for staging but requires 30+ minutes and trained interviewers.
+              Consider combining brief tools with informant questionnaires (AD8 / IQCODE) for optimal sensitivity.
+            </div>
+            <div class="divider"></div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; font-family:var(--font-mono); font-size:11px;">
+              <div style="padding:10px; background:var(--bg-cell); border-left:3px solid var(--signal-positive);"><div class="tiny muted uppercase mb-8">Quick</div><strong>Mini-Cog</strong><br/>3 min · 76% sens</div>
+              <div style="padding:10px; background:var(--bg-cell); border-left:3px solid var(--signal-watch);"><div class="tiny muted uppercase mb-8">Standard</div><strong>MoCA</strong><br/>10 min · 90% sens</div>
+              <div style="padding:10px; background:var(--bg-cell); border-left:3px solid var(--signal-concern);"><div class="tiny muted uppercase mb-8">Detailed</div><strong>ACE-III</strong><br/>15 min · 93% sens</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: PROTOCOLS -->
+    <div id="tab-protocols" class="tab-panel" style="display:none;">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><h2>Primary Care Pathway</h2></div>
+          <div class="panel-body prose">
+            <h3>Step 1 · Trigger</h3>
+            <p>Subjective concern (patient or informant), age 65+ AWV, family history, or functional change.</p>
+
+            <h3>Step 2 · Brief screen</h3>
+            <p>Mini-Cog or GPCOG (≤5 min). If concerning, proceed to Step 3.</p>
+
+            <h3>Step 3 · Extended cognitive assessment</h3>
+            <p>MoCA + informant questionnaire (AD8 or IQCODE). Score MoCA &lt;26 with informant report → likely cognitive impairment.</p>
+
+            <h3>Step 4 · Workup for reversible causes</h3>
+            <p>CBC, CMP, TSH, B12, folate, RPR. Depression screen (PHQ-9 or GDS-15). Medication review.</p>
+
+            <h3>Step 5 · Imaging</h3>
+            <p>Brain MRI (preferred) or CT. Look for atrophy patterns, vascular disease, NPH, mass lesions.</p>
+
+            <h3>Step 6 · Refer or treat</h3>
+            <p>Refer to neurology / memory clinic if: rapid progression, atypical presentation, age &lt;65, anti-amyloid candidacy.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Specialty / Memory Clinic Protocol</h2></div>
+          <div class="panel-body prose">
+            <h3>Comprehensive evaluation</h3>
+            <ul>
+              <li>Detailed history with informant</li>
+              <li>Neuropsychological battery (memory, executive, language, visuospatial)</li>
+              <li>CDR / CDR-SB staging</li>
+              <li>Functional assessment (FAQ, ADL/IADL)</li>
+              <li>Behavioral assessment (NPI)</li>
+            </ul>
+
+            <h3>Biomarker workup</h3>
+            <ul>
+              <li>Plasma p-tau217 (high NPV for excluding AD)</li>
+              <li>If AD suspected: amyloid PET or CSF Aβ42/p-tau ratio</li>
+              <li>If DLB suspected: DaT-SPECT, polysomnography (RBD)</li>
+              <li>If FTD: structural MRI for frontotemporal atrophy; consider FDG-PET</li>
+              <li>Genetic counseling if early-onset / strong FH</li>
+            </ul>
+
+            <h3>Anti-amyloid eligibility</h3>
+            <ul>
+              <li>MCI or mild AD (CDR 0.5–1)</li>
+              <li>Confirmed Aβ pathology</li>
+              <li>APOE genotyping (ε4/ε4 high ARIA risk)</li>
+              <li>MRI exclusion: ≥4 microhemorrhages, superficial siderosis, macrohemorrhage</li>
+              <li>No anticoagulation if avoidable</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/screener.js"></script>
+  <script>
+    NV_LAYOUT.mount('screener');
+
+    // Tab switching
+    document.querySelectorAll('#subnav button').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('#subnav button').forEach(x => x.classList.remove('is-active'));
+        b.classList.add('is-active');
+        document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+        document.getElementById('tab-' + b.dataset.tab).style.display = '';
+      });
+    });
+
+    // Mount screener
+    NV_SCREENER.render(document.getElementById('screenerMount'));
+
+    // Tools table
+    function renderToolsTable(items) {
+      document.getElementById('toolsBody').innerHTML = items.map(t => `
+        <tr>
+          <td class="id-cell">${t.code}</td>
+          <td>${t.name}</td>
+          <td class="num">${t.minutes} min</td>
+          <td class="num">${t.sensitivity}%</td>
+          <td class="num">${t.specificity}%</td>
+          <td>${t.cutoff}</td>
+          <td>${t.domain}</td>
+          <td style="font-size:11px;">${t.use}</td>
+        </tr>
+      `).join('');
+    }
+    renderToolsTable(NV_DATA.screeningTools);
+
+    // Sortable columns
+    document.querySelectorAll('#toolsTable th[data-sort]').forEach(th => {
+      th.addEventListener('click', () => {
+        const k = th.dataset.sort;
+        const sorted = [...NV_DATA.screeningTools].sort((a,b) => {
+          if (typeof a[k] === 'number') return b[k] - a[k];
+          return String(a[k]).localeCompare(String(b[k]));
+        });
+        renderToolsTable(sorted);
+      });
+    });
+
+    // Filter
+    document.getElementById('filterTools').addEventListener('click', () => {
+      const time = +document.getElementById('toolTime').value;
+      const dom = document.getElementById('toolDomain').value;
+      const setting = document.getElementById('toolSetting').value;
+      let filtered = NV_DATA.screeningTools.filter(t => {
+        if (t.minutes > time) return false;
+        if (dom !== 'all' && !t.domain.toLowerCase().includes(dom.replace('multi','multi').replace('memory','memory'))) {
+          if (dom === 'multi' && t.domain !== 'Multi-domain') return false;
+          if (dom === 'memory' && !t.domain.toLowerCase().includes('memory')) return false;
+          if (dom === 'functional' && !t.domain.toLowerCase().includes('functional')) return false;
+          if (dom === 'staging' && !t.domain.toLowerCase().includes('global')) return false;
+          if (dom === 'mood' && !t.domain.toLowerCase().includes('mood')) return false;
+        }
+        if (setting !== 'all') {
+          const map = { primary: 'Primary care', specialty: 'Specialty', annual: 'Annual' };
+          if (!t.settings.some(s => s.toLowerCase().includes(map[setting].toLowerCase()))) return false;
+        }
+        return true;
+      });
+      renderToolsTable(filtered);
+    });
+
+    // Sens/spec scatter SVG
+    const tools = NV_DATA.screeningTools;
+    let scatterSvg = `<svg viewBox="0 0 400 280" style="width:100%; height:auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="20" width="340" height="220" fill="white" stroke="#d8d3c4"/>
+      <line x1="40" y1="240" x2="380" y2="240" stroke="#2a3838" stroke-width="1.5"/>
+      <line x1="40" y1="20" x2="40" y2="240" stroke="#2a3838" stroke-width="1.5"/>
+      <text x="210" y="270" font-family="JetBrains Mono" font-size="9" fill="#6b7878" text-anchor="middle" letter-spacing="0.1em">SENSITIVITY %</text>
+      <text x="14" y="130" font-family="JetBrains Mono" font-size="9" fill="#6b7878" text-anchor="middle" transform="rotate(-90 14 130)" letter-spacing="0.1em">SPECIFICITY %</text>
+      ${[60,70,80,90,100].map(v => {
+        const x = 40 + ((v-60)/40) * 340;
+        return `<line x1="${x}" y1="240" x2="${x}" y2="20" stroke="#ece8db"/>
+                <text x="${x}" y="252" font-family="JetBrains Mono" font-size="8" fill="#9aa5a5" text-anchor="middle">${v}</text>`;
+      }).join('')}
+      ${[60,70,80,90,100].map(v => {
+        const y = 240 - ((v-60)/40) * 220;
+        return `<line x1="40" y1="${y}" x2="380" y2="${y}" stroke="#ece8db"/>
+                <text x="32" y="${y+3}" font-family="JetBrains Mono" font-size="8" fill="#9aa5a5" text-anchor="end">${v}</text>`;
+      }).join('')}
+      ${tools.map((t,i) => {
+        const x = 40 + ((t.sensitivity-60)/40) * 340;
+        const y = 240 - ((t.specificity-60)/40) * 220;
+        return `<g><circle cx="${x}" cy="${y}" r="6" fill="#c75a3c" opacity="0.85" stroke="white" stroke-width="1.5"><title>${t.code}: Sens ${t.sensitivity}%, Spec ${t.specificity}%</title></circle>
+                <text x="${x+9}" y="${y+3}" font-family="JetBrains Mono" font-size="9" fill="#0a1f1f" font-weight="600">${t.code}</text></g>`;
+      }).join('')}
+    </svg>`;
+    document.getElementById('sensSpecChart').innerHTML = scatterSvg;
+  </script>
+</body>
+</html>

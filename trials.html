@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinical Trials · NeuroViz</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="breadcrumb">Research / Clinical Trials</div>
+        <h1>Clinical Trials Browser</h1>
+      </div>
+      <div class="meta">
+        Source: ClinicalTrials.gov<br/>
+        Representative late-stage pipeline
+      </div>
+    </div>
+
+    <!-- Stat strip -->
+    <div class="stat-strip" id="trialStats"></div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Phase</label>
+        <select id="filterPhase">
+          <option value="all">All phases</option>
+          <option value="I">Phase I</option>
+          <option value="II">Phase II</option>
+          <option value="III">Phase III</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Status</label>
+        <select id="filterStatus">
+          <option value="all">All</option>
+          <option value="Recruiting">Recruiting</option>
+          <option value="Active">Active</option>
+          <option value="Active, not recruiting">Active, not recruiting</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Mechanism</label>
+        <select id="filterMech">
+          <option value="all">All</option>
+          <option value="amyloid">Anti-amyloid</option>
+          <option value="tau">Anti-tau</option>
+          <option value="GLP-1">Metabolic / GLP-1</option>
+          <option value="Sigma">Sigma-1 / Other</option>
+          <option value="vaccine">Active vaccines</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Search</label>
+        <input id="filterSearch" type="text" placeholder="Sponsor, target, NCT…" />
+      </div>
+      <div class="filter-actions">
+        <button class="btn" id="apply">Apply</button>
+        <button class="btn btn-ghost" id="reset">Reset</button>
+      </div>
+    </div>
+
+    <div class="grid-sidebar">
+      <!-- Main: trials table + pipeline timeline -->
+      <div>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Trial pipeline</h2>
+            <div class="panel-actions"><span class="muted" id="trialCount">—</span></div>
+          </div>
+          <div class="panel-body tight">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>NCT</th>
+                  <th>Trial</th>
+                  <th>Phase</th>
+                  <th>Sponsor</th>
+                  <th>Mechanism / Target</th>
+                  <th>Population</th>
+                  <th class="num">N</th>
+                  <th>Status</th>
+                  <th>Completion</th>
+                </tr>
+              </thead>
+              <tbody id="trialRows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Pipeline phase chart -->
+        <div class="panel" style="margin-top:14px;">
+          <div class="panel-head">
+            <h2>Pipeline visualization</h2>
+            <div class="panel-actions"><span class="muted">By target completion</span></div>
+          </div>
+          <div class="panel-body">
+            <div class="trial-timeline" id="trialTimeline"></div>
+            <div class="legend" style="margin-top:10px;">
+              <span class="legend-item"><span class="swatch" style="background:#c4d6c8;"></span>Phase I</span>
+              <span class="legend-item"><span class="swatch" style="background:#98b8a3;"></span>Phase II</span>
+              <span class="legend-item"><span class="swatch" style="background:var(--accent);"></span>Phase III</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        <div class="aside-panel">
+          <div class="ap-head">For patients & families</div>
+          <div class="ap-body">
+            <p class="ap-line"><b>Want to participate in research?</b></p>
+            <p class="ap-line">Talk to your neurologist or memory clinic. Most academic centers have a research coordinator.</p>
+            <p class="ap-line">National registries:</p>
+            <ul style="padding-left:16px; font-size:11px; line-height:1.7;">
+              <li><b>TrialMatch</b> — Alzheimer's Association</li>
+              <li><b>Brain Health Registry</b> — UCSF</li>
+              <li><b>APT Webstudy</b> — USC</li>
+              <li><b>GeneMatch</b> — for APOE-based trials</li>
+            </ul>
+            <p class="ap-line muted">Most trials reimburse travel. Many are virtual / decentralized.</p>
+          </div>
+        </div>
+
+        <div class="aside-panel">
+          <div class="ap-head">Therapeutic landscape (2026)</div>
+          <div class="ap-body">
+            <p class="ap-line"><b>Anti-amyloid</b> — first generation (lecanemab, donanemab) approved; next-gen (trontinemab, remternetug) entering pivotal readouts.</p>
+            <p class="ap-line"><b>Anti-tau</b> — antibodies (E2814, JNJ-2056) and active vaccines (AADvac1) in Ph 2/3.</p>
+            <p class="ap-line"><b>Metabolic</b> — GLP-1 agonists (semaglutide EVOKE) testing dementia repurposing hypothesis.</p>
+            <p class="ap-line"><b>DLB-specific</b> — neflamapimod (p38α) showing functional benefits.</p>
+          </div>
+        </div>
+
+        <div class="aside-panel">
+          <div class="ap-head">Eligibility commonalities</div>
+          <div class="ap-body">
+            <p class="ap-line">Most early-AD trials require:</p>
+            <ul style="padding-left:16px; font-size:11px; line-height:1.7;">
+              <li>Aβ confirmation (PET or CSF p-tau217)</li>
+              <li>MMSE 22–28 or CDR 0.5–1</li>
+              <li>Stable medications ≥4 wk</li>
+              <li>MRI without significant micro-bleeds</li>
+              <li>Reliable study partner</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    NV_LAYOUT.mount('trials');
+
+    // Stat strip
+    const total = NV_DATA.trials.length;
+    const recruiting = NV_DATA.trials.filter(t => t.status === 'Recruiting').length;
+    const phase3 = NV_DATA.trials.filter(t => t.phase === 'III').length;
+    const totalN = NV_DATA.trials.reduce((s, t) => s + t.n, 0);
+    const countries = new Set(NV_DATA.trials.flatMap(t => [t.countries])).size;
+    const sponsors = new Set(NV_DATA.trials.map(t => t.sponsor)).size;
+    document.getElementById('trialStats').innerHTML = `
+      <div class="stat-cell"><div class="stat-label">TRIALS LISTED</div><div class="stat-value">${total}</div></div>
+      <div class="stat-cell"><div class="stat-label">RECRUITING</div><div class="stat-value">${recruiting}</div></div>
+      <div class="stat-cell"><div class="stat-label">PHASE 3</div><div class="stat-value">${phase3}</div></div>
+      <div class="stat-cell"><div class="stat-label">PARTICIPANTS (N)</div><div class="stat-value">${totalN.toLocaleString()}</div></div>
+      <div class="stat-cell"><div class="stat-label">UNIQUE SPONSORS</div><div class="stat-value">${sponsors}</div></div>
+      <div class="stat-cell"><div class="stat-label">CTI.GOV TOTAL</div><div class="stat-value">1,247+</div><div class="stat-detail muted">all neurocog</div></div>
+    `;
+
+    // Renderers
+    function statusPill(s) {
+      if (s === 'Recruiting') return '<span class="pill pill-pos">Recruiting</span>';
+      if (s.startsWith('Active')) return '<span class="pill pill-info">Active</span>';
+      return '<span class="pill pill-watch">' + s + '</span>';
+    }
+    function phasePill(p) {
+      const cls = p === 'III' ? 'pill-conc' : (p === 'II' ? 'pill-info' : 'pill-watch');
+      return '<span class="pill ' + cls + '">Phase ' + p + '</span>';
+    }
+
+    function renderTable(rows) {
+      document.getElementById('trialCount').textContent = rows.length + ' trials';
+      document.getElementById('trialRows').innerHTML = rows.map(t => `
+        <tr>
+          <td class="id-cell"><a href="https://clinicaltrials.gov/study/${t.nct}" target="_blank">${t.nct}</a></td>
+          <td><b>${t.title}</b></td>
+          <td>${phasePill(t.phase)}</td>
+          <td>${t.sponsor}</td>
+          <td><span class="chip">${t.target}</span></td>
+          <td class="muted">${t.population}</td>
+          <td class="num">${t.n.toLocaleString()}</td>
+          <td>${statusPill(t.status)}</td>
+          <td class="mono">${t.completion}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderTimeline(rows) {
+      const minYear = 2025;
+      const maxYear = 2028;
+      const span = maxYear - minYear;
+      const tl = rows.map(t => {
+        const end = parseInt(t.completion) || maxYear;
+        const startYear = 2024;
+        const left = ((startYear - minYear) / span) * 100;
+        const width = Math.max(8, ((end - startYear) / span) * 100);
+        return `
+          <div class="ttl-row">
+            <div><b>${t.nct.slice(0, 11)}</b><br/><span class="muted">${t.sponsor}</span></div>
+            <div class="ttl-bar phase-${t.phase === 'III' ? '3' : (t.phase === 'II' ? '2' : '1')}" title="${t.title}: through ${t.completion}">
+              <span style="margin-left:${Math.max(0,left)}%; width:${width}%;"></span>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('trialTimeline').innerHTML = `
+        <div class="ttl-row" style="border-bottom:1px solid var(--rule); font-weight:600; color:var(--ink-primary); background:var(--bg-cell);">
+          <div>TRIAL</div>
+          <div style="display:flex; justify-content:space-between; padding:0 4px;">
+            <span>2025</span><span>2026</span><span>2027</span><span>2028</span>
+          </div>
+        </div>
+        ${tl}
+      `;
+    }
+
+    function applyFilters() {
+      const phase = document.getElementById('filterPhase').value;
+      const status = document.getElementById('filterStatus').value;
+      const mech = document.getElementById('filterMech').value;
+      const q = document.getElementById('filterSearch').value.toLowerCase().trim();
+
+      let rows = NV_DATA.trials.slice();
+      if (phase !== 'all') rows = rows.filter(r => r.phase === phase);
+      if (status !== 'all') rows = rows.filter(r => r.status === status || (status === 'Active' && r.status.startsWith('Active')));
+      if (mech !== 'all') {
+        const map = {
+          'amyloid': /amyloid|aβ|protofibril|plaque/i,
+          'tau': /tau/i,
+          'GLP-1': /glp|semaglu/i,
+          'Sigma': /sigma|p38|kinase|free radical|levetirac/i,
+          'vaccine': /vaccine|immuniz/i
+        };
+        const re = map[mech];
+        if (re) rows = rows.filter(r => re.test(r.target) || re.test(r.title));
+      }
+      if (q) {
+        rows = rows.filter(r =>
+          r.nct.toLowerCase().includes(q) ||
+          r.title.toLowerCase().includes(q) ||
+          r.sponsor.toLowerCase().includes(q) ||
+          r.target.toLowerCase().includes(q)
+        );
+      }
+      renderTable(rows);
+      renderTimeline(rows);
+    }
+
+    document.getElementById('apply').addEventListener('click', applyFilters);
+    document.getElementById('filterSearch').addEventListener('input', applyFilters);
+    document.getElementById('reset').addEventListener('click', () => {
+      document.getElementById('filterPhase').value = 'all';
+      document.getElementById('filterStatus').value = 'all';
+      document.getElementById('filterMech').value = 'all';
+      document.getElementById('filterSearch').value = '';
+      applyFilters();
+    });
+
+    renderTable(NV_DATA.trials);
+    renderTimeline(NV_DATA.trials);
+  </script>
+</body>
+</html>

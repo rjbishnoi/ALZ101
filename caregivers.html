@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caregivers · NeuroViz</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="breadcrumb">Support / Caregivers</div>
+        <h1>Caregiver Hub</h1>
+      </div>
+      <div class="meta">
+        Resources · Toolkit · Stage-by-stage<br/>
+        Educational reference only
+      </div>
+    </div>
+
+    <!-- Subnav -->
+    <div class="subnav">
+      <a href="#resources" data-tab="resources" class="is-active">Resources Directory</a>
+      <a href="#toolkit" data-tab="toolkit">Caregiver Toolkit</a>
+      <a href="#stages" data-tab="stages">Stage-by-Stage</a>
+      <a href="#wellness" data-tab="wellness">Caregiver Wellness</a>
+    </div>
+
+    <!-- ===== TAB: RESOURCES ===== -->
+    <section id="tab-resources" class="tab-pane">
+      <!-- Crisis line -->
+      <div class="panel" style="background: var(--accent-soft); border-color: var(--accent);">
+        <div class="panel-body" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div class="mono tiny" style="color:var(--accent-deep); letter-spacing:0.08em;">24/7 HELPLINE</div>
+            <div style="font-family:var(--font-display); font-size: 22px; font-weight: 600; color: var(--ink-primary); margin-top:2px;">
+              Alzheimer's Association: <span style="color:var(--accent-deep);">1-800-272-3900</span>
+            </div>
+            <div class="muted" style="font-size: 12px;">Master's-level clinicians · 200+ languages · Free</div>
+          </div>
+          <div class="muted" style="text-align:right; font-size:11px;">
+            For caregiver crisis or urgent question.<br/>
+            Not for medical emergency — call 911.
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar" style="margin-top:14px;">
+        <div class="filter-group">
+          <label>Type</label>
+          <select id="filterType">
+            <option value="all">All</option>
+            <option value="Crisis support">Crisis support</option>
+            <option value="Online community">Online community</option>
+            <option value="Information & tools">Information & tools</option>
+            <option value="Multi-state services">Multi-state services</option>
+            <option value="Service finder">Service finder</option>
+            <option value="Disease-specific">Disease-specific</option>
+            <option value="Social support">Social support</option>
+            <option value="Advocacy & education">Advocacy & education</option>
+            <option value="Veterans">Veterans</option>
+            <option value="Comprehensive care">Comprehensive care</option>
+            <option value="Advance planning">Advance planning</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Cost</label>
+          <select id="filterCost">
+            <option value="all">All</option>
+            <option value="Free">Free</option>
+            <option value="Insurance">Insurance / paid</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button class="btn" id="apply">Apply</button>
+          <button class="btn btn-ghost" id="reset">Reset</button>
+        </div>
+      </div>
+
+      <div id="resourceGrid"></div>
+    </section>
+
+    <!-- ===== TAB: TOOLKIT ===== -->
+    <section id="tab-toolkit" class="tab-pane" hidden>
+      <div class="grid-sidebar">
+        <div>
+          <div class="panel">
+            <div class="panel-head"><h2>Daily-life toolkit</h2></div>
+            <div class="panel-body">
+              <div class="toolkit-grid">
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">CO M M U N I C A T I O N</div>
+                  <h4>Talking with someone with dementia</h4>
+                  <p>Use short, simple sentences. Make eye contact. Speak slowly. Ask one question at a time. Allow extra time for response. Avoid arguing — redirect instead.</p>
+                </div>
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">SAFETY</div>
+                  <h4>Home safety checklist</h4>
+                  <p>Remove throw rugs. Install grab bars. Lock medications. Turn down water heater (≤120°F). Use stove safety knobs. Consider GPS tracker for wandering.</p>
+                </div>
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">ROUTINE</div>
+                  <h4>Build a daily routine</h4>
+                  <p>Same wake/sleep times. Bright light + activity in AM. Light dinner; calm evening. Limit naps to 30 min before 3 PM. Familiar music helps transitions.</p>
+                </div>
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">L E G A L</div>
+                  <h4>Essential legal documents</h4>
+                  <p>Durable Power of Attorney (financial). Healthcare proxy / advance directive. POLST/MOLST. Will. Complete <b>early</b> while capacity allows. Free state-specific forms at caringinfo.org.</p>
+                </div>
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">DRIVING</div>
+                  <h4>When to stop driving</h4>
+                  <p>Warning signs: getting lost in familiar areas, slow reactions, near-misses. AAA Senior Driving has on-road evaluations. Some states have anonymous physician reporting.</p>
+                </div>
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">M E D I C A T I O N</div>
+                  <h4>Medication management</h4>
+                  <p>Use pill organizers (weekly). Set alarms or pharmacy auto-text. Brown-bag review with pharmacist annually. Watch for anticholinergic load — see Beers Criteria.</p>
+                </div>
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">F I N A N C I A L</div>
+                  <h4>Financial protection</h4>
+                  <p>Consolidate accounts. Set up bill auto-pay. Add a trusted contact at brokerage. Watch for scams (robocalls, romance, grandparent). EverSafe and TrueLink monitor accounts for cognitive-decline patterns.</p>
+                </div>
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">B E H A V I O R S</div>
+                  <h4>Managing difficult moments</h4>
+                  <p>Stay calm. Validate emotion ("you seem upset"). Redirect, don't reason. Look for triggers: pain, hunger, full bladder, fatigue, overstimulation. Document patterns to share with clinician.</p>
+                </div>
+
+                <div class="toolkit-card">
+                  <div class="tk-meta">EATING</div>
+                  <h4>Mealtime strategies</h4>
+                  <p>Finger foods if utensils difficult. High-contrast plates (red plates increase intake by 25%). Smaller portions, more often. Add nutrition shakes if losing weight.</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">Printable handouts</div>
+            <div class="ap-body">
+              <ul style="padding-left:16px; font-size:11px; line-height:1.7;">
+                <li>10 Warning Signs of Alzheimer's (alz.org)</li>
+                <li>Daily Activity Planner</li>
+                <li>Doctor Visit Question List</li>
+                <li>Wandering Action Plan</li>
+                <li>Hospital Visit Toolkit</li>
+                <li>Hospice Decision Guide</li>
+              </ul>
+              <p class="ap-line muted" style="margin-top:6px;">Available free at alz.org/help-support</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Apps & tech</div>
+            <div class="ap-body">
+              <p class="ap-line"><b>MedAdvisor / Medisafe</b> — medication tracking</p>
+              <p class="ap-line"><b>CareZone</b> — shared family caregiving notes</p>
+              <p class="ap-line"><b>AngelSense / Apple AirTag</b> — wandering location</p>
+              <p class="ap-line"><b>Lotsa Helping Hands</b> — coordinate help</p>
+              <p class="ap-line"><b>Constant Therapy</b> — cognitive exercises</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: STAGES ===== -->
+    <section id="tab-stages" class="tab-pane" hidden>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>What to expect — and what to do — at each stage</h2>
+          <div class="panel-actions"><span class="muted">Adapted from NIA caregiver guides</span></div>
+        </div>
+        <div class="panel-body">
+          <div id="stageGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: WELLNESS ===== -->
+    <section id="tab-wellness" class="tab-pane" hidden>
+      <div class="grid-sidebar">
+        <div class="panel">
+          <div class="panel-head"><h2>Caregiver self-assessment</h2></div>
+          <div class="panel-body">
+            <p style="font-size:13px; line-height:1.6; margin-bottom:14px;">
+              Caregiving for someone with dementia is associated with elevated rates of depression, anxiety, and burnout. <b>Caring for yourself is part of caring for them.</b>
+            </p>
+
+            <h3 style="font-family:var(--font-display); font-weight:600; font-size:16px; margin-top: 0; color:var(--ink-primary);">
+              Zarit Burden Interview — sample questions
+            </h3>
+            <p class="muted" style="font-size:11px; margin-bottom:10px;">Score 0 (never) to 4 (nearly always). ≥21 suggests significant burden.</p>
+
+            <table class="data-table">
+              <thead>
+                <tr><th>#</th><th>In the past month…</th><th class="num">Score</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>Do you feel that your relative asks for more help than they need?</td><td class="num">0–4</td></tr>
+                <tr><td>2</td><td>Do you feel you don't have enough time for yourself?</td><td class="num">0–4</td></tr>
+                <tr><td>3</td><td>Do you feel stressed between caregiving and meeting other responsibilities?</td><td class="num">0–4</td></tr>
+                <tr><td>4</td><td>Do you feel embarrassed by your relative's behavior?</td><td class="num">0–4</td></tr>
+                <tr><td>5</td><td>Do you feel angry when around your relative?</td><td class="num">0–4</td></tr>
+                <tr><td>6</td><td>Do you feel your social life has suffered?</td><td class="num">0–4</td></tr>
+                <tr><td>7</td><td>Do you feel you've lost control of your life?</td><td class="num">0–4</td></tr>
+              </tbody>
+            </table>
+            <p class="muted" style="font-size:11px; margin-top:10px;">Full 22-item ZBI available from Family Caregiver Alliance.</p>
+
+            <h3 style="font-family:var(--font-display); font-weight:600; font-size:16px; margin-top: 24px; color:var(--ink-primary);">
+              Warning signs of caregiver burnout
+            </h3>
+            <ul style="padding-left:18px; font-size:13px; line-height:1.8; margin: 6px 0;">
+              <li>Withdrawal from friends and activities you used to enjoy</li>
+              <li>Persistent irritability, sadness, or hopelessness</li>
+              <li>Sleep disturbance not explained by your relative's needs</li>
+              <li>Frequent illness, headaches, GI complaints</li>
+              <li>Increased reliance on alcohol, sleep aids, or other substances</li>
+              <li>Thoughts of self-harm or harming the person you care for</li>
+            </ul>
+            <p style="font-size:13px; margin-top:14px;">
+              <b>If thoughts of self-harm or harming your relative are present</b>, this is a medical emergency. Call 988 (US Suicide & Crisis Lifeline). You are not alone — these thoughts can occur in caregivers and are treatable.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">REACH II evidence base</div>
+            <div class="ap-body">
+              <p class="ap-line">Multi-component caregiver intervention (REACH II) reduced caregiver depression and improved quality of life across 5 sites.</p>
+              <p class="ap-line muted">Components: stress management, problem-solving, support, education, telephone support groups.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Respite is medicine</div>
+            <div class="ap-body">
+              <p class="ap-line">Adult day programs and respite care reduce caregiver depression scores and delay nursing home placement by an average of 22 months (NYU Caregiver Intervention).</p>
+              <p class="ap-line muted">See <a href="community.html">Community Care</a> for service types and costs.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Crisis & support</div>
+            <div class="ap-body">
+              <ul style="padding-left:16px; font-size:11px; line-height:1.7;">
+                <li><b>988</b> — Suicide & Crisis Lifeline</li>
+                <li><b>1-800-272-3900</b> — Alzheimer's Association</li>
+                <li><b>1-800-985-5990</b> — Disaster Distress Helpline</li>
+                <li><b>caregiver.org</b> — Family Caregiver Alliance</li>
+                <li>Therapy with a counselor experienced in caregiver issues — many therapists list this specialty in Psychology Today directory</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    NV_LAYOUT.mount('caregivers');
+
+    // ===== Tab switching =====
+    const tabs = document.querySelectorAll('.subnav a');
+    tabs.forEach(t => {
+      t.addEventListener('click', e => {
+        e.preventDefault();
+        const k = t.dataset.tab;
+        tabs.forEach(x => x.classList.toggle('is-active', x === t));
+        document.querySelectorAll('.tab-pane').forEach(p => p.hidden = p.id !== 'tab-' + k);
+        history.replaceState(null, '', '#' + k);
+      });
+    });
+    if (location.hash) {
+      const tgt = document.querySelector(`.subnav a[data-tab="${location.hash.slice(1)}"]`);
+      if (tgt) tgt.click();
+    }
+
+    // ===== Resources grid =====
+    function renderResources(rows) {
+      document.getElementById('resourceGrid').innerHTML = `
+        <div class="toolkit-grid">
+          ${rows.map(r => `
+            <div class="toolkit-card">
+              <div class="tk-meta">${r.type.toUpperCase()}</div>
+              <h4>${r.name}</h4>
+              <p>${r.detail}</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                <span class="chip ${r.cost === 'Free' ? 'chip-accent' : ''}">${r.cost}</span>
+                <span class="mono tiny" style="color:var(--accent);">${r.contact}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    function applyResources() {
+      const t = document.getElementById('filterType').value;
+      const c = document.getElementById('filterCost').value;
+      let rows = NV_DATA.caregiverResources;
+      if (t !== 'all') rows = rows.filter(r => r.type === t);
+      if (c !== 'all') rows = rows.filter(r => (c === 'Free' ? r.cost === 'Free' : r.cost !== 'Free'));
+      renderResources(rows);
+    }
+    document.getElementById('apply').addEventListener('click', applyResources);
+    document.getElementById('reset').addEventListener('click', () => {
+      document.getElementById('filterType').value = 'all';
+      document.getElementById('filterCost').value = 'all';
+      renderResources(NV_DATA.caregiverResources);
+    });
+    renderResources(NV_DATA.caregiverResources);
+
+    // ===== Stages-by-stage caregiver guidance =====
+    const stageGuidance = {
+      'Preclinical': {
+        whatHappens: 'No symptoms. Biomarkers may be positive on research testing. Person fully independent.',
+        watch: 'Subtle changes in sleep, mood, sense of smell. Strong family history of dementia.',
+        do: ['Build cognitive reserve: education, social engagement, learning', 'Manage cardiovascular risk factors', 'Establish primary care + memory baseline', 'Discuss values; consider advance directives']
+      },
+      'MCI': {
+        whatHappens: 'Mild but objective cognitive decline; daily life still independent. Some convert to dementia (~10–15%/yr); some remain stable or improve.',
+        watch: 'Misplacing items, forgetting recent conversations, word-finding difficulty. Anxiety often emerges.',
+        do: ['Comprehensive cognitive evaluation + biomarkers if indicated', 'Driving evaluation if any concerns', 'Complete legal/financial planning NOW', 'Exercise + Mediterranean/MIND diet', 'Treat hearing loss, sleep apnea, depression']
+      },
+      'Mild': {
+        whatHappens: 'Difficulty with complex tasks (finances, medications). Recent memory clearly impaired. Personality may begin to change.',
+        watch: 'Getting lost while driving, missed bills, repeated questions, withdrawal from hobbies.',
+        do: ['Establish neurology + dementia care', 'Activate POA / healthcare proxy', 'Pillbox + medication system', 'Stop driving when unsafe — get evaluation', 'Begin caregiver support group', 'Explore clinical trials if interested']
+      },
+      'Moderate': {
+        whatHappens: 'Needs help with daily activities (bathing, dressing). Behavioral symptoms common (agitation, sleep changes, sometimes hallucinations). May not recognize family.',
+        watch: 'Wandering, sundowning, falls, incontinence, swallowing difficulty starting.',
+        do: ['Day program or in-home aide', 'Home safety modifications', 'Wandering plan + ID + tracker', 'Discuss palliative care consult', 'Consider memory care residential if needed', 'Caregiver respite is essential']
+      },
+      'Severe': {
+        whatHappens: 'Total dependence for ADLs. Mute or minimally verbal. Bed-bound or limited mobility. Swallowing impaired.',
+        watch: 'Aspiration, weight loss, pressure ulcers, infections (UTI, pneumonia).',
+        do: ['Hospice referral when appropriate (often eligible by FAST stage 7)', 'Comfort-focused care', 'Avoid hospitalization unless quality-of-life improvement likely', 'Spiritual care, music, touch', 'Bereavement planning + caregiver support']
+      }
+    };
+
+    document.getElementById('stageGrid').innerHTML = NV_DATA.stages.map((s, i) => {
+      const g = stageGuidance[s.name] || {};
+      const dots = Array.from({length: 5}, (_, idx) => `<span class="${idx <= i ? 'is-on' : ''}"></span>`).join('');
+      return `
+        <div style="border:1px solid var(--rule); margin-bottom: 14px; background: var(--bg-paper);">
+          <div style="padding:14px; border-bottom: 1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; background:var(--bg-cell);">
+            <div>
+              <div class="mono tiny muted" style="letter-spacing:0.06em;">STAGE ${i + 1} · CDR ${s.cdr} · MMSE ${s.mmse}</div>
+              <div style="font-family:var(--font-display); font-size: 22px; font-weight: 600; color: var(--ink-primary); margin-top:2px;">${s.name}</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="cg-stage-gauge" style="width: 120px;">${dots}</div>
+              <div class="mono tiny muted">DURATION: ${s.duration}</div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;">
+            <div style="padding:14px; border-right: 1px solid var(--rule);">
+              <div class="mono tiny muted" style="letter-spacing:0.05em; margin-bottom:6px;">WHAT HAPPENS</div>
+              <p style="font-size:12px; line-height:1.6; margin:0;">${g.whatHappens || s.features}</p>
+            </div>
+            <div style="padding:14px; border-right: 1px solid var(--rule);">
+              <div class="mono tiny muted" style="letter-spacing:0.05em; margin-bottom:6px;">WATCH FOR</div>
+              <p style="font-size:12px; line-height:1.6; margin:0;">${g.watch || ''}</p>
+            </div>
+            <div style="padding:14px; background: var(--accent-soft);">
+              <div class="mono tiny" style="color: var(--accent-deep); letter-spacing:0.05em; margin-bottom:6px;">CAREGIVER ACTIONS</div>
+              <ul style="padding-left:16px; font-size:12px; line-height:1.6; margin:0;">
+                ${(g.do || []).map(d => `<li>${d}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  </script>
+</body>
+</html>

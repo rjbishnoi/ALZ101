@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuroViz — Cognitive Health Terminal</title>
+  <meta name="description" content="Data-visualization terminal for neurocognitive disorders. For physicians, patients, and caregivers." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <main class="page">
+
+    <!-- Top stat strip -->
+    <div class="stat-strip" id="statStrip"></div>
+
+    <!-- Heatmap section -->
+    <div class="grid-sidebar">
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Dementia Type Heatmap</h2>
+          <div class="panel-actions">
+            <span class="muted">METRIC:</span>
+            <select id="heatmapMetric" style="border:1px solid var(--rule); background:white; padding:2px 6px; font-family:var(--font-mono); font-size:10px;">
+              <option value="prevalence">Prevalence</option>
+              <option value="severity">Severity / Stage</option>
+              <option value="trials">Active Trials</option>
+            </select>
+            <a href="groups.html">FULL VIEW →</a>
+          </div>
+        </div>
+        <div class="panel-body tight" style="padding:8px;">
+          <div id="heatmap"></div>
+          <div class="legend" style="padding: 10px 4px 4px;">
+            <span>Severity gradient:</span>
+            <span class="legend-item"><span class="swatch" style="background:var(--sev-0)"></span>Minimal</span>
+            <span class="legend-item"><span class="swatch" style="background:var(--sev-1)"></span>Mild</span>
+            <span class="legend-item"><span class="swatch" style="background:var(--sev-2)"></span>Moderate</span>
+            <span class="legend-item"><span class="swatch" style="background:var(--sev-3)"></span>Significant</span>
+            <span class="legend-item"><span class="swatch" style="background:var(--sev-4)"></span>Severe</span>
+            <span class="legend-item"><span class="swatch" style="background:var(--sev-5)"></span>End-stage</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar: signals & quick actions -->
+      <div>
+        <div class="aside-panel">
+          <div class="ap-head">Today's Signals</div>
+          <div class="ap-body">
+            <ul>
+              <li><span class="item-name">FDA approvals YTD</span><span class="item-val">2</span></li>
+              <li><span class="item-name">Phase III readouts pending</span><span class="item-val">7</span></li>
+              <li><span class="item-name">Biomarker tests CMS-covered</span><span class="item-val">11</span></li>
+              <li><span class="item-name">Reversible causes (NPH, B12, hypothyroid)</span><span class="item-val">5%</span></li>
+              <li><span class="item-name">Modifiable risk burden</span><span class="item-val">45%</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="aside-panel">
+          <div class="ap-head">Quick Actions</div>
+          <div class="ap-body" style="display:flex; flex-direction:column; gap:6px;">
+            <a href="screener.html" class="btn btn-ghost" style="text-align:center;">Run Screener</a>
+            <a href="diagnosis.html" class="btn btn-ghost" style="text-align:center;">Diagnostic Workup</a>
+            <a href="trials.html" class="btn btn-ghost" style="text-align:center;">Find Clinical Trial</a>
+            <a href="caregivers.html" class="btn btn-accent" style="text-align:center;">Caregiver Toolkit</a>
+          </div>
+        </div>
+
+        <div class="aside-panel">
+          <div class="ap-head">Lancet 2024 Risk Factors</div>
+          <div class="ap-body">
+            <ul id="riskList"></ul>
+            <div class="tiny muted" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--rule-soft);">
+              45% of dementia is potentially preventable through addressing 14 modifiable risks across the lifespan.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- News + Trials grid -->
+    <div class="grid-2 mt-16">
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Latest News & Research</h2>
+          <div class="panel-actions">
+            <a href="news.html">ALL NEWS →</a>
+          </div>
+        </div>
+        <div class="news-list" id="newsList" style="border:none;"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>High-Profile Active Trials</h2>
+          <div class="panel-actions">
+            <a href="trials.html">ALL TRIALS →</a>
+          </div>
+        </div>
+        <div class="scroll-x">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>NCT</th><th>Phase</th><th>Sponsor</th><th>Target</th><th class="num">N</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="trialsMini"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stages timeline -->
+    <div class="panel mt-16">
+      <div class="panel-head"><h2>Disease Trajectory</h2></div>
+      <div class="panel-body">
+        <div id="stagesTimeline" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:0; border:1px solid var(--rule);"></div>
+        <div class="tiny muted" style="margin-top:10px;">CDR = Clinical Dementia Rating · MMSE = Mini-Mental State Examination · Duration ranges represent typical AD progression</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/heatmap.js"></script>
+  <script>
+    NV_LAYOUT.mount('home');
+
+    // ---- Top stat strip
+    document.getElementById('statStrip').innerHTML = NV_DATA.topStats.map(s => `
+      <div class="stat">
+        <div class="stat-label">${s.label}</div>
+        <div class="stat-value">${s.value}</div>
+        <div class="stat-detail ${s.dir}">${s.dir === 'up' ? '▲' : '▼'} ${s.detail}</div>
+      </div>
+    `).join('');
+
+    // ---- Heatmap
+    const heatmapEl = document.getElementById('heatmap');
+    NV_HEATMAP.render(heatmapEl, { metric: 'prevalence' });
+    document.getElementById('heatmapMetric').addEventListener('change', e => {
+      NV_HEATMAP.render(heatmapEl, { metric: e.target.value });
+      attachHeatmapClicks();
+    });
+    function attachHeatmapClicks() {
+      document.querySelectorAll('.heatmap-cell').forEach(c => {
+        c.addEventListener('click', () => {
+          window.location.href = `groups.html#${c.dataset.type}`;
+        });
+      });
+    }
+    attachHeatmapClicks();
+
+    // ---- Risk factors
+    document.getElementById('riskList').innerHTML = NV_DATA.riskFactors
+      .sort((a,b) => b.popAttrRisk - a.popAttrRisk).slice(0, 8)
+      .map(r => `<li><span class="item-name">${r.factor}</span><span class="item-val">${r.popAttrRisk}%</span></li>`)
+      .join('');
+
+    // ---- News list
+    document.getElementById('newsList').innerHTML = NV_DATA.news.slice(0, 9).map(n => `
+      <div class="news-row">
+        <div class="news-time">${n.time}</div>
+        <div class="news-title"><a href="news.html">${n.title}</a></div>
+        <div class="news-source">${n.source}</div>
+        <div class="news-cat">${n.cat}</div>
+      </div>
+    `).join('');
+
+    // ---- Mini trials table
+    document.getElementById('trialsMini').innerHTML = NV_DATA.trials.slice(0, 9).map(t => `
+      <tr>
+        <td class="id-cell"><a href="trials.html">${t.nct.slice(0, 11)}</a></td>
+        <td><span class="pill pill-info">${t.phase}</span></td>
+        <td>${t.sponsor}</td>
+        <td>${t.target}</td>
+        <td class="num">${t.n.toLocaleString()}</td>
+        <td><span class="pill ${t.status === 'Recruiting' ? 'pill-pos' : 'pill-watch'}">${t.status}</span></td>
+      </tr>
+    `).join('');
+
+    // ---- Stages timeline
+    document.getElementById('stagesTimeline').innerHTML = NV_DATA.stages.map((s, i) => `
+      <div style="padding:14px; ${i < 4 ? 'border-right:1px solid var(--rule);' : ''} background: ${i === 0 ? 'var(--bg-cell)' : 'white'};">
+        <div class="mono tiny muted uppercase">Stage ${i+1}</div>
+        <div style="font-family:var(--font-display); font-size:18px; font-weight:600; color:var(--ink-primary); margin:4px 0;">${s.name}</div>
+        <div class="mono tiny" style="display:flex; gap:8px; margin:4px 0;">
+          <span class="muted">CDR ${s.cdr}</span>·<span class="muted">MMSE ${s.mmse}</span>
+        </div>
+        <div class="mono tiny muted" style="margin-bottom:6px;">DURATION: ${s.duration}</div>
+        <div style="font-size:11px; line-height:1.5;">${s.features}</div>
+      </div>
+    `).join('');
+  </script>
+</body>
+</html>

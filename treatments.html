@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treatments · NeuroViz</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <div class="breadcrumb">Therapy / Treatments</div>
+        <h1>Treatment Atlas</h1>
+      </div>
+      <div class="meta">
+        PHARMACOLOGICAL · NON-PHARMACOLOGICAL<br/>
+        Evidence-graded · Updated 2025
+      </div>
+    </div>
+
+    <!-- Subnav (tabs) -->
+    <div class="subnav">
+      <a href="#pharm" data-tab="pharm" class="is-active">Pharmacological</a>
+      <a href="#nonpharm" data-tab="nonpharm">Non-Pharmacological</a>
+      <a href="#compare" data-tab="compare">Efficacy Comparison</a>
+      <a href="#bpsd" data-tab="bpsd">BPSD Management</a>
+    </div>
+
+    <!-- ===== TAB: PHARMACOLOGICAL ===== -->
+    <section id="tab-pharm" class="tab-pane">
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Drug class</label>
+          <select id="pharmClass">
+            <option value="all">All classes</option>
+            <option value="Cholinesterase inhibitor">Cholinesterase inhibitor</option>
+            <option value="NMDA antagonist">NMDA antagonist</option>
+            <option value="Anti-amyloid mAb">Anti-amyloid monoclonal</option>
+            <option value="Atypical antipsychotic">Atypical antipsychotic</option>
+            <option value="SSRI">SSRI</option>
+            <option value="5-HT2A inverse agonist">5-HT2A inverse agonist</option>
+            <option value="Sedating antidepressant">Sedating antidepressant</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Cost tier</label>
+          <select id="pharmCost">
+            <option value="all">All</option>
+            <option value="$">$ Generic</option>
+            <option value="$$">$$ Mid</option>
+            <option value="$$$">$$$ High</option>
+            <option value="$$$$">$$$$ Specialty</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Status</label>
+          <select id="pharmStatus">
+            <option value="all">All</option>
+            <option value="Generic">Generic</option>
+            <option value="Brand">Brand / on-patent</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button class="btn" id="applyPharm">Apply</button>
+          <button class="btn btn-ghost" id="resetPharm">Reset</button>
+        </div>
+      </div>
+
+      <div class="grid-sidebar">
+        <!-- Main: pharm table -->
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Pharmacological agents</h2>
+            <div class="panel-actions">
+              <span class="muted" id="pharmCount">—</span>
+            </div>
+          </div>
+          <div class="panel-body tight">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Agent</th>
+                  <th>Class</th>
+                  <th>Indication</th>
+                  <th>Mechanism</th>
+                  <th>Efficacy</th>
+                  <th>Key adverse effects</th>
+                  <th class="num">Cost</th>
+                </tr>
+              </thead>
+              <tbody id="pharmRows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">Disease-modifying era</div>
+            <div class="ap-body">
+              <p class="ap-line"><b>Anti-amyloid mAbs</b> (lecanemab, donanemab) are the first agents shown to slow clinical progression of early AD. Both require Aβ confirmation (PET or CSF) and MRI ARIA monitoring.</p>
+              <p class="ap-line muted">Symptomatic agents (ChEIs, memantine) remain standard of care across stages and dementia subtypes.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">ARIA monitoring</div>
+            <div class="ap-body">
+              <p class="ap-line">For lecanemab/donanemab, MRI surveillance at baseline + before doses 5, 7, 14 (donanemab also 22, 26).</p>
+              <p class="ap-line muted">APOE ε4 homozygotes carry highest ARIA risk — counsel and consider risk-benefit.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">Avoid in dementia</div>
+            <div class="ap-body">
+              <ul style="padding-left:16px; font-size:11px; line-height:1.6;">
+                <li>Anticholinergics (diphenhydramine, oxybutynin)</li>
+                <li>Benzodiazepines (falls, paradoxical effects)</li>
+                <li>Z-drugs (zolpidem)</li>
+                <li>Tricyclic antidepressants</li>
+                <li>First-gen antipsychotics for BPSD</li>
+              </ul>
+              <p class="ap-line muted" style="margin-top:6px;">See AGS Beers Criteria 2023.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: NON-PHARMACOLOGICAL ===== -->
+    <section id="tab-nonpharm" class="tab-pane" hidden>
+
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Category</label>
+          <select id="nonCat">
+            <option value="all">All</option>
+            <option value="Cognitive">Cognitive</option>
+            <option value="Behavioral">Behavioral</option>
+            <option value="Physical">Physical</option>
+            <option value="Functional">Functional</option>
+            <option value="Lifestyle">Lifestyle</option>
+            <option value="Caregiver">Caregiver</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Evidence grade</label>
+          <select id="nonEvid">
+            <option value="all">All</option>
+            <option value="A">A — strong RCT support</option>
+            <option value="B">B — moderate</option>
+            <option value="C">C — limited / mixed</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button class="btn" id="applyNon">Apply</button>
+          <button class="btn btn-ghost" id="resetNon">Reset</button>
+        </div>
+      </div>
+
+      <div class="grid-sidebar">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Non-pharmacological interventions</h2>
+            <div class="panel-actions">
+              <span class="muted" id="nonCount">—</span>
+            </div>
+          </div>
+          <div class="panel-body tight">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Intervention</th>
+                  <th>Category</th>
+                  <th>Evidence</th>
+                  <th>Best target</th>
+                  <th>Delivery</th>
+                  <th>Documented benefit</th>
+                  <th class="num">Cost</th>
+                </tr>
+              </thead>
+              <tbody id="nonRows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">First-line for behavioral symptoms</div>
+            <div class="ap-body">
+              <p class="ap-line">Per NICE and APA 2024 — non-pharmacological approaches are <b>first-line</b> for agitation, apathy, sleep disturbance, and wandering.</p>
+              <p class="ap-line muted">Pharmacotherapy reserved for safety risk or refractory symptoms after a trial of behavioral approaches.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">DICE framework</div>
+            <div class="ap-body">
+              <ol style="padding-left:18px; font-size:11px; line-height:1.7;">
+                <li><b>D</b>escribe the behavior</li>
+                <li><b>I</b>nvestigate triggers</li>
+                <li><b>C</b>reate a plan</li>
+                <li><b>E</b>valuate response</li>
+              </ol>
+              <p class="ap-line muted" style="margin-top:6px;">Kales et al., 2014; endorsed by AAGP and Alzheimer's Association.</p>
+            </div>
+          </div>
+
+          <div class="aside-panel">
+            <div class="ap-head">FINGER replication</div>
+            <div class="ap-body">
+              <p class="ap-line">Multidomain (diet+exercise+cognition+vascular) replicated globally as <b>WW-FINGERS</b> network spanning 60+ countries.</p>
+              <p class="ap-line muted">US arm: U.S. POINTER (Alzheimer's Association).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: COMPARE ===== -->
+    <section id="tab-compare" class="tab-pane" hidden>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Comparative efficacy — disease-modifying anti-amyloid therapy</h2>
+          <div class="panel-actions"><span class="muted">CLARITY-AD · TRAILBLAZER-ALZ 2</span></div>
+        </div>
+        <div class="panel-body">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Lecanemab (Leqembi)</th>
+                <th>Donanemab (Kisunla)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>FDA approval</td><td>Jan 2023 (full Jul 2023)</td><td>Jul 2024</td></tr>
+              <tr><td>Mechanism</td><td>Aβ protofibril binder</td><td>Plaque-targeted (pyroglutamate Aβ)</td></tr>
+              <tr><td>Schedule</td><td>10 mg/kg IV q2wk</td><td>700→1400 mg IV q4wk</td></tr>
+              <tr><td>Pivotal Δ on CDR-SB</td><td>−27% vs placebo (18 mo)</td><td>−35% vs placebo (low/medium tau)</td></tr>
+              <tr><td>ARIA-E (edema)</td><td>12.6% (3% symptomatic)</td><td>24% (6% symptomatic)</td></tr>
+              <tr><td>ARIA-H (hemorrhage)</td><td>17%</td><td>31%</td></tr>
+              <tr><td>APOE ε4 homo ARIA-E</td><td>32.6%</td><td>40.6%</td></tr>
+              <tr><td>Stopping rule</td><td>Continued until disease progression</td><td>Stop when amyloid clears (~30–40% by 18 mo)</td></tr>
+              <tr><td>Cost / yr (US list)</td><td>~$26,500</td><td>~$32,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <div class="panel-head">
+          <h2>Symptomatic agents — direct comparison</h2>
+        </div>
+        <div class="panel-body">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Drug</th>
+                <th>Best evidence stage</th>
+                <th>MMSE Δ (vs placebo, 6 mo)</th>
+                <th>NNT for response</th>
+                <th>Drop-out (AE)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Donepezil</td><td>Mild–severe AD</td><td class="num">+1.4 to +2.0</td><td class="num">~10</td><td>~15%</td></tr>
+              <tr><td>Rivastigmine (patch)</td><td>Mild–moderate AD, PDD</td><td class="num">+1.0 to +2.0</td><td class="num">~12</td><td>~10% (patch)</td></tr>
+              <tr><td>Galantamine</td><td>Mild–moderate AD</td><td class="num">+1.5 to +2.5</td><td class="num">~10</td><td>~15%</td></tr>
+              <tr><td>Memantine</td><td>Moderate–severe AD</td><td class="num">+0.6 to +1.2</td><td class="num">~6 (composite)</td><td>~5%</td></tr>
+            </tbody>
+          </table>
+          <p class="muted" style="font-size:11px; margin-top:10px;">
+            Pooled estimates from Cochrane reviews (donepezil 2018, galantamine 2021, memantine 2019, rivastigmine 2015).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TAB: BPSD ===== -->
+    <section id="tab-bpsd" class="tab-pane" hidden>
+      <div class="grid-sidebar">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>BPSD stepped care — by symptom cluster</h2>
+            <div class="panel-actions"><span class="muted">Behavioral & Psychological Symptoms of Dementia</span></div>
+          </div>
+          <div class="panel-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Symptom</th>
+                  <th>Step 1 (non-pharm)</th>
+                  <th>Step 2 (consider)</th>
+                  <th>Step 3 (refractory)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Agitation / aggression</b></td>
+                  <td>DICE; music; structured activity; environmental modification</td>
+                  <td>Citalopram 20–30 mg; brexpiprazole (FDA-approved AD-agitation)</td>
+                  <td>Atypical antipsychotic (boxed warning); dexmedetomidine SL (BXCL501)</td>
+                </tr>
+                <tr>
+                  <td><b>Depression</b></td>
+                  <td>Behavioral activation; reminiscence; exercise</td>
+                  <td>SSRI (sertraline, escitalopram); avoid TCAs</td>
+                  <td>Mirtazapine (sleep+appetite); ECT in severe</td>
+                </tr>
+                <tr>
+                  <td><b>Apathy</b></td>
+                  <td>Structured engagement; tailored activities (TAP)</td>
+                  <td>Methylphenidate 5–20 mg (ADMET-2)</td>
+                  <td>Reassess; rule out depression</td>
+                </tr>
+                <tr>
+                  <td><b>Psychosis</b></td>
+                  <td>Reassurance; remove triggers; treat delirium</td>
+                  <td>Pimavanserin (off-label AD; on-label PDP); low-dose quetiapine</td>
+                  <td>Risperidone short-term; ECT</td>
+                </tr>
+                <tr>
+                  <td><b>Sleep disturbance</b></td>
+                  <td>Sleep hygiene; bright light; daytime activity</td>
+                  <td>Trazodone 25–100 mg; melatonin 3–10 mg</td>
+                  <td>Suvorexant (Lemborexant approved in MCI/AD insomnia)</td>
+                </tr>
+                <tr>
+                  <td><b>Wandering</b></td>
+                  <td>Safe walking paths; ID bracelet; environmental cues</td>
+                  <td>Rule out pain, infection, delirium</td>
+                  <td>Door alarms; secured units; GPS tracking</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="aside-panel">
+            <div class="ap-head">⚠ Antipsychotic boxed warning</div>
+            <div class="ap-body">
+              <p class="ap-line">All antipsychotics in older adults with dementia carry a <b>1.6–1.7× mortality risk</b>. Use only when behavior poses safety risk; reassess every 4–6 weeks; trial gradual dose reduction.</p>
+            </div>
+          </div>
+          <div class="aside-panel">
+            <div class="ap-head">DLB — high sensitivity</div>
+            <div class="ap-body">
+              <p class="ap-line">Patients with DLB or PDD can develop severe extrapyramidal reactions to typical antipsychotics. <b>Quetiapine</b> or <b>pimavanserin</b> preferred if antipsychotic required.</p>
+            </div>
+          </div>
+          <div class="aside-panel">
+            <div class="ap-head">FTD-specific</div>
+            <div class="ap-body">
+              <p class="ap-line">ChEIs not effective and may worsen behavioral symptoms in bvFTD. SSRIs (sertraline, citalopram) are first-line for behavioral disinhibition and compulsions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="data/nv-data.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    NV_LAYOUT.mount('treatments');
+
+    // ===== Tab switching =====
+    const tabs = document.querySelectorAll('.subnav a');
+    tabs.forEach(t => {
+      t.addEventListener('click', e => {
+        e.preventDefault();
+        const k = t.dataset.tab;
+        tabs.forEach(x => x.classList.toggle('is-active', x === t));
+        document.querySelectorAll('.tab-pane').forEach(p => p.hidden = p.id !== 'tab-' + k);
+        history.replaceState(null, '', '#' + k);
+      });
+    });
+    // open from hash
+    if (location.hash) {
+      const tgt = document.querySelector(`.subnav a[data-tab="${location.hash.slice(1)}"]`);
+      if (tgt) tgt.click();
+    }
+
+    // ===== Pharmacological table =====
+    const pharmTbody = document.getElementById('pharmRows');
+    function renderPharm(rows) {
+      document.getElementById('pharmCount').textContent = rows.length + ' agents';
+      pharmTbody.innerHTML = rows.map(d => `
+        <tr>
+          <td><b>${d.name}</b><div class="mono tiny muted">${d.dose}</div></td>
+          <td><span class="chip">${d.class}</span></td>
+          <td>${d.indication}</td>
+          <td class="muted">${d.mechanism}</td>
+          <td>${d.efficacy}</td>
+          <td>${d.sideEffects}</td>
+          <td class="num">${d.cost}<div class="mono tiny muted">${d.status}</div></td>
+        </tr>
+      `).join('');
+    }
+    function applyPharm() {
+      const c = document.getElementById('pharmClass').value;
+      const cost = document.getElementById('pharmCost').value;
+      const status = document.getElementById('pharmStatus').value;
+      let rows = NV_DATA.treatmentsPharm;
+      if (c !== 'all') rows = rows.filter(r => r.class === c);
+      if (cost !== 'all') rows = rows.filter(r => r.cost === cost);
+      if (status !== 'all') rows = rows.filter(r => (status === 'Generic' ? r.status === 'Generic' : r.status !== 'Generic'));
+      renderPharm(rows);
+    }
+    document.getElementById('applyPharm').addEventListener('click', applyPharm);
+    document.getElementById('resetPharm').addEventListener('click', () => {
+      document.getElementById('pharmClass').value = 'all';
+      document.getElementById('pharmCost').value = 'all';
+      document.getElementById('pharmStatus').value = 'all';
+      renderPharm(NV_DATA.treatmentsPharm);
+    });
+    renderPharm(NV_DATA.treatmentsPharm);
+
+    // ===== Non-pharm table =====
+    const nonTbody = document.getElementById('nonRows');
+    function evidPill(e) {
+      const cls = e === 'A' ? 'pill-pos' : (e === 'B' ? 'pill-info' : 'pill-watch');
+      return `<span class="pill ${cls}">${e}</span>`;
+    }
+    function renderNon(rows) {
+      document.getElementById('nonCount').textContent = rows.length + ' interventions';
+      nonTbody.innerHTML = rows.map(d => `
+        <tr>
+          <td><b>${d.name}</b></td>
+          <td><span class="chip">${d.category}</span></td>
+          <td>${evidPill(d.evidence)}</td>
+          <td>${d.target}</td>
+          <td class="muted">${d.delivery}</td>
+          <td>${d.benefit}</td>
+          <td class="num">${d.cost}</td>
+        </tr>
+      `).join('');
+    }
+    function applyNon() {
+      const c = document.getElementById('nonCat').value;
+      const e = document.getElementById('nonEvid').value;
+      let rows = NV_DATA.treatmentsNonPharm;
+      if (c !== 'all') rows = rows.filter(r => r.category === c);
+      if (e !== 'all') rows = rows.filter(r => r.evidence === e);
+      renderNon(rows);
+    }
+    document.getElementById('applyNon').addEventListener('click', applyNon);
+    document.getElementById('resetNon').addEventListener('click', () => {
+      document.getElementById('nonCat').value = 'all';
+      document.getElementById('nonEvid').value = 'all';
+      renderNon(NV_DATA.treatmentsNonPharm);
+    });
+    renderNon(NV_DATA.treatmentsNonPharm);
+  </script>
+</body>
+</html>
