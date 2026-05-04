@@ -81,6 +81,43 @@
       </div>
     </div>
 
+    <!-- Movers row: Finviz-style top-of-attention list -->
+    <div class="grid-2 mt-16">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Pharmacotherapy spotlight</h2>
+          <div class="panel-actions"><a href="treatments.html">ALL TREATMENTS →</a></div>
+        </div>
+        <div class="movers">
+          <div class="movers-col">
+            <div class="movers-head">DISEASE-MODIFYING (NEW ERA)</div>
+            <div id="moversDMT"></div>
+          </div>
+          <div class="movers-col">
+            <div class="movers-head">SYMPTOMATIC STANDARD-OF-CARE</div>
+            <div id="moversStd"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Diagnostic biomarkers — by accuracy</h2>
+          <div class="panel-actions"><a href="diagnosis.html">ALL DIAGNOSTICS →</a></div>
+        </div>
+        <div class="movers">
+          <div class="movers-col">
+            <div class="movers-head">HIGHEST SENSITIVITY</div>
+            <div id="moversSens"></div>
+          </div>
+          <div class="movers-col">
+            <div class="movers-head">HIGHEST SPECIFICITY</div>
+            <div id="moversSpec"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- News + Trials grid -->
     <div class="grid-2 mt-16">
 
@@ -128,33 +165,87 @@
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/heatmap.js"></script>
+  <script src="js/sortable.js"></script>
   <script>
     NV_LAYOUT.mount('home');
 
-    // ---- Top stat strip
+    // ---- Top stat strip with sparklines (purely illustrative trend lines)
+    function buildSpark(seedKey) {
+      // deterministic pseudo-random walk for visual continuity
+      let h = 0;
+      for (let i = 0; i < seedKey.length; i++) h = ((h << 5) - h + seedKey.charCodeAt(i)) | 0;
+      const rng = () => {
+        h = (h * 9301 + 49297) % 233280;
+        return h / 233280;
+      };
+      const n = 24;
+      const pts = [];
+      let v = 50;
+      for (let i = 0; i < n; i++) {
+        v += (rng() - 0.45) * 14;
+        v = Math.max(8, Math.min(92, v));
+        pts.push(v);
+      }
+      const W = 60, H = 18;
+      const path = pts.map((p, i) => {
+        const x = (i / (n - 1)) * W;
+        const y = H - (p / 100) * H;
+        return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+      }).join(' ');
+      const area = path + ` L ${W} ${H} L 0 ${H} Z`;
+      return `<svg class="spark-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><path class="spark-area" d="${area}"/><path class="spark-line" d="${path}"/></svg>`;
+    }
     document.getElementById('statStrip').innerHTML = NV_DATA.topStats.map(s => `
-      <div class="stat">
+      <div class="stat-cell">
         <div class="stat-label">${s.label}</div>
         <div class="stat-value">${s.value}</div>
-        <div class="stat-detail ${s.dir}">${s.dir === 'up' ? '▲' : '▼'} ${s.detail}</div>
+        <div class="stat-detail ${s.dir}">${s.detail}</div>
+        <div style="position:absolute; right:10px; bottom:8px; opacity:0.55;">${buildSpark(s.label)}</div>
       </div>
     `).join('');
 
-    // ---- Heatmap
+    // ---- Heatmap (treemap; cells link directly to groups.html)
     const heatmapEl = document.getElementById('heatmap');
-    NV_HEATMAP.render(heatmapEl, { metric: 'prevalence' });
-    document.getElementById('heatmapMetric').addEventListener('change', e => {
-      NV_HEATMAP.render(heatmapEl, { metric: e.target.value });
-      attachHeatmapClicks();
-    });
-    function attachHeatmapClicks() {
-      document.querySelectorAll('.heatmap-cell').forEach(c => {
-        c.addEventListener('click', () => {
-          window.location.href = `groups.html#${c.dataset.type}`;
-        });
-      });
+    function renderHM() {
+      const m = document.getElementById('heatmapMetric').value;
+      NV_HEATMAP.render(heatmapEl, { metric: m });
     }
-    attachHeatmapClicks();
+    renderHM();
+    document.getElementById('heatmapMetric').addEventListener('change', renderHM);
+    window.addEventListener('resize', () => { clearTimeout(window._hmT); window._hmT = setTimeout(renderHM, 150); });
+
+    // ---- Movers panels
+    const dmt = NV_DATA.treatmentsPharm.filter(d => /Anti-amyloid/i.test(d.class));
+    const std = NV_DATA.treatmentsPharm.filter(d => /Cholinesterase|NMDA/i.test(d.class));
+    const moverHTML = (rows, valKey, fmt) => rows.slice(0, 6).map(r => `
+      <div class="mover-row">
+        <span class="m-code">${r.id}</span>
+        <span class="m-name">${r.name}</span>
+        <span class="m-val">${fmt(r)}</span>
+      </div>
+    `).join('');
+    document.getElementById('moversDMT').innerHTML = moverHTML(dmt, 'cost', r => r.cost);
+    document.getElementById('moversStd').innerHTML = moverHTML(std, 'cost', r => r.cost);
+
+    const sensRanked = NV_DATA.diagnostics
+      .filter(d => typeof d.sensitivity === 'number')
+      .sort((a, b) => b.sensitivity - a.sensitivity);
+    const specRanked = NV_DATA.diagnostics
+      .filter(d => typeof d.specificity === 'number')
+      .sort((a, b) => b.specificity - a.specificity);
+    const dxColor = v => v >= 90 ? 'up' : (v >= 75 ? '' : 'down');
+    document.getElementById('moversSens').innerHTML = sensRanked.slice(0, 6).map(d => `
+      <div class="mover-row">
+        <span class="m-code">${d.id}</span>
+        <span class="m-name">${d.name}</span>
+        <span class="m-val ${dxColor(d.sensitivity)}">${d.sensitivity}%</span>
+      </div>`).join('');
+    document.getElementById('moversSpec').innerHTML = specRanked.slice(0, 6).map(d => `
+      <div class="mover-row">
+        <span class="m-code">${d.id}</span>
+        <span class="m-name">${d.name}</span>
+        <span class="m-val ${dxColor(d.specificity)}">${d.specificity}%</span>
+      </div>`).join('');
 
     // ---- Risk factors
     document.getElementById('riskList').innerHTML = NV_DATA.riskFactors

@@ -1073,3 +1073,304 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 .cost-cov-row { display: grid; grid-template-columns: 200px 1fr 130px 100px; gap: 12px; align-items: center; padding: 10px; background: var(--bg-paper); border: 1px solid var(--rule); font-size: 12px; }
 .cost-cov-row b { color: var(--ink-primary); }
 
+
+/* ============================================
+   FINVIZ-STYLE UPGRADES (added after build review)
+   ============================================ */
+
+/* --- Sticky chrome: ticker + masthead + primary nav stay visible on scroll --- */
+.ticker { position: sticky; top: 0; z-index: 50; }
+.masthead { position: sticky; top: 22px; z-index: 49; }
+.primary-nav {
+  position: sticky;
+  top: 80px;
+  z-index: 48;
+  background: var(--bg-rail);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+}
+@media (max-width: 900px) {
+  .masthead { position: static; }
+  .primary-nav { position: static; top: auto; }
+}
+
+/* --- New treemap heatmap cells --- */
+.hm-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  padding: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.18);
+  box-sizing: border-box;
+  transition: filter 0.12s, outline-width 0.06s;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.hm-cell:hover {
+  filter: brightness(1.18);
+  outline: 2px solid white;
+  z-index: 5;
+  text-decoration: none;
+}
+.hm-cell .hm-code {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.hm-cell .hm-val {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  margin-top: 2px;
+  opacity: 0.92;
+}
+.hm-cell .hm-sub {
+  font-family: var(--font-body);
+  font-size: 9px;
+  margin-top: 2px;
+  opacity: 0.78;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  max-width: 96%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Light cells (sev-0/1) need dark text */
+.hm-cell.sev-0,
+.hm-cell.sev-1 {
+  color: var(--ink-primary);
+  text-shadow: none;
+}
+
+/* --- Sortable table indicators --- */
+.data-table thead th.sortable { cursor: pointer; }
+.data-table thead th.sortable:hover { background: var(--bg-rail); }
+.data-table thead th .sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  color: rgba(255,255,255,0.35);
+  font-size: 9px;
+}
+.data-table thead th.is-sorted { background: var(--bg-rail-deep); }
+.data-table thead th.is-sorted .sort-arrow {
+  color: var(--accent);
+}
+
+/* --- Tighter universal density (Finviz vibe) --- */
+.data-table tbody td { padding: 4px 8px; font-size: 11px; line-height: 1.4; }
+.data-table thead th { padding: 6px 8px; }
+.panel-body { padding: 10px; }
+.panel-head { padding: 7px 10px; }
+
+/* --- Finviz-style stat cells: bold mono numbers, compact deltas --- */
+.stat-cell {
+  padding: 8px 12px;
+  border-right: 1px solid var(--rule);
+  position: relative;
+  background: var(--bg-paper);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-cell .stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 2px;
+}
+.stat-cell .stat-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink-primary);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.stat-cell .stat-detail {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
+.stat-cell .stat-detail.up   { color: var(--signal-positive); }
+.stat-cell .stat-detail.up::before   { content: '▲ '; font-size: 8px; }
+.stat-cell .stat-detail.down { color: var(--signal-concern); }
+.stat-cell .stat-detail.down::before { content: '▼ '; font-size: 8px; }
+
+/* --- Filter chips (quick filter row) --- */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--bg-paper);
+  border: 1px solid var(--rule);
+  border-bottom: none;
+}
+.chip-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  background: var(--bg-cell);
+  color: var(--ink-body);
+  border: 1px solid var(--rule);
+  border-radius: 1px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+.chip-btn:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-deep); }
+.chip-btn.is-active {
+  background: var(--ink-primary);
+  border-color: var(--ink-primary);
+  color: white;
+}
+
+/* --- Quick-jump keyboard help overlay --- */
+.kbd-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 31, 31, 0.6);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+}
+.kbd-overlay.is-open { display: flex; }
+.kbd-overlay .kbd-card {
+  background: var(--bg-paper);
+  border: 1px solid var(--rule-strong);
+  padding: 24px 28px;
+  max-width: 520px;
+  box-shadow: var(--shadow-2);
+}
+.kbd-overlay h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink-primary);
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 8px;
+}
+.kbd-overlay .kbd-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 13px;
+}
+.kbd-overlay kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--bg-cell);
+  border: 1px solid var(--rule);
+  padding: 1px 6px;
+  border-radius: 2px;
+  color: var(--ink-primary);
+  margin-right: 4px;
+}
+
+/* --- Search results dropdown (masthead) --- */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0; right: 0;
+  background: var(--bg-paper);
+  border: 1px solid var(--rule-strong);
+  box-shadow: var(--shadow-2);
+  z-index: 60;
+  max-height: 60vh;
+  overflow-y: auto;
+  display: none;
+}
+.search-results.is-open { display: block; }
+.search-result {
+  display: grid;
+  grid-template-columns: 60px 1fr 90px;
+  gap: 10px;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--rule-soft);
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: none;
+  color: var(--ink-body);
+}
+.search-result:hover { background: var(--accent-soft); text-decoration: none; }
+.search-result .sr-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.search-result .sr-title { color: var(--ink-primary); }
+.search-result .sr-source {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-muted);
+  text-align: right;
+}
+.search-input-wrap { position: relative; flex: 1 1 auto; max-width: 380px; }
+
+/* --- Numeric color cells (sens/spec etc.) --- */
+.num-good   { color: var(--signal-positive); font-weight: 600; }
+.num-mid    { color: var(--signal-watch);    font-weight: 600; }
+.num-bad    { color: var(--signal-concern);  font-weight: 600; }
+
+/* --- Movers panel (top dashboard) --- */
+.movers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.movers-col { background: var(--bg-paper); }
+.movers-head {
+  padding: 6px 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-inverse);
+  background: var(--bg-strip);
+}
+.mover-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 70px;
+  gap: 8px;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: center;
+}
+.mover-row:nth-child(even) { background: var(--bg-cell); }
+.mover-row .m-code { color: var(--ink-primary); font-weight: 600; }
+.mover-row .m-name {
+  color: var(--ink-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+.mover-row .m-val { text-align: right; }
+.mover-row .m-val.up   { color: var(--signal-positive); }
+.mover-row .m-val.down { color: var(--signal-concern); }
+
+/* --- Mini sparkline area for stats --- */
+.spark-svg { display: block; }
+.spark-svg path { fill: none; stroke-width: 1.5; }
+.spark-svg .spark-line { stroke: var(--accent); }
+.spark-svg .spark-area { fill: var(--accent); fill-opacity: 0.15; stroke: none; }
+
