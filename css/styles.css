@@ -104,40 +104,89 @@ a.btn, a.btn-ghost, a.btn-accent {
   background: var(--bg-rail-deep);
   color: var(--ink-inverse);
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 13px;
   border-bottom: 1px solid var(--bg-strip);
-  overflow: hidden;
-  white-space: nowrap;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 56px;
+  min-height: 36px;
+  overflow: hidden;
 }
-.ticker-track {
-  display: inline-block;
-  padding: 8px 0;
-  animation: ticker-scroll 240s linear infinite;
+
+/* Stage holds all slots stacked on top of each other; only the active one is shown */
+.ticker-stage {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  min-height: 18px;
 }
-.ticker-track:hover { animation-play-state: paused; }
-.ticker-fact {
-  display: inline-block;
-  margin: 0 22px;
-  letter-spacing: 0.005em;
+.ticker-slot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  pointer-events: none;
 }
-.ticker-fact .ticker-bullet {
+.ticker-slot.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ticker-bullet {
   color: var(--accent);
-  margin-right: 8px;
+  margin-right: 10px;
   font-size: 9px;
   vertical-align: middle;
 }
-.ticker-fact .fact-text { color: var(--ink-inverse); }
-.ticker-fact .fact-source {
+.ticker .fact-text {
+  color: var(--ink-inverse);
+  letter-spacing: 0.005em;
+}
+.ticker .fact-source {
   color: #6fb88d;
   font-family: var(--font-mono);
-  font-size: 10px;
-  margin-left: 6px;
+  font-size: 11px;
+  margin-left: 10px;
   letter-spacing: 0.04em;
 }
-@keyframes ticker-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+
+/* Dots: tiny progress indicators / clickable jump targets */
+.ticker-dots {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 5px;
+}
+.ticker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.ticker-dot:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+.ticker-dot.is-active {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+@media (max-width: 700px) {
+  .ticker { font-size: 12px; padding: 8px 14px; }
+  .ticker-dots { display: none; }
+  .ticker .fact-source { font-size: 10px; }
 }
 
 /* ============================================
