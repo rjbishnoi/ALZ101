@@ -14,32 +14,28 @@
     <!-- Top stat strip -->
     <div class="stat-strip" id="statStrip"></div>
 
-    <!-- Heatmap section -->
+    <!-- People-grid pictogram + disease trajectory -->
     <div class="grid-sidebar">
 
       <div class="panel">
         <div class="panel-head">
-          <h2>Dementia Type Heatmap</h2>
+          <h2>Who develops dementia? — 100 people view</h2>
           <div class="panel-actions">
-            <span class="muted">METRIC:</span>
-            <select id="heatmapMetric" style="border:1px solid var(--rule); background:white; padding:2px 6px; font-family:var(--font-mono); font-size:10px;">
-              <option value="prevalence">Prevalence</option>
-              <option value="severity">Severity / Stage</option>
-              <option value="trials">Active Trials</option>
-            </select>
-            <a href="groups.html">FULL VIEW →</a>
+            <a href="groups.html">FULL TYPE CATALOG →</a>
           </div>
         </div>
-        <div class="panel-body tight" style="padding:8px;">
-          <div id="heatmap"></div>
-          <div class="legend" style="padding: 10px 4px 4px;">
-            <span>Severity gradient:</span>
-            <span class="legend-item"><span class="swatch" style="background:var(--sev-0)"></span>Minimal</span>
-            <span class="legend-item"><span class="swatch" style="background:var(--sev-1)"></span>Mild</span>
-            <span class="legend-item"><span class="swatch" style="background:var(--sev-2)"></span>Moderate</span>
-            <span class="legend-item"><span class="swatch" style="background:var(--sev-3)"></span>Significant</span>
-            <span class="legend-item"><span class="swatch" style="background:var(--sev-4)"></span>Severe</span>
-            <span class="legend-item"><span class="swatch" style="background:var(--sev-5)"></span>End-stage</span>
+        <div class="panel-body tight" style="padding:14px;">
+          <div id="peopleGrid"></div>
+
+          <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule);">
+            <h3 style="font-family: var(--font-display); font-size: 17px; font-style: italic;
+                       font-weight: 600; margin: 0 0 4px; color: var(--ink-primary);">
+              Dementia is the end of a longer journey
+            </h3>
+            <div class="muted" style="font-size: 12px; margin-bottom: 12px;">
+              Most dementia is preceded by silent brain changes (preclinical) and a warning phase (mild cognitive impairment, or MCI).
+            </div>
+            <div id="trajectoryFig"></div>
           </div>
         </div>
       </div>
@@ -319,7 +315,8 @@
 
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
-  <script src="js/heatmap.js"></script>
+  <script src="js/people-grid.js"></script>
+  <script src="js/trajectory.js"></script>
   <script src="js/sortable.js"></script>
   <script src="js/watchlist.js"></script>
   <script src="js/ask-evidence.js"></script>
@@ -361,15 +358,15 @@
       </div>
     `).join('');
 
-    // ---- Heatmap (treemap; cells link directly to groups.html)
-    const heatmapEl = document.getElementById('heatmap');
-    function renderHM() {
-      const m = document.getElementById('heatmapMetric').value;
-      NV_HEATMAP.render(heatmapEl, { metric: m });
+    // ---- People-grid pictogram + trajectory figure
+    const peopleEl = document.getElementById('peopleGrid');
+    const trajEl = document.getElementById('trajectoryFig');
+    function renderViz() {
+      NV_PEOPLE.render(peopleEl);
+      NV_TRAJECTORY.render(trajEl);
     }
-    renderHM();
-    document.getElementById('heatmapMetric').addEventListener('change', renderHM);
-    window.addEventListener('resize', () => { clearTimeout(window._hmT); window._hmT = setTimeout(renderHM, 150); });
+    renderViz();
+    window.addEventListener('resize', () => { clearTimeout(window._pT); window._pT = setTimeout(renderViz, 150); });
 
     // ---- Spotlight panels (top treatments / top diagnostics)
     const dmt = NV_DATA.treatmentsPharm.filter(d => /Anti-amyloid/i.test(d.class));

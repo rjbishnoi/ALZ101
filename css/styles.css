@@ -1940,3 +1940,86 @@ body[data-audience="care"] .aud-pat {
   width: 100%;
   box-sizing: border-box;
 }
+
+/* ============================================
+   People-grid pictogram (replaces heatmap)
+   ============================================ */
+.people-grid-wrap { padding: 8px 4px 4px; }
+.people-headline {
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.people-headline-text {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-primary);
+  margin-bottom: 4px;
+}
+.people-headline-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.people-grid-svg .person { cursor: pointer; }
+.people-grid-svg .person:hover path {
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));
+}
+.people-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-soft);
+}
+.people-legend-item {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 8px;
+  background: var(--bg-cell);
+  border: 1px solid var(--rule);
+  font-family: var(--font-body);
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.people-legend-item:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.people-legend-item.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.people-legend-item .legend-swatch {
+  width: 14px; height: 14px;
+  display: inline-block;
+}
+.people-legend-item .legend-name {
+  color: var(--ink-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.people-legend-item .legend-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+.people-legend-item .legend-count .muted {
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+/* ============================================
+   Disease trajectory figure
+   ============================================ */
+.trajectory-svg { max-width: 100%; height: auto; }
