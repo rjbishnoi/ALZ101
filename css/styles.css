@@ -2023,3 +2023,117 @@ body[data-audience="care"] .aud-pat {
    Disease trajectory figure
    ============================================ */
 .trajectory-svg { max-width: 100%; height: auto; }
+
+/* ============================================
+   Ask the Evidence — answer cards
+   ============================================ */
+.ask-sugg-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 14px 0 6px;
+}
+.ask-sugg-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ask-answer-zone { margin-top: 16px; }
+.answer-card {
+  background: var(--bg-cell);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  padding: 16px 18px;
+  font-family: var(--font-body);
+}
+.answer-fallback { border-left-color: #b88a3a; }
+.answer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.answer-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+.answer-fallback .answer-tag { color: #8a6a1a; }
+.answer-conf {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+.answer-q {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-primary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.answer-body {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink-body);
+}
+.answer-body p { margin: 0 0 10px; }
+.answer-body p:last-child { margin-bottom: 0; }
+.answer-body ul { margin: 6px 0; padding-left: 22px; }
+.answer-body li { margin-bottom: 4px; }
+.answer-body a { color: var(--accent); }
+
+.answer-cites {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule-soft);
+}
+.answer-cites-label,
+.answer-related-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+.answer-cites ul,
+.answer-related ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.answer-cites li {
+  font-size: 12px;
+  color: var(--ink-body);
+  padding: 3px 0;
+}
+.answer-cites li a { color: var(--accent); }
+.answer-cites .ext-mini { font-size: 10px; color: var(--ink-faint); }
+
+.answer-related {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule-soft);
+}
+.answer-related li { padding: 2px 0; }
+.answer-related-q {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  color: var(--accent);
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-align: left;
+  text-decoration: underline;
+}
+.answer-related-q:hover { color: var(--accent-deep); }
