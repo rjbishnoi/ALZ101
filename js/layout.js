@@ -24,7 +24,7 @@ const NV_LAYOUT = {
       <header class="masthead">
         <div class="masthead-row">
           <a class="brand" href="index.html">
-            <span class="brand-mark">Neuro<span class="accent">Viz</span></span>
+            <span class="brand-mark">ALZ<span class="accent">101</span></span>
             <span class="brand-tag">Cognitive Health Atlas</span>
           </a>
           <div class="search-box">
@@ -81,7 +81,7 @@ const NV_LAYOUT = {
       <footer class="footer">
         <div class="footer-inner">
           <div>
-            <h4>NeuroViz</h4>
+            <h4>ALZ101</h4>
             <p style="line-height:1.6;color:var(--ink-faint)">
               An open data-visualization platform for neurocognitive disorders.
               Built for clinicians, patients, and caregivers — modeled after
