@@ -2382,3 +2382,19 @@ body[data-audience="care"] .aud-pat {
 .panel-head.dx-csf      { border-left-color: #6b1f1a; }
 .panel-head.dx-genetic  { border-left-color: #5a4a7a; }
 .panel-head.dx-other    { border-left-color: #4a7c59; }
+
+/* ============================================
+   Pharmacological tables — split heads
+   ============================================ */
+.pharm-group-head {
+  border-left: 4px solid var(--accent);
+  padding-left: 12px;
+}
+.pharm-group-head h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.pharm-group-icon { font-size: 18px; }
+.panel-head.pharm-cog    { border-left-color: #c75a3c; }
+.panel-head.pharm-noncog { border-left-color: #5a4a7a; }

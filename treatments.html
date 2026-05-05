@@ -31,103 +31,97 @@
     <!-- ===== TAB: PHARMACOLOGICAL ===== -->
     <section id="tab-pharm" class="tab-pane">
 
-      <!-- Filter bar -->
-      <div class="filter-bar">
-        <div class="filter-group">
-          <label>Drug class</label>
-          <select id="pharmClass">
-            <option value="all">All classes</option>
-            <option value="Cholinesterase inhibitor">Cholinesterase inhibitor</option>
-            <option value="NMDA antagonist">NMDA antagonist</option>
-            <option value="Anti-amyloid mAb">Anti-amyloid monoclonal</option>
-            <option value="Atypical antipsychotic">Atypical antipsychotic</option>
-            <option value="SSRI">SSRI</option>
-            <option value="5-HT2A inverse agonist">5-HT2A inverse agonist</option>
-            <option value="Sedating antidepressant">Sedating antidepressant</option>
-          </select>
+      <p style="font-size:13px; line-height:1.6; margin: 0 0 14px; color: var(--ink-body);">
+        Pharmacotherapy in dementia falls into two distinct families. Drugs for <b>cognitive symptoms</b>
+        (memory, orientation, executive function) include cholinesterase inhibitors, NMDA modulators, and the
+        new disease-modifying anti-amyloid antibodies. Drugs for <b>non-cognitive (behavioral &amp; psychiatric)
+        symptoms</b> — agitation, depression, psychosis, sleep disturbance — are used <b>only after</b>
+        non-pharmacological strategies have been tried.
+      </p>
+
+      <!-- ============= COGNITIVE SYMPTOMS ============= -->
+      <div class="panel">
+        <div class="panel-head pharm-group-head pharm-cog">
+          <h2><span class="pharm-group-icon">🧠</span> For cognitive symptoms</h2>
+          <div class="panel-actions">
+            <span class="muted" id="pharmCogCount">—</span>
+          </div>
         </div>
-        <div class="filter-group">
-          <label>Cost tier</label>
-          <select id="pharmCost">
-            <option value="all">All</option>
-            <option value="$">$ Generic</option>
-            <option value="$$">$$ Mid</option>
-            <option value="$$$">$$$ High</option>
-            <option value="$$$$">$$$$ Specialty</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Status</label>
-          <select id="pharmStatus">
-            <option value="all">All</option>
-            <option value="Generic">Generic</option>
-            <option value="Brand">Brand / on-patent</option>
-          </select>
-        </div>
-        <div class="filter-actions">
-          <button class="btn" id="applyPharm">Apply</button>
-          <button class="btn btn-ghost" id="resetPharm">Reset</button>
+        <div class="panel-body tight">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:28px;" data-sort="off"></th>
+                <th>Agent</th>
+                <th>Class</th>
+                <th>Indication</th>
+                <th>Mechanism</th>
+                <th>Efficacy</th>
+                <th>Key adverse effects</th>
+                <th class="num">Cost</th>
+              </tr>
+            </thead>
+            <tbody id="pharmCogRows"></tbody>
+          </table>
         </div>
       </div>
 
-      <div class="grid-sidebar">
-        <!-- Main: pharm table -->
-        <div class="panel">
-          <div class="panel-head">
-            <h2>Pharmacological agents</h2>
-            <div class="panel-actions">
-              <span class="muted" id="pharmCount">—</span>
-            </div>
+      <!-- ============= NON-COGNITIVE SYMPTOMS ============= -->
+      <div class="panel mt-16">
+        <div class="panel-head pharm-group-head pharm-noncog">
+          <h2><span class="pharm-group-icon">⚖️</span> For non-cognitive symptoms (behavioral &amp; psychiatric)</h2>
+          <div class="panel-actions">
+            <span class="muted" id="pharmNonCogCount">—</span>
           </div>
-          <div class="panel-body tight">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th style="width:28px;" data-sort="off"></th>
-                  <th>Agent</th>
-                  <th>Class</th>
-                  <th>Indication</th>
-                  <th>Mechanism</th>
-                  <th>Efficacy</th>
-                  <th>Key adverse effects</th>
-                  <th class="num">Cost</th>
-                </tr>
-              </thead>
-              <tbody id="pharmRows"></tbody>
-            </table>
+        </div>
+        <div class="panel-body tight">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:28px;" data-sort="off"></th>
+                <th>Agent</th>
+                <th>Class</th>
+                <th>Target symptom</th>
+                <th>Mechanism</th>
+                <th>Efficacy</th>
+                <th>Key adverse effects</th>
+                <th class="num">Cost</th>
+              </tr>
+            </thead>
+            <tbody id="pharmNonCogRows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Aside panels in a row underneath -->
+      <div class="grid-3 mt-16">
+        <div class="aside-panel">
+          <div class="ap-head">Disease-modifying era</div>
+          <div class="ap-body">
+            <p class="ap-line"><b>Anti-amyloid mAbs</b> (lecanemab, donanemab) are the first agents shown to slow clinical progression of early AD. Both require Aβ confirmation (PET or CSF) and MRI ARIA monitoring.</p>
+            <p class="ap-line muted">Symptomatic agents (ChEIs, memantine) remain standard of care across stages and dementia subtypes.</p>
           </div>
         </div>
 
-        <!-- Sidebar -->
-        <div>
-          <div class="aside-panel">
-            <div class="ap-head">Disease-modifying era</div>
-            <div class="ap-body">
-              <p class="ap-line"><b>Anti-amyloid mAbs</b> (lecanemab, donanemab) are the first agents shown to slow clinical progression of early AD. Both require Aβ confirmation (PET or CSF) and MRI ARIA monitoring.</p>
-              <p class="ap-line muted">Symptomatic agents (ChEIs, memantine) remain standard of care across stages and dementia subtypes.</p>
-            </div>
+        <div class="aside-panel">
+          <div class="ap-head">Non-pharm always first for behaviors</div>
+          <div class="ap-body">
+            <p class="ap-line">For agitation, sundowning, and BPSD, the <b>DICE framework</b> and stage-matched non-pharmacological interventions are first-line per APA 2024.</p>
+            <p class="ap-line muted">Identify triggers (pain, infection, sleep, environment) before reaching for medication.</p>
           </div>
+        </div>
 
-          <div class="aside-panel">
-            <div class="ap-head">ARIA monitoring</div>
-            <div class="ap-body">
-              <p class="ap-line">For lecanemab/donanemab, MRI surveillance at baseline + before doses 5, 7, 14 (donanemab also 22, 26).</p>
-              <p class="ap-line muted">APOE ε4 homozygotes carry highest ARIA risk — counsel and consider risk-benefit.</p>
-            </div>
-          </div>
-
-          <div class="aside-panel">
-            <div class="ap-head">Avoid in dementia</div>
-            <div class="ap-body">
-              <ul style="padding-left:16px; font-size:11px; line-height:1.6;">
-                <li>Anticholinergics (diphenhydramine, oxybutynin)</li>
-                <li>Benzodiazepines (falls, paradoxical effects)</li>
-                <li>Z-drugs (zolpidem)</li>
-                <li>Tricyclic antidepressants</li>
-                <li>First-gen antipsychotics for BPSD</li>
-              </ul>
-              <p class="ap-line muted" style="margin-top:6px;">See AGS Beers Criteria 2023.</p>
-            </div>
+        <div class="aside-panel">
+          <div class="ap-head">Avoid in dementia</div>
+          <div class="ap-body">
+            <ul style="padding-left:16px; font-size:11px; line-height:1.6;">
+              <li>Anticholinergics (diphenhydramine, oxybutynin)</li>
+              <li>Benzodiazepines (falls, paradoxical effects)</li>
+              <li>Z-drugs (zolpidem)</li>
+              <li>Tricyclic antidepressants</li>
+              <li>First-gen antipsychotics for BPSD (boxed warning: 1.6–1.7× mortality)</li>
+            </ul>
+            <p class="ap-line muted" style="margin-top:6px;">See AGS Beers Criteria 2023.</p>
           </div>
         </div>
       </div>
@@ -588,12 +582,13 @@
       if (tgt) tgt.click();
     }
 
-    // ===== Pharmacological table =====
-    const pharmTbody = document.getElementById('pharmRows');
-    function renderPharm(rows) {
-      document.getElementById('pharmCount').textContent = rows.length + ' agents';
+    // ===== Pharmacological tables (split: cognitive vs non-cognitive symptoms) =====
+    // Classes that act on cognitive symptoms — memory, orientation, executive function
+    const COG_CLASSES = ['Cholinesterase inhibitor', 'NMDA antagonist', 'Anti-amyloid mAb'];
+
+    function pharmRowHtml(d) {
       const costClass = c => 'cost-' + (c.length || 1);
-      pharmTbody.innerHTML = rows.map(d => `
+      return `
         <tr>
           <td>
             <span data-pin-tag="DRUG" data-pin-id="${d.id}" data-pin-name="${d.name}" data-pin-url="treatments.html#pharm"></span>
@@ -606,28 +601,23 @@
           <td>${d.sideEffects}</td>
           <td class="num"><span class="${costClass(d.cost)}">${d.cost}</span><div class="mono tiny muted">${d.status}</div></td>
         </tr>
-      `).join('');
+      `;
+    }
+
+    function renderPharmSplit() {
+      const cog    = NV_DATA.treatmentsPharm.filter(d => COG_CLASSES.includes(d.class));
+      const nonCog = NV_DATA.treatmentsPharm.filter(d => !COG_CLASSES.includes(d.class));
+
+      document.getElementById('pharmCogCount').textContent = cog.length + ' agent' + (cog.length === 1 ? '' : 's');
+      document.getElementById('pharmCogRows').innerHTML = cog.map(pharmRowHtml).join('');
+
+      document.getElementById('pharmNonCogCount').textContent = nonCog.length + ' agent' + (nonCog.length === 1 ? '' : 's');
+      document.getElementById('pharmNonCogRows').innerHTML = nonCog.map(pharmRowHtml).join('');
+
       if (window.NV_SORT) NV_SORT.refresh();
       if (window.NV_WL) NV_WL.attachAll();
     }
-    function applyPharm() {
-      const c = document.getElementById('pharmClass').value;
-      const cost = document.getElementById('pharmCost').value;
-      const status = document.getElementById('pharmStatus').value;
-      let rows = NV_DATA.treatmentsPharm;
-      if (c !== 'all') rows = rows.filter(r => r.class === c);
-      if (cost !== 'all') rows = rows.filter(r => r.cost === cost);
-      if (status !== 'all') rows = rows.filter(r => (status === 'Generic' ? r.status === 'Generic' : r.status !== 'Generic'));
-      renderPharm(rows);
-    }
-    document.getElementById('applyPharm').addEventListener('click', applyPharm);
-    document.getElementById('resetPharm').addEventListener('click', () => {
-      document.getElementById('pharmClass').value = 'all';
-      document.getElementById('pharmCost').value = 'all';
-      document.getElementById('pharmStatus').value = 'all';
-      renderPharm(NV_DATA.treatmentsPharm);
-    });
-    renderPharm(NV_DATA.treatmentsPharm);
+    renderPharmSplit();
 
     // ===== Non-pharm table =====
     const nonTbody = document.getElementById('nonRows');
