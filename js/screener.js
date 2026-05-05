@@ -91,6 +91,59 @@ const NV_SCREENER = {
     document.getElementById('screenerProgress').textContent = `${answered} / ${this.questions.length} answered`;
   },
 
+  /**
+   * Pattern weights → comparative probability bars by etiology.
+   * NOT a validated diagnostic — pattern matching only.
+   */
+  estimateProbabilities(s) {
+    // Each etiology gets a raw weight from related responses.
+    const w = {
+      AD:        (s.memory||0)*3 + (s.function||0)*2 + (s.age||0)*1.5 + (s.family||0)*1.2,
+      Vascular:  (s.cardio||0)*3 + (s.memory||0)*0.8 + (s.function||0)*0.8,
+      DLB:       (s.visual||0)*4 + (s.parkinsons||0)*3 + (s.sleep||0)*2,
+      FTD:       (s.personality||0)*4 + (s.age <= 1 ? 1.5 : 0),
+      Mood:      (s.mood||0)*3 + (s.memory||0)*0.5,
+      Reversible:(s.sleep||0)*1.2 + (s.medication||0)*1.5 + (s.cardio||0)*0.5
+    };
+    // Add a small floor so bars never read as zero in low-input cases
+    Object.keys(w).forEach(k => w[k] = Math.max(0, w[k]));
+    const total = Object.values(w).reduce((a,b) => a+b, 0) || 1;
+
+    const meta = {
+      AD:         { name: "Alzheimer's disease",                 color: '#c75a3c' },
+      Vascular:   { name: 'Vascular dementia / contribution',    color: '#3c6e9a' },
+      DLB:        { name: 'Lewy body dementia',                  color: '#8a6a3c' },
+      FTD:        { name: 'Frontotemporal dementia',             color: '#3c8a6a' },
+      Mood:       { name: 'Mood-related (depression, anxiety)',  color: '#7a4a8a' },
+      Reversible: { name: 'Reversible / mimic (sleep, meds)',    color: '#9c8b76' }
+    };
+
+    return Object.keys(w).map(k => ({
+      key: k,
+      name: meta[k].name,
+      color: meta[k].color,
+      value: Math.round((w[k] / total) * 100)
+    })).sort((a,b) => b.value - a.value);
+  },
+
+  /**
+   * Stage probability heuristic from response pattern (preclinical / MCI / dementia).
+   */
+  estimateStage(s, totalPct) {
+    // Function impairment is the strongest dementia indicator (per AAN criteria);
+    // memory + family signal MCI; absence of either suggests preclinical.
+    const dementiaWt = (s.function||0) * 3 + (s.memory||0) * 1.2 + (totalPct/100) * 1.5;
+    const mciWt      = (s.memory||0)   * 2.5 + (s.age||0) * 0.5 + (s.family||0) * 1.0;
+    const preclinWt  = Math.max(0, 5 - ((s.memory||0) + (s.function||0)));
+
+    const sum = dementiaWt + mciWt + preclinWt || 1;
+    return {
+      preclinical: Math.round((preclinWt / sum) * 100),
+      mci:         Math.round((mciWt     / sum) * 100),
+      dementia:    Math.round((dementiaWt/ sum) * 100)
+    };
+  },
+
   calculate() {
     const answered = Object.keys(this.state).length;
     if (answered < this.questions.length) {
@@ -102,6 +155,20 @@ const NV_SCREENER = {
     const total = Object.values(s).reduce((a,b) => a+b, 0);
     const max = this.questions.reduce((sum, q) => sum + Math.max(...q.opts.map(o => o.val)), 0);
     const pct = Math.round((total / max) * 100);
+
+    // ============================================================
+    // Compute pattern-based probability for each etiology
+    // ============================================================
+    // These are not validated probabilities — they are pattern weights
+    // from the user's responses, scaled 0-100 to give a comparative
+    // visual of which etiologies the answer pattern most suggests.
+    // The disclaimer below makes the educational nature explicit.
+    const probs = this.estimateProbabilities(s);
+
+    // ============================================================
+    // Stage probability — preclinical / MCI / dementia
+    // ============================================================
+    const stage = this.estimateStage(s, pct);
 
     // Pattern recognition for differential
     let signals = [];
@@ -174,20 +241,50 @@ const NV_SCREENER = {
     const panel = document.getElementById('screenerResultPanel');
     panel.innerHTML = `
       <div class="screener-result">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:20px;">
-          <div>
-            <div class="result-label">Composite Risk Score</div>
-            <div class="result-score">${pct}<span style="font-size:18px; opacity:0.6;">/100</span></div>
-            <div style="margin-top:6px;"><span class="pill ${urgencyClass}" style="background:rgba(255,255,255,0.05);">${urgency}</span></div>
+
+        <!-- Stage probability strip -->
+        <div class="stage-prob-row">
+          <div class="stage-prob-label">What stage does this answer pattern suggest?</div>
+          <div class="stage-prob-bars">
+            <div class="stage-prob stage-pre" style="--p:${stage.preclinical}%;">
+              <div class="sp-name">Preclinical / Normal</div>
+              <div class="sp-bar"><span style="width:${stage.preclinical}%; background:#6fb88d;"></span></div>
+              <div class="sp-pct">${stage.preclinical}%</div>
+            </div>
+            <div class="stage-prob stage-mci" style="--p:${stage.mci}%;">
+              <div class="sp-name">MCI (mild cognitive impairment)</div>
+              <div class="sp-bar"><span style="width:${stage.mci}%; background:#d8a85a;"></span></div>
+              <div class="sp-pct">${stage.mci}%</div>
+            </div>
+            <div class="stage-prob stage-dem" style="--p:${stage.dementia}%;">
+              <div class="sp-name">Dementia</div>
+              <div class="sp-bar"><span style="width:${stage.dementia}%; background:#a04848;"></span></div>
+              <div class="sp-pct">${stage.dementia}%</div>
+            </div>
           </div>
-          <div style="flex:1; max-width:360px;">
-            <div class="result-label" style="margin-bottom:6px;">Risk Distribution</div>
-            <div class="gauge">
-              <div class="gauge-needle" style="left:${pct}%;"></div>
-            </div>
-            <div class="gauge-labels">
-              <span>Low</span><span>Mild</span><span>Mod</span><span>High</span><span>Very high</span>
-            </div>
+          <div class="stage-prob-foot">
+            <span class="pill ${urgencyClass}" style="background:rgba(255,255,255,0.05);">${urgency}</span>
+          </div>
+        </div>
+
+        <!-- Etiology probability bars -->
+        <div class="cause-prob-block">
+          <div class="cause-prob-label">If symptoms are present, which causes does this pattern point toward?</div>
+          <div class="cause-prob-list">
+            ${probs.map(p => `
+              <div class="cause-prob-row">
+                <div class="cp-name">
+                  <span class="cp-color" style="background:${p.color};"></span>
+                  ${p.name}
+                </div>
+                <div class="cp-bar"><span style="width:${p.value}%; background:${p.color};"></span></div>
+                <div class="cp-pct">${p.value}%</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="cause-prob-note">
+            These percentages are <b>pattern weights</b>, not validated probabilities — they show the relative likelihood
+            that your answer pattern matches each etiology. Real diagnosis requires clinical evaluation, biomarker testing, and imaging.
           </div>
         </div>
 
