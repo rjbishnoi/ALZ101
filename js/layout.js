@@ -349,18 +349,30 @@ const NV_LAYOUT = {
 
   attachAudienceToggle() {
     const buttons = document.querySelectorAll('.audience-toggle button');
-    const saved = localStorage.getItem('nv-audience') || 'phys';
+    // Prefer the new alz101_role key from NV_ROLE; fall back to legacy nv-audience key
+    let saved = (window.NV_ROLE && NV_ROLE.get())
+              || localStorage.getItem('alz101_role')
+              || localStorage.getItem('nv-audience')
+              || 'phys';
+    function applyActive(aud) {
+      buttons.forEach(b => b.classList.toggle('is-active', b.dataset.aud === aud));
+    }
+    applyActive(saved);
     buttons.forEach(b => {
-      b.classList.toggle('is-active', b.dataset.aud === saved);
       b.addEventListener('click', () => {
-        buttons.forEach(x => x.classList.remove('is-active'));
-        b.classList.add('is-active');
-        localStorage.setItem('nv-audience', b.dataset.aud);
-        document.body.dataset.audience = b.dataset.aud;
-        // dispatch event for pages that respond to audience changes
-        window.dispatchEvent(new CustomEvent('nv-audience-change', { detail: b.dataset.aud }));
+        applyActive(b.dataset.aud);
+        // Write through NV_ROLE so the chip updates and role gate stays in sync
+        if (window.NV_ROLE) {
+          NV_ROLE.set(b.dataset.aud, NV_ROLE.getName());
+        } else {
+          localStorage.setItem('alz101_role', b.dataset.aud);
+          document.body.dataset.audience = b.dataset.aud;
+          window.dispatchEvent(new CustomEvent('nv-audience-change', { detail: b.dataset.aud }));
+        }
       });
     });
+    // Stay in sync if role-gate or another tab changes the role
+    window.addEventListener('nv-audience-change', e => applyActive(e.detail));
     document.body.dataset.audience = saved;
   }
 };
