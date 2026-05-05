@@ -9,10 +9,10 @@ const NV_LAYOUT = {
     if (!window.NV_DATA) return '';
     const items = window.NV_DATA.ticker;
     const itemHtml = items.map(t => `
-      <span class="ticker-item">
-        <span class="label">${t.label}</span>
-        <span class="value">${t.value}</span>
-        <span class="delta-${t.dir}">${t.dir === 'up' ? '▲' : '▼'} ${t.delta}</span>
+      <span class="ticker-fact">
+        <span class="ticker-bullet">●</span>
+        <span class="fact-text">${t.fact}</span>
+        <span class="fact-source">— ${t.source}</span>
       </span>
     `).join('');
     // Duplicate for seamless scroll loop
@@ -36,6 +36,7 @@ const NV_LAYOUT = {
           </div>
           <nav class="user-rail">
             <span class="nv-clock" id="nvClock"><span class="clock-pulse"></span><span class="clock-time">--:--:--</span></span>
+            <a href="#" id="nvAskBtn" title="Ask the Evidence (a)">⊕ Ask</a>
             <a href="#" id="nvHelpBtn" title="Keyboard shortcuts">? Help</a>
             <a href="news.html">News</a>
             <a href="caregivers.html">Caregivers</a>
@@ -132,11 +133,46 @@ const NV_LAYOUT = {
       this.renderMasthead() +
       this.renderPrimaryNav(active)
     );
-    document.body.insertAdjacentHTML('beforeend', this.renderFooter() + this.renderHelpOverlay());
+    document.body.insertAdjacentHTML('beforeend', this.renderFooter() + this.renderHelpOverlay() + this.renderAskOverlay());
     this.attachAudienceToggle();
     this.attachSearch();
     this.attachKeyboard();
     this.startClock();
+    this.attachAsk();
+  },
+
+  renderAskOverlay() {
+    return `
+      <div id="nvAskOverlay" class="kbd-overlay" role="dialog" aria-modal="true">
+        <div class="kbd-card" style="max-width: 640px;">
+          <div id="nvAskMount"></div>
+        </div>
+      </div>
+    `;
+  },
+
+  attachAsk() {
+    const btn = document.getElementById('nvAskBtn');
+    const overlay = document.getElementById('nvAskOverlay');
+    const mount = document.getElementById('nvAskMount');
+    if (!btn || !overlay || !mount) return;
+    // Apply the ask-evidence class so its child styles match
+    mount.classList.add('ask-evidence');
+    let mounted = false;
+    const open = () => {
+      if (!mounted && window.NV_ASK) {
+        NV_ASK.mount(mount);
+        mounted = true;
+      }
+      overlay.classList.add('is-open');
+      const ta = mount.querySelector('#askInput');
+      if (ta) setTimeout(() => ta.focus(), 50);
+    };
+    btn.addEventListener('click', e => { e.preventDefault(); open(); });
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.remove('is-open');
+    });
+    this._openAsk = open;
   },
 
   startClock() {
@@ -278,8 +314,15 @@ const NV_LAYOUT = {
         overlay.classList.toggle('is-open');
         return;
       }
+      if (e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        if (this._openAsk) this._openAsk();
+        return;
+      }
       if (e.key === 'Escape') {
         overlay.classList.remove('is-open');
+        const askO = document.getElementById('nvAskOverlay');
+        if (askO) askO.classList.remove('is-open');
         return;
       }
       if (e.key === 'g') {

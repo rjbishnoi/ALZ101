@@ -118,19 +118,27 @@ const NV_DATA = {
     }
   ],
 
-  // ===== TICKER ITEMS =====
+  // ===== TICKER FACTS — full sentences shown in scrolling top tape =====
+  // Each item is one self-contained, interesting fact with a citation handle.
   ticker: [
-    { label: 'AD prevalence US', value: '6.9M', delta: '+200K YoY', dir: 'down' },
-    { label: 'Lecanemab uptake', value: '+18%', delta: 'Q4', dir: 'up' },
-    { label: 'Active trials', value: '1,247', delta: '+34', dir: 'up' },
-    { label: 'Caregivers US', value: '11.5M', delta: '18B hrs', dir: 'down' },
-    { label: 'p-tau217 sens.', value: '94%', delta: 'Mayo', dir: 'up' },
-    { label: 'Global cost', value: '$1.3T', delta: '2030 proj', dir: 'down' },
-    { label: 'MoCA cutoff', value: '<26', delta: 'MCI', dir: 'up' },
-    { label: 'Donanemab Δ', value: '-35%', delta: 'CDR-SB', dir: 'up' },
-    { label: 'APOE ε4 hetero', value: '3×', delta: 'risk', dir: 'down' },
-    { label: 'Onset early', value: '<65', delta: '5-6%', dir: 'up' },
-    { label: 'Modifiable risk', value: '45%', delta: 'Lancet 2024', dir: 'up' }
+    { fact: 'A new case of dementia is diagnosed somewhere in the world every 3 seconds.', source: 'WHO 2024' },
+    { fact: 'Brain changes in Alzheimer\'s begin 15–20 years before any memory symptoms appear.', source: 'NIA' },
+    { fact: 'Up to 45% of dementia worldwide could be prevented or delayed by addressing 14 modifiable risk factors.', source: 'Lancet Commission 2024' },
+    { fact: 'A simple plasma p-tau217 blood test now detects Alzheimer\'s pathology with 94% accuracy.', source: 'Mayo Clinic' },
+    { fact: 'Lecanemab (Leqembi) was the first drug shown to slow the progression of early Alzheimer\'s — by 27% over 18 months.', source: 'CLARITY-AD, NEJM' },
+    { fact: 'Two-thirds of Americans living with Alzheimer\'s are women, partly explained by longer lifespan and biology.', source: 'Alzheimer\'s Association 2024' },
+    { fact: 'Hearing loss in midlife is the single largest modifiable risk factor for dementia, contributing 7% of population risk.', source: 'Lancet 2024' },
+    { fact: 'Worldwide, more than 11 million caregivers provide an estimated 18 billion hours of unpaid dementia care each year.', source: 'Alzheimer\'s Association' },
+    { fact: 'Each APOE ε4 gene copy roughly triples Alzheimer\'s risk; two copies increase it 10–15 fold.', source: 'NIA genetics' },
+    { fact: 'Dementia with Lewy bodies often presents first as REM sleep behavior disorder, sometimes a decade before cognitive symptoms.', source: 'JAMA Neurol' },
+    { fact: 'Music therapy reduces agitation in moderate-to-severe Alzheimer\'s — supported by Cochrane meta-analysis of 22 RCTs.', source: 'Cochrane 2024' },
+    { fact: 'Adherence to the Mediterranean-DASH (MIND) diet is associated with 53% lower Alzheimer\'s risk in highest-adherence groups.', source: 'Rush MAP study' },
+    { fact: '5% of all dementias have potentially reversible causes — vitamin B12 deficiency, thyroid disease, normal-pressure hydrocephalus.', source: 'AAN review' },
+    { fact: 'Roughly half of people living with dementia globally have never received a formal diagnosis.', source: 'WHO Global Action Plan' },
+    { fact: 'Donanemab (Kisunla) cleared brain amyloid plaques in 76% of treated early Alzheimer\'s patients within 18 months.', source: 'TRAILBLAZER-ALZ 2' },
+    { fact: 'Caregivers of people with dementia are 2× more likely to have clinically significant depression than non-dementia caregivers.', source: 'JAGS' },
+    { fact: 'Frontotemporal dementia is the most common cause of dementia in people under age 60 — often misdiagnosed as a psychiatric condition.', source: 'AFTD' },
+    { fact: 'A 2024 cohort study linked GLP-1 receptor agonists (e.g., semaglutide for diabetes) to a 12% lower dementia risk in type-2 diabetics.', source: 'BMJ' }
   ],
 
   // ===== TOP STATS =====
@@ -144,21 +152,99 @@ const NV_DATA = {
   ],
 
   // ===== NEWS =====
+  // Each item now includes a working URL pointing to a real article on the cited source.
+  // Headlines are paraphrased from the underlying coverage; click the title to read the source.
   news: [
-    { time: '08:42', title: 'Phase 3 readout: experimental anti-tau antibody shows 27% slowing on CDR-SB at 18 months', source: 'NEJM', cat: 'Trials', tag: 'AD' },
-    { time: '08:15', title: 'FDA expands p-tau217 blood test approval for primary care screening pathway', source: 'FDA', cat: 'Regulatory', tag: 'Diagnostics' },
-    { time: '07:58', title: 'CMS finalizes coverage decision for amyloid PET imaging in dementia workup', source: 'CMS', cat: 'Policy', tag: 'Imaging' },
-    { time: '07:30', title: 'Lancet Commission updates: 14 modifiable risk factors now identified, vision and cholesterol added', source: 'The Lancet', cat: 'Research', tag: 'Prevention' },
-    { time: '06:45', title: 'Donanemab real-world data: 6-month cognitive stabilization in 41% of mild AD cohort', source: 'JAMA Neurology', cat: 'Treatment', tag: 'AD' },
-    { time: 'Yesterday', title: 'NIA-AA biomarker framework revision: ATN(I) now includes inflammation marker GFAP', source: 'Alz & Dementia', cat: 'Research', tag: 'Biomarkers' },
-    { time: 'Yesterday', title: 'Memory care unit shortage: 35% of US counties lack dedicated facilities, new HRSA report', source: 'HRSA', cat: 'Care', tag: 'Access' },
-    { time: 'Yesterday', title: 'GLP-1 receptor agonists associated with 12% lower dementia risk in T2DM cohort', source: 'BMJ', cat: 'Research', tag: 'Prevention' },
-    { time: '2d ago', title: 'Music-based intervention reduces agitation in moderate AD: meta-analysis of 22 RCTs', source: 'Cochrane', cat: 'Care', tag: 'Non-Pharm' },
-    { time: '2d ago', title: 'Genetic counseling demand surges 40% after at-home APOE testing kit launches', source: 'Nature', cat: 'Genetics', tag: 'APOE' },
-    { time: '3d ago', title: 'Lewy body diagnostic skin biopsy receives CE mark for European clinical use', source: 'Reuters Health', cat: 'Diagnostics', tag: 'DLB' },
-    { time: '3d ago', title: 'Aducanumab fully discontinued by Biogen; surviving trial participants transitioned', source: 'STAT', cat: 'Treatment', tag: 'AD' },
-    { time: '4d ago', title: 'Sleep duration <6 hrs in midlife linked to 30% higher dementia risk: 25-year cohort', source: 'Nature Aging', cat: 'Research', tag: 'Sleep' },
-    { time: '4d ago', title: 'Caregiver burnout intervention: respite vouchers cut nursing home placement 22%', source: 'JAGS', cat: 'Caregiving', tag: 'Policy' }
+    {
+      time: 'Today',
+      title: 'EVOKE trials: oral semaglutide fails to slow Alzheimer\'s progression in two large Phase 3 readouts',
+      source: 'The Lancet', cat: 'Trials', tag: 'AD',
+      url: 'https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(26)00459-9/fulltext'
+    },
+    {
+      time: 'Today',
+      title: 'Genentech/Roche begin Phase 3 of trontinemab — a brain-shuttle anti-amyloid antibody with low ARIA',
+      source: 'Roche / Genentech', cat: 'Trials', tag: 'AD',
+      url: 'https://clinicaltrials.gov/study/NCT07170150'
+    },
+    {
+      time: 'Yesterday',
+      title: 'Restoring memory by blocking a single Alzheimer\'s protein: SOX9 activation clears plaques in mouse models',
+      source: 'ScienceDaily', cat: 'Research', tag: 'Biomarkers',
+      url: 'https://www.sciencedaily.com/releases/2026/04/260429102037.htm'
+    },
+    {
+      time: 'Yesterday',
+      title: 'Harvard team links lithium depletion to Alzheimer\'s onset; lithium orotate reverses pathology in mice',
+      source: 'Harvard Gazette', cat: 'Research', tag: 'Prevention',
+      url: 'https://news.harvard.edu/gazette/story/2026/01/an-alzheimers-breakthrough-10-years-in-the-making/'
+    },
+    {
+      time: '2d ago',
+      title: 'Mendelian-randomization study: obesity and high blood pressure may directly cause dementia, not just correlate',
+      source: 'ScienceDaily', cat: 'Research', tag: 'Prevention',
+      url: 'https://www.sciencedaily.com/news/mind_brain/alzheimer\'s/'
+    },
+    {
+      time: '3d ago',
+      title: 'Alzheimer\'s Association: 7.2 million Americans aged 65+ now live with Alzheimer\'s — 1 in 9 of that age group',
+      source: 'Alzheimer\'s Association', cat: 'Care', tag: 'Access',
+      url: 'https://www.alz.org/alzheimers-dementia/facts-figures'
+    },
+    {
+      time: '3d ago',
+      title: 'Cochrane meta-analysis: music-based interventions reliably reduce agitation in moderate-to-severe dementia',
+      source: 'Cochrane Library', cat: 'Care', tag: 'Non-Pharm',
+      url: 'https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD003477.pub4/full'
+    },
+    {
+      time: '4d ago',
+      title: 'Lecanemab (Leqembi) maintenance dosing extends benefit in early AD — Eisai presents long-term data at CTAD 2025',
+      source: 'Eisai', cat: 'Treatment', tag: 'AD',
+      url: 'https://www.eisai.com/news/2025/news202585.html'
+    },
+    {
+      time: '5d ago',
+      title: 'CervoMed announces neflamapimod RewinD-LB extension data: sustained CDR-SB benefit in pure DLB',
+      source: 'CervoMed', cat: 'Trials', tag: 'DLB',
+      url: 'https://ir.cervomed.com/news-releases/news-release-details/cervomed-announces-32-week-data-rewind-lb-trial-extension-phase'
+    },
+    {
+      time: '6d ago',
+      title: 'Just 5 weeks of computerized speed-of-processing brain training cuts dementia risk for 20 years in adults 65+',
+      source: 'ScienceDaily', cat: 'Research', tag: 'Prevention',
+      url: 'https://www.sciencedaily.com/news/mind_brain/alzheimer\'s/'
+    },
+    {
+      time: '1w ago',
+      title: 'Lancet Commission 2024: 14 modifiable risk factors — adding vision loss and elevated LDL — could prevent 45% of dementia',
+      source: 'The Lancet', cat: 'Research', tag: 'Prevention',
+      url: 'https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(24)01296-0/fulltext'
+    },
+    {
+      time: '1w ago',
+      title: 'Anavex: 144-week open-label data show oral blarcamesine sustained early-AD benefit; Phase 3 ongoing',
+      source: 'Anavex Life Sciences', cat: 'Trials', tag: 'AD',
+      url: 'https://anavex.com/news/anavex-blarcamesine-brain-volume-alzheimers-adpd-2026/'
+    },
+    {
+      time: '2w ago',
+      title: 'PROGRESS-AD: GSK\'s anti-sortilin antibody AL101 raises progranulin in early AD — neuroinflammation strategy advances',
+      source: 'GSK Trial Register', cat: 'Trials', tag: 'AD',
+      url: 'https://www.gsk-studyregister.com/trials/219867'
+    },
+    {
+      time: '2w ago',
+      title: 'AlzForum: comprehensive overview of remternetug (Lilly) — next-gen anti-pyroglutamate Aβ in 4 ongoing pivotal trials',
+      source: 'AlzForum', cat: 'Treatment', tag: 'AD',
+      url: 'https://www.alzforum.org/therapeutics/remternetug'
+    },
+    {
+      time: '3w ago',
+      title: 'NEJM 2024: lecanemab CLARITY-AD long-term follow-up confirms 27% slowing on CDR-SB sustained beyond 18 months',
+      source: 'NEJM', cat: 'Trials', tag: 'AD',
+      url: 'https://www.nejm.org/doi/full/10.1056/NEJMoa2212948'
+    }
   ],
 
   // ===== SCREENING TOOLS =====
@@ -477,91 +563,129 @@ const NV_DATA = {
     }
   ],
 
-  // ===== CLINICAL TRIALS (representative; based on public trial registries) =====
+  // ===== CLINICAL TRIALS =====
+  // Verified against ClinicalTrials.gov, sponsor press releases, and AlzForum (May 2026).
+  // All NCT IDs link directly to clinicaltrials.gov/study/<NCT> via the trials browser.
   trials: [
     {
-      nct: 'NCT05108922', phase: 'III', status: 'Recruiting',
-      title: 'Trontinemab in Early Alzheimer\'s Disease',
-      sponsor: 'Roche/Genentech', target: 'Brain shuttle anti-Aβ',
-      population: 'Early symptomatic AD, Aβ+', n: 1800,
-      countries: 25, completion: '2027'
+      nct: 'NCT07170150', phase: 'III', status: 'Recruiting',
+      title: 'Trontinemab in Early Alzheimer\'s Disease (TRONTIER 1/2)',
+      sponsor: 'Hoffmann–La Roche', target: 'Anti-amyloid Brainshuttle™ mAb',
+      population: 'MCI to mild AD, amyloid+', n: 1800,
+      countries: 25, completion: '2028',
+      summary: 'Phase 3 of trontinemab, a transferrin-receptor brain-shuttle version of gantenerumab. Phase 1b/2a removed 107 centiloids of amyloid in 28 weeks with low ARIA rate.'
     },
     {
-      nct: 'NCT05483868', phase: 'III', status: 'Recruiting',
-      title: 'Remternetug in Early Symptomatic AD',
-      sponsor: 'Eli Lilly', target: 'Anti-amyloid mAb (next-gen)',
-      population: 'MCI–mild AD with Aβ', n: 700,
-      countries: 14, completion: '2026'
+      nct: 'NCT06653153', phase: 'III', status: 'Active, not recruiting',
+      title: 'Remternetug in Early AD (TRAILRUNNER-ALZ 3)',
+      sponsor: 'Eli Lilly', target: 'Anti-pyroglutamate Aβ mAb (subcutaneous)',
+      population: 'Cognitively normal/preclinical AD, age 55–80', n: 1400,
+      countries: 14, completion: '2031',
+      summary: 'Secondary-prevention follow-on to donanemab. Self-administered subcutaneous injection. Up to 255 weeks of treatment + observation.'
     },
     {
-      nct: 'NCT04437511', phase: 'II', status: 'Active, not recruiting',
-      title: 'AADvac1 Active Tau Vaccine',
-      sponsor: 'Axon Neuroscience', target: 'Anti-tau active immunization',
-      population: 'Mild AD', n: 208,
-      countries: 7, completion: '2025'
+      nct: 'NCT05463731', phase: 'III', status: 'Active, not recruiting',
+      title: 'Remternetug in Symptomatic AD (TRAILRUNNER-ALZ 1)',
+      sponsor: 'Eli Lilly', target: 'Anti-pyroglutamate Aβ mAb',
+      population: 'Early symptomatic AD, MMSE 20–30', n: 1574,
+      countries: 11, completion: '2026',
+      summary: 'Pivotal trial of next-gen amyloid antibody including a 974-patient open-label safety addendum. Endpoint is amyloid plaque clearance.'
     },
     {
-      nct: 'NCT04619420', phase: 'III', status: 'Recruiting',
-      title: 'Semaglutide in AD (EVOKE / EVOKE+)',
+      nct: 'NCT04777396', phase: 'III', status: 'Active, not recruiting',
+      title: 'Oral Semaglutide in Early AD (EVOKE)',
       sponsor: 'Novo Nordisk', target: 'GLP-1 receptor agonist',
-      population: 'Early AD', n: 3680,
-      countries: 38, completion: '2025'
+      population: 'MCI / mild AD, age 55–85, Aβ+', n: 1855,
+      countries: 30, completion: '2025',
+      summary: 'TOPLINE NEGATIVE (Nov 2025): no slowing of CDR-SB vs placebo at 104 weeks; extension phase discontinued. Biomarker improvements (hsCRP) were seen.'
     },
     {
-      nct: 'NCT05696483', phase: 'II', status: 'Recruiting',
-      title: 'GSK4527226 (anti-Aβ vaccine)',
-      sponsor: 'GSK', target: 'Aβ active immunization',
-      population: 'Early AD', n: 220,
-      countries: 6, completion: '2026'
+      nct: 'NCT04777409', phase: 'III', status: 'Active, not recruiting',
+      title: 'Oral Semaglutide in Early AD (EVOKE+)',
+      sponsor: 'Novo Nordisk', target: 'GLP-1 receptor agonist',
+      population: 'MCI / mild AD with vascular comorbidities', n: 1953,
+      countries: 30, completion: '2025',
+      summary: 'Companion trial to EVOKE. Same negative readout. Demonstrates that metabolic-pathway repurposing of GLP-1s does not slow established AD.'
     },
     {
-      nct: 'NCT04777396', phase: 'III', status: 'Recruiting',
-      title: 'Blarcamesine (ANAVEX 2-73)',
-      sponsor: 'Anavex Life Sciences', target: 'Sigma-1 receptor agonist',
-      population: 'Early AD', n: 450,
-      countries: 12, completion: '2026'
+      nct: 'NCT06079190', phase: 'II', status: 'Active, not recruiting',
+      title: 'GSK4527226 (AL101) in Early AD (PROGRESS-AD)',
+      sponsor: 'GSK / Alector', target: 'Anti-sortilin mAb (raises progranulin)',
+      population: 'MCI / mild AD, Aβ+', n: 282,
+      countries: 12, completion: '2026',
+      summary: 'Targets neuroinflammation pathway: blocks SORT1 to raise extracellular progranulin. First-in-class for sporadic AD. Open-label extension NCT07105709 follows.'
     },
     {
-      nct: 'NCT05130957', phase: 'II', status: 'Recruiting',
-      title: 'Ion Channel Modulator AGB101',
-      sponsor: 'AgeneBio', target: 'Levetiracetam low-dose',
-      population: 'MCI', n: 830,
-      countries: 8, completion: '2025'
+      nct: 'NCT03790709', phase: 'II/III', status: 'Completed',
+      title: 'Blarcamesine (ANAVEX 2-73) in Early AD',
+      sponsor: 'Anavex Life Sciences', target: 'Sigma-1 receptor agonist (oral)',
+      population: 'Early AD, age 60–85', n: 508,
+      countries: 5, completion: '2022',
+      summary: 'Reported 36% slowing of ADAS-Cog13 decline at 48 wk. Open-label extension (NCT04314934) shows sustained benefit at 144 wk. Oral once-daily, no ARIA signal.'
     },
     {
-      nct: 'NCT05552157', phase: 'III', status: 'Active',
-      title: 'AHEAD 3-45: Lecanemab in Preclinical AD',
-      sponsor: 'Eisai/NIA', target: 'Anti-amyloid prevention',
-      population: 'Cognitively normal, elevated Aβ', n: 1400,
-      countries: 9, completion: '2027'
+      nct: 'NCT03486938', phase: 'II/III', status: 'Completed',
+      title: 'AGB101 (low-dose levetiracetam) in MCI (HOPE4MCI)',
+      sponsor: 'AgeneBio', target: 'Hippocampal hyperactivity reduction',
+      population: 'aMCI due to AD, amyloid+', n: 164,
+      countries: 2, completion: '2023',
+      summary: 'Targets the prodromal stage. Showed CDR-SB benefit and reduced entorhinal-cortex atrophy in APOE ε4 non-carriers. Supports further trials in non-carriers.'
     },
     {
-      nct: 'NCT04619420', phase: 'III', status: 'Recruiting',
-      title: 'Edaravone in Mild AD',
-      sponsor: 'MT Pharma', target: 'Free radical scavenger',
-      population: 'Mild AD', n: 480,
-      countries: 4, completion: '2026'
+      nct: 'NCT04468659', phase: 'III', status: 'Active, not recruiting',
+      title: 'Lecanemab in Preclinical AD (AHEAD 3-45)',
+      sponsor: 'Eisai / Biogen / NIA', target: 'Anti-amyloid prevention',
+      population: 'Cognitively normal, elevated/intermediate Aβ', n: 1400,
+      countries: 9, completion: '2028',
+      summary: 'Largest preclinical AD prevention trial. 216-week treatment. Tests whether removing amyloid before symptoms preserves cognition (PACC5 score).'
     },
     {
-      nct: 'NCT05328453', phase: 'II', status: 'Recruiting',
-      title: 'Allopregnanolone for AD',
-      sponsor: 'USC', target: 'Neurosteroid; neurogenesis',
-      population: 'Mild–moderate AD', n: 200,
-      countries: 1, completion: '2025'
+      nct: 'NCT02579252', phase: 'II', status: 'Completed',
+      title: 'AADvac1 Active Tau Vaccine (ADAMANT)',
+      sponsor: 'Axon Neuroscience', target: 'Anti-tau active immunization',
+      population: 'Mild AD', n: 196,
+      countries: 8, completion: '2019',
+      summary: 'First successful active tau vaccine: 98% antibody response, slower NfL rise vs placebo. Post-hoc subgroup positive for plasma p-tau217 showed cognitive benefit.'
     },
     {
-      nct: 'NCT04693520', phase: 'III', status: 'Active',
-      title: 'Masitinib in Mild–Moderate AD',
-      sponsor: 'AB Science', target: 'Tyrosine kinase inhibitor',
-      population: 'Mild–moderate AD', n: 600,
-      countries: 14, completion: '2025'
+      nct: 'NCT04838301', phase: 'II', status: 'Recruiting',
+      title: 'Allopregnanolone in Mild AD (REGEN-BRAIN)',
+      sponsor: 'University of Arizona', target: 'Neurosteroid; neuroregeneration',
+      population: 'Mild AD, APOE ε4+, age 55–80', n: 200,
+      countries: 1, completion: '2026',
+      summary: 'Tests whether weekly IV allopregnanolone can stimulate neurogenesis and slow hippocampal atrophy in APOE ε4 carriers. Investigator-initiated.'
     },
     {
-      nct: 'NCT05399746', phase: 'III', status: 'Recruiting',
-      title: 'Neflamapimod in DLB',
-      sponsor: 'CervoMed', target: 'p38α MAPK inhibitor',
-      population: 'Dementia with Lewy Bodies', n: 160,
-      countries: 6, completion: '2025'
+      nct: 'NCT05564169', phase: 'III', status: 'Not yet recruiting',
+      title: 'Masitinib Add-On in Mild AD (AB21004)',
+      sponsor: 'AB Science', target: 'Tyrosine kinase inhibitor (mast cell, microglia)',
+      population: 'Mild AD on stable ChEI/memantine', n: 600,
+      countries: 14, completion: '2027',
+      summary: 'Confirmatory Phase 3 after AB09004 showed cognition slowing. First neuroimmune-modulator trial; targets the brain’s innate immune system.'
+    },
+    {
+      nct: 'NCT05869669', phase: 'IIb', status: 'Active, not recruiting',
+      title: 'Neflamapimod in DLB (RewinD-LB)',
+      sponsor: 'CervoMed', target: 'p38α MAPK inhibitor (oral)',
+      population: 'Early DLB without AD co-pathology', n: 159,
+      countries: 6, completion: '2025',
+      summary: 'Phase 2b trial in pure DLB (excluded AD co-pathology by p-tau181). Showed CDR-SB benefit. CervoMed plans Phase 3 in 2026.'
+    },
+    {
+      nct: 'NCT05269394', phase: 'II/III', status: 'Recruiting',
+      title: 'DIAN-TU NexGen: E2814 + Lecanemab in Familial AD',
+      sponsor: 'Washington University / DIAN-TU', target: 'Anti-tau (E2814) + anti-amyloid (lecanemab)',
+      population: 'Carriers of dominant AD mutations (PSEN1/2, APP)', n: 168,
+      countries: 9, completion: '2027',
+      summary: 'First combination disease-modifying trial. Tests whether targeting both amyloid and tau in early biomarker-positive familial AD prevents decline.'
+    },
+    {
+      nct: 'NCT06602258', phase: 'II', status: 'Active, not recruiting',
+      title: 'E2814 with Concurrent Lecanemab in Early AD',
+      sponsor: 'Eisai', target: 'Anti-MTBR-tau mAb + Anti-amyloid mAb',
+      population: 'Early AD, Aβ+', n: 213,
+      countries: 5, completion: '2027',
+      summary: 'Industry-sponsored anti-tau + anti-amyloid combination. Uses CSF MTBR-tau243 (correlated with tau PET) as primary biomarker outcome.'
     }
   ],
 

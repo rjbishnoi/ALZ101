@@ -156,12 +156,162 @@
       </div>
     </div>
 
-    <!-- Stages timeline -->
+    <!-- Disease trajectory: Preclinical → Predementia → Dementia -->
     <div class="panel mt-16">
-      <div class="panel-head"><h2>Disease Trajectory</h2></div>
+      <div class="panel-head">
+        <h2>The journey of dementia — from silent biology to symptoms</h2>
+        <div class="panel-actions"><span class="muted">Patients · families · clinicians</span></div>
+      </div>
       <div class="panel-body">
-        <div id="stagesTimeline" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:0; border:1px solid var(--rule);"></div>
-        <div class="tiny muted" style="margin-top:10px;">CDR = Clinical Dementia Rating · MMSE = Mini-Mental State Examination · Duration ranges represent typical AD progression</div>
+        <p style="font-size:13px; line-height:1.6; margin: 0 0 14px; color: var(--ink-body);">
+          Dementia does not start the day someone forgets a name. The brain changes
+          <b>15 to 20 years</b> before any symptoms appear, then passes through a quiet
+          warning phase, before the most familiar dementia symptoms emerge. Understanding
+          where someone is on this journey helps with planning, prevention, and treatment.
+        </p>
+
+        <div class="stage-strip">
+
+          <!-- Stage 1: Preclinical -->
+          <div class="stage-block stage-pre">
+            <div class="stage-band"></div>
+            <div class="stage-tag">Stage 1 · The Silent Years</div>
+            <div class="stage-name">Preclinical</div>
+            <div class="stage-meta">
+              <span class="stage-yrs">15–20 yrs before symptoms</span>
+              <span class="muted">Memory and thinking still normal</span>
+            </div>
+
+            <div class="stage-figs">
+              <div class="stage-fig"><div class="sf-num">~30%</div><div class="sf-lbl">Of cognitively normal 70-yr-olds have brain amyloid</div></div>
+              <div class="stage-fig"><div class="sf-num">≥28</div><div class="sf-lbl">MMSE score (out of 30) typical here</div></div>
+            </div>
+
+            <h4>What's happening in the brain</h4>
+            <ul>
+              <li>Amyloid-β plaques begin building up</li>
+              <li>Tau tangles seed in deep memory areas</li>
+              <li>Subtle inflammation and brain shrinkage start</li>
+            </ul>
+
+            <h4>Causes & risk drivers</h4>
+            <ul>
+              <li><b>Age</b> — risk doubles every 5 years after 65</li>
+              <li><b>APOE ε4 gene</b> — 3× risk per copy</li>
+              <li><b>Midlife</b> blood pressure, cholesterol, hearing loss, head injury</li>
+              <li><b>Sleep & social</b> — chronic poor sleep, isolation</li>
+            </ul>
+
+            <h4>What can you do now?</h4>
+            <ul>
+              <li>Manage blood pressure, LDL, diabetes</li>
+              <li>Treat hearing loss; stay socially engaged</li>
+              <li>MIND/Mediterranean diet · 150 min exercise/week</li>
+              <li>Discuss family history with primary care</li>
+            </ul>
+          </div>
+
+          <!-- Stage 2: Predementia -->
+          <div class="stage-block stage-prede">
+            <div class="stage-band"></div>
+            <div class="stage-tag">Stage 2 · The Warning Years</div>
+            <div class="stage-name">Predementia (MCI)</div>
+            <div class="stage-meta">
+              <span class="stage-yrs">2–7 yrs typical duration</span>
+              <span class="muted">Mild Cognitive Impairment — daily life still independent</span>
+            </div>
+
+            <div class="stage-figs">
+              <div class="stage-fig"><div class="sf-num">10–15%</div><div class="sf-lbl">Per year convert from MCI to dementia</div></div>
+              <div class="stage-fig"><div class="sf-num">24–27</div><div class="sf-lbl">Typical MMSE range</div></div>
+            </div>
+
+            <h4>What you might notice</h4>
+            <ul>
+              <li>Forgetting recent conversations or appointments</li>
+              <li>Repeating questions; losing familiar items</li>
+              <li>Word-finding pauses; new anxiety about memory</li>
+              <li>Friends or family quietly notice the change</li>
+            </ul>
+
+            <h4>Causes</h4>
+            <ul>
+              <li>Same drivers continuing — but now with measurable cognitive change</li>
+              <li>Always rule out <b>reversible mimics</b>: thyroid, B12, depression, sleep apnea, medication side effects</li>
+              <li>~5% of dementia-like presentations are reversible at this stage</li>
+            </ul>
+
+            <h4>What to do now</h4>
+            <ul>
+              <li>See a neurologist or memory clinic for evaluation</li>
+              <li>Get blood test: plasma p-tau217 if available; CBC, B12, TSH</li>
+              <li>Consider MRI; amyloid PET if changing course of treatment</li>
+              <li>Complete legal & financial planning <b>while capacity is intact</b></li>
+              <li>Eligible window for anti-amyloid therapy (lecanemab/donanemab) if AD-type</li>
+            </ul>
+          </div>
+
+          <!-- Stage 3: Dementia -->
+          <div class="stage-block stage-dem">
+            <div class="stage-band"></div>
+            <div class="stage-tag">Stage 3 · Symptomatic Dementia</div>
+            <div class="stage-name">Dementia</div>
+            <div class="stage-meta">
+              <span class="stage-yrs">Mild → Moderate → Severe (8–12 yrs total)</span>
+              <span class="muted">Daily activities now affected</span>
+            </div>
+
+            <div class="stage-figs">
+              <div class="stage-fig"><div class="sf-num">7.2 M</div><div class="sf-lbl">Americans aged 65+ living with dementia today</div></div>
+              <div class="stage-fig"><div class="sf-num">11.5 M</div><div class="sf-lbl">Family caregivers in the US providing daily support</div></div>
+            </div>
+
+            <h4>The most common causes</h4>
+            <ul>
+              <li><b>Alzheimer's disease</b> — 60–70%; amyloid + tau pathology</li>
+              <li><b>Vascular dementia</b> — 5–10% (often mixed with AD)</li>
+              <li><b>Lewy body dementia</b> — 5–15%; Parkinsonism + visual hallucinations</li>
+              <li><b>Frontotemporal dementia</b> — most common cause under 65</li>
+            </ul>
+
+            <h4>What changes through the stages</h4>
+            <ul>
+              <li><b>Mild:</b> Loses items, gets lost driving, struggles with finances</li>
+              <li><b>Moderate:</b> Needs help bathing, dressing; may not recognize family; wandering, sleep changes</li>
+              <li><b>Severe:</b> Total dependence; minimal language; difficulty swallowing</li>
+            </ul>
+
+            <h4>Care now matters most</h4>
+            <ul>
+              <li>Build a care team: clinician, social worker, family</li>
+              <li>Match level of care to stage — see <a href="community.html">community services</a></li>
+              <li>Non-drug approaches first for behavior — <a href="treatments.html#bystage">see stage-by-stage guide</a></li>
+              <li>Caregiver support is part of the treatment plan</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding: 10px 12px; background: var(--bg-cell); border: 1px solid var(--rule);">
+          <div style="font-size:12px; color: var(--ink-body); line-height: 1.5;">
+            <b>Prevention works at every stage.</b> The Lancet Commission 2024 estimates that
+            addressing 14 modifiable risk factors could prevent or delay <b>up to 45% of all
+            dementia worldwide</b>.
+          </div>
+          <div>
+            <a href="maps.html#riskmap" class="btn">See risk-factor map →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ask-the-Evidence panel -->
+    <div class="panel mt-16">
+      <div class="panel-head">
+        <h2>Ask the Evidence</h2>
+        <div class="panel-actions"><span class="muted">Powered by OpenEvidence — peer-reviewed answers in seconds</span></div>
+      </div>
+      <div class="panel-body">
+        <div class="ask-evidence" id="askEvidence"></div>
       </div>
     </div>
 
@@ -172,6 +322,7 @@
   <script src="js/heatmap.js"></script>
   <script src="js/sortable.js"></script>
   <script src="js/watchlist.js"></script>
+  <script src="js/ask-evidence.js"></script>
   <script>
     NV_LAYOUT.mount('home');
 
@@ -260,19 +411,23 @@
       .join('');
 
     // ---- News list
-    document.getElementById('newsList').innerHTML = NV_DATA.news.slice(0, 9).map(n => `
-      <div class="news-row">
+    document.getElementById('newsList').innerHTML = NV_DATA.news.slice(0, 9).map(n => {
+      const link = n.url
+        ? `<a href="${n.url}" target="_blank" rel="noopener">${n.title}</a> <span class="ext-link" aria-hidden="true">↗</span>`
+        : `<a href="news.html">${n.title}</a>`;
+      return `
+      <div class="news-row" data-cat="${n.cat}">
         <div class="news-time">${n.time}</div>
-        <div class="news-title"><a href="news.html">${n.title}</a></div>
+        <div class="news-title">${link}</div>
         <div class="news-source">${n.source}</div>
         <div class="news-cat">${n.cat}</div>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
 
     // ---- Mini trials table
     document.getElementById('trialsMini').innerHTML = NV_DATA.trials.slice(0, 9).map(t => `
       <tr>
-        <td class="id-cell"><a href="trials.html">${t.nct.slice(0, 11)}</a></td>
+        <td class="id-cell"><a href="https://clinicaltrials.gov/study/${t.nct}" target="_blank" rel="noopener">${t.nct}</a></td>
         <td><span class="pill pill-info">${t.phase}</span></td>
         <td>${t.sponsor}</td>
         <td>${t.target}</td>
@@ -281,18 +436,14 @@
       </tr>
     `).join('');
 
-    // ---- Stages timeline
-    document.getElementById('stagesTimeline').innerHTML = NV_DATA.stages.map((s, i) => `
-      <div style="padding:14px; ${i < 4 ? 'border-right:1px solid var(--rule);' : ''} background: ${i === 0 ? 'var(--bg-cell)' : 'white'};">
-        <div class="mono tiny muted uppercase">Stage ${i+1}</div>
-        <div style="font-family:var(--font-display); font-size:18px; font-weight:600; color:var(--ink-primary); margin:4px 0;">${s.name}</div>
-        <div class="mono tiny" style="display:flex; gap:8px; margin:4px 0;">
-          <span class="muted">CDR ${s.cdr}</span>·<span class="muted">MMSE ${s.mmse}</span>
-        </div>
-        <div class="mono tiny muted" style="margin-bottom:6px;">DURATION: ${s.duration}</div>
-        <div style="font-size:11px; line-height:1.5;">${s.features}</div>
-      </div>
-    `).join('');
+    // ---- Watchlist sidebar
+    if (window.NV_WL) NV_WL.renderInto(document.getElementById('watchlistBox'));
+    window.addEventListener('nv-watchlist-change', () => {
+      if (window.NV_WL) NV_WL.renderInto(document.getElementById('watchlistBox'));
+    });
+
+    // ---- Ask-the-Evidence module
+    if (window.NV_ASK) NV_ASK.mount(document.getElementById('askEvidence'));
   </script>
 </body>
 </html>

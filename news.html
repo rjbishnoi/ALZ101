@@ -118,6 +118,7 @@
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/sortable.js"></script>
+  <script src="js/ask-evidence.js"></script>
   <script>
     NV_LAYOUT.mount('news');
 
@@ -140,14 +141,18 @@
       document.getElementById('newsCount').textContent = list.length + ' items';
       document.getElementById('newsList').innerHTML = list.length === 0
         ? '<div style="padding: 30px; text-align:center; color: var(--ink-faint); font-size: 12px;">No items match these filters.</div>'
-        : list.map(n => `
-          <div class="news-row">
+        : list.map(n => {
+          const link = n.url
+            ? `<a href="${n.url}" target="_blank" rel="noopener">${n.title}</a> <span class="ext-link" aria-hidden="true">↗</span>`
+            : n.title;
+          return `
+          <div class="news-row" data-cat="${n.cat}">
             <div class="news-time">${n.time}</div>
-            <div class="news-headline">${n.title} <span class="chip" style="margin-left:6px;">${n.tag}</span></div>
+            <div class="news-headline">${link} <span class="chip" style="margin-left:6px;">${n.tag}</span></div>
             <div class="news-source">${n.source}</div>
             <div class="news-cat"><span class="pill ${catColor(n.cat)}">${n.cat}</span></div>
-          </div>
-        `).join('');
+          </div>`;
+        }).join('');
     }
 
     function applyFilters() {
