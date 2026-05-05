@@ -70,6 +70,7 @@
           <table class="data-table" id="dxTable">
             <thead>
               <tr>
+                <th style="width:28px;" data-sort="off"></th>
                 <th>Method</th>
                 <th>Tier</th>
                 <th class="num">Sens.</th>
@@ -177,6 +178,7 @@
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/sortable.js"></script>
+  <script src="js/watchlist.js"></script>
   <script>
     NV_LAYOUT.mount('diagnosis');
 
@@ -190,18 +192,23 @@
     });
 
     function renderDx(items) {
+      const vClass = v => typeof v !== 'number' ? 'v-na' : (v >= 90 ? 'v-good' : (v >= 75 ? 'v-mid' : 'v-low'));
+      const costClass = c => 'cost-' + c.length;
       document.getElementById('dxBody').innerHTML = items.map(d => `
         <tr>
+          <td><span data-pin-tag="DX" data-pin-id="${d.id}" data-pin-name="${d.name}" data-pin-url="diagnosis.html#methods"></span></td>
           <td class="id-cell">${d.name}</td>
           <td><span class="pill pill-info">${d.tier}</span></td>
-          <td class="num">${typeof d.sensitivity === 'number' ? d.sensitivity + '%' : '—'}</td>
-          <td class="num">${typeof d.specificity === 'number' ? d.specificity + '%' : '—'}</td>
-          <td class="mono">${d.cost}</td>
+          <td class="num"><span class="${vClass(d.sensitivity)}">${typeof d.sensitivity === 'number' ? d.sensitivity + '%' : '—'}</span></td>
+          <td class="num"><span class="${vClass(d.specificity)}">${typeof d.specificity === 'number' ? d.specificity + '%' : '—'}</span></td>
+          <td class="mono"><span class="${costClass(d.cost)}">${d.cost}</span></td>
           <td>${d.accessibility}</td>
           <td style="font-size:11px;">${d.indication}</td>
           <td>${d.stage}</td>
         </tr>
       `).join('');
+      if (window.NV_SORT) NV_SORT.refresh();
+      if (window.NV_WL) NV_WL.attachAll();
     }
     renderDx(NV_DATA.diagnostics);
 

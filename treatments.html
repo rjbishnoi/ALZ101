@@ -82,6 +82,7 @@
             <table class="data-table">
               <thead>
                 <tr>
+                  <th style="width:28px;" data-sort="off"></th>
                   <th>Agent</th>
                   <th>Class</th>
                   <th>Indication</th>
@@ -174,6 +175,7 @@
             <table class="data-table">
               <thead>
                 <tr>
+                  <th style="width:28px;" data-sort="off"></th>
                   <th>Intervention</th>
                   <th>Category</th>
                   <th>Evidence</th>
@@ -369,6 +371,8 @@
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/sortable.js"></script>
+  <script src="js/watchlist.js"></script>
+  <script src="js/sortable.js"></script>
   <script>
     NV_LAYOUT.mount('treatments');
 
@@ -393,17 +397,23 @@
     const pharmTbody = document.getElementById('pharmRows');
     function renderPharm(rows) {
       document.getElementById('pharmCount').textContent = rows.length + ' agents';
+      const costClass = c => 'cost-' + (c.length || 1);
       pharmTbody.innerHTML = rows.map(d => `
         <tr>
-          <td><b>${d.name}</b><div class="mono tiny muted">${d.dose}</div></td>
+          <td>
+            <span data-pin-tag="DRUG" data-pin-id="${d.id}" data-pin-name="${d.name}" data-pin-url="treatments.html#pharm"></span>
+            <b>${d.name}</b><div class="mono tiny muted">${d.dose}</div>
+          </td>
           <td><span class="chip">${d.class}</span></td>
           <td>${d.indication}</td>
           <td class="muted">${d.mechanism}</td>
           <td>${d.efficacy}</td>
           <td>${d.sideEffects}</td>
-          <td class="num">${d.cost}<div class="mono tiny muted">${d.status}</div></td>
+          <td class="num"><span class="${costClass(d.cost)}">${d.cost}</span><div class="mono tiny muted">${d.status}</div></td>
         </tr>
       `).join('');
+      if (window.NV_SORT) NV_SORT.refresh();
+      if (window.NV_WL) NV_WL.attachAll();
     }
     function applyPharm() {
       const c = document.getElementById('pharmClass').value;
@@ -432,17 +442,23 @@
     }
     function renderNon(rows) {
       document.getElementById('nonCount').textContent = rows.length + ' interventions';
+      const costClass = c => 'cost-' + (c.length || 1);
       nonTbody.innerHTML = rows.map(d => `
         <tr>
+          <td>
+            <span data-pin-tag="CARE" data-pin-id="${d.id}" data-pin-name="${d.name}" data-pin-url="treatments.html#nonpharm"></span>
+          </td>
           <td><b>${d.name}</b></td>
           <td><span class="chip">${d.category}</span></td>
           <td>${evidPill(d.evidence)}</td>
           <td>${d.target}</td>
           <td class="muted">${d.delivery}</td>
           <td>${d.benefit}</td>
-          <td class="num">${d.cost}</td>
+          <td class="num"><span class="${costClass(d.cost)}">${d.cost}</span></td>
         </tr>
       `).join('');
+      if (window.NV_SORT) NV_SORT.refresh();
+      if (window.NV_WL) NV_WL.attachAll();
     }
     function applyNon() {
       const c = document.getElementById('nonCat').value;

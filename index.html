@@ -47,6 +47,11 @@
       <!-- Sidebar: signals & quick actions -->
       <div>
         <div class="aside-panel">
+          <div class="ap-head">★ My Watchlist</div>
+          <div id="watchlistBox"></div>
+        </div>
+
+        <div class="aside-panel">
           <div class="ap-head">Today's Signals</div>
           <div class="ap-body">
             <ul>
@@ -63,7 +68,7 @@
           <div class="ap-head">Quick Actions</div>
           <div class="ap-body" style="display:flex; flex-direction:column; gap:6px;">
             <a href="screener.html" class="btn btn-ghost" style="text-align:center;">Run Screener</a>
-            <a href="diagnosis.html" class="btn btn-ghost" style="text-align:center;">Diagnostic Workup</a>
+            <a href="diagnosis.html" class="btn btn-ghost aud-phys" style="text-align:center;">Diagnostic Workup</a>
             <a href="trials.html" class="btn btn-ghost" style="text-align:center;">Find Clinical Trial</a>
             <a href="caregivers.html" class="btn btn-accent" style="text-align:center;">Caregiver Toolkit</a>
           </div>
@@ -72,7 +77,7 @@
         <div class="aside-panel">
           <div class="ap-head">Lancet 2024 Risk Factors</div>
           <div class="ap-body">
-            <ul id="riskList"></ul>
+            <div id="riskList"></div>
             <div class="tiny muted" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--rule-soft);">
               45% of dementia is potentially preventable through addressing 14 modifiable risks across the lifespan.
             </div>
@@ -166,6 +171,7 @@
   <script src="js/layout.js"></script>
   <script src="js/heatmap.js"></script>
   <script src="js/sortable.js"></script>
+  <script src="js/watchlist.js"></script>
   <script>
     NV_LAYOUT.mount('home');
 

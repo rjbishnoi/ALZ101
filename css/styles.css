@@ -1374,3 +1374,217 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 .spark-svg .spark-line { stroke: var(--accent); }
 .spark-svg .spark-area { fill: var(--accent); fill-opacity: 0.15; stroke: none; }
 
+
+/* ============================================
+   FINVIZ POLISH PASS — Value coding, watchlist, audience-aware
+   ============================================ */
+
+/* --- Value-coded numbers (sens/spec, prevalence, evidence) --- */
+.v-good   { color: var(--signal-positive); font-weight: 600; }   /* ≥ 90 */
+.v-mid    { color: var(--signal-watch); font-weight: 600; }      /* 75–89 */
+.v-low    { color: var(--signal-concern); font-weight: 600; }    /* < 75 */
+.v-na     { color: var(--ink-faint); }
+td.v-good, td.v-mid, td.v-low { font-family: var(--font-mono); }
+
+/* Cost intensity (1–4 dollar signs) */
+.cost-1 { color: #4a7c59; font-weight: 600; }
+.cost-2 { color: #7c8c4a; font-weight: 600; }
+.cost-3 { color: #b8893d; font-weight: 600; }
+.cost-4 { color: #a44d3a; font-weight: 600; }
+
+/* --- Watchlist pin star --- */
+.pin-star {
+  display: inline-block;
+  width: 14px; height: 14px;
+  font-size: 12px; line-height: 14px;
+  color: var(--ink-faint);
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  background: transparent;
+  border: none;
+  margin-right: 4px;
+  transition: color 0.1s, transform 0.1s;
+}
+.pin-star:hover { color: var(--accent); transform: scale(1.15); }
+.pin-star.is-pinned { color: var(--accent); }
+.pin-star::before { content: '☆'; }
+.pin-star.is-pinned::before { content: '★'; }
+
+/* Watchlist panel on dashboard */
+.watchlist-empty {
+  padding: 16px 12px;
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.watchlist-empty .mono { color: var(--ink-muted); }
+.watchlist-row {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 8px;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: center;
+}
+.watchlist-row:hover { background: var(--bg-cell); }
+.watchlist-row .wl-tag {
+  font-size: 8px;
+  padding: 1px 4px;
+  background: var(--bg-rail);
+  color: white;
+  letter-spacing: 0.06em;
+}
+.watchlist-row .wl-name {
+  font-family: var(--font-body);
+  color: var(--ink-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.watchlist-row .wl-rm {
+  color: var(--ink-faint);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 14px;
+  padding: 0 4px;
+}
+.watchlist-row .wl-rm:hover { color: var(--accent); }
+
+/* --- Audience-aware visibility (CSS-only) --- */
+body[data-audience="phys"] .aud-pat,
+body[data-audience="phys"] .aud-care,
+body[data-audience="pat"]  .aud-phys,
+body[data-audience="pat"]  .aud-care,
+body[data-audience="care"] .aud-phys,
+body[data-audience="care"] .aud-pat {
+  display: none !important;
+}
+
+/* Audience-tagged panel banners */
+.audience-banner {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  color: white;
+  display: inline-block;
+}
+.audience-banner.phys { background: #2d5a7a; }
+.audience-banner.pat  { background: #4a7c59; }
+.audience-banner.care { background: var(--accent); }
+
+/* --- Live clock in masthead --- */
+.nv-clock {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  margin-left: 12px;
+  white-space: nowrap;
+}
+.nv-clock .clock-time { color: var(--ink-inverse); font-weight: 500; }
+.nv-clock .clock-pulse {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: #6fb88d;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot { 0%,100% { opacity:1 } 50% { opacity:0.3 } }
+
+/* --- Movers w/ inline bars --- */
+.mover-row.with-bar { grid-template-columns: 50px 1fr 50px 60px; }
+.mover-row .m-bar {
+  height: 6px;
+  background: var(--bg-cell);
+  border: 1px solid var(--rule-soft);
+  position: relative;
+}
+.mover-row .m-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+/* --- News page category color stripes --- */
+.news-row { position: relative; padding-left: 14px; }
+.news-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--ink-faint);
+}
+.news-row[data-cat="Trials"]::before    { background: #4a7c8c; }
+.news-row[data-cat="Regulatory"]::before { background: #a44d3a; }
+.news-row[data-cat="Policy"]::before    { background: #b8893d; }
+.news-row[data-cat="Research"]::before  { background: #4a7c59; }
+.news-row[data-cat="Treatment"]::before { background: var(--accent); }
+.news-row[data-cat="Diagnostics"]::before { background: #5a7a4a; }
+.news-row[data-cat="Care"]::before      { background: #7a4a8a; }
+.news-row[data-cat="Genetics"]::before  { background: #6b1f1a; }
+.news-row[data-cat="Caregiving"]::before { background: var(--accent-deep); }
+
+/* --- Compact footer --- */
+.footer { background: var(--bg-rail); color: var(--ink-inverse); margin-top: 20px; }
+.footer-inner {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 24px;
+  font-size: 11px;
+}
+.footer h4 { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; color: white; }
+.footer ul { list-style: none; }
+.footer li { padding: 1px 0; }
+.footer a { color: var(--ink-faint); }
+.footer a:hover { color: var(--accent); }
+.footer-disclaimer {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 8px 18px;
+  font-size: 10px;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--bg-strip);
+  font-family: var(--font-mono);
+}
+
+/* --- Dense type-table for groups page (Finviz-style) --- */
+.dt-types-row td.dt-name { font-family: var(--font-display); font-style: italic; font-weight: 500; color: var(--ink-primary); }
+.dt-types-row td.dt-features { font-size: 11px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px; }
+.dt-types-row td.dt-stage-bar { width: 100px; }
+.dt-stage-bar .bar-track {
+  height: 8px;
+  background: linear-gradient(to right, var(--sev-0), var(--sev-1), var(--sev-2), var(--sev-3), var(--sev-4), var(--sev-5));
+  position: relative;
+  border: 1px solid var(--rule);
+}
+.dt-stage-bar .bar-marker {
+  position: absolute;
+  top: -2px; bottom: -2px;
+  width: 2px;
+  background: var(--ink-primary);
+  border: 1px solid white;
+}
+
+/* Better hover tooltip on heatmap cells (using title attribute is browser default;
+   this is a CSS overlay for richer info) */
+.hm-cell { transition: outline 0.05s; }
+.hm-cell:hover { outline: 2px solid white; outline-offset: -2px; z-index: 5; }
+
+/* Click-flash highlight for any element (used by anchor jumps) */
+@keyframes hl-flash {
+  0% { box-shadow: 0 0 0 4px var(--accent); }
+  100% { box-shadow: 0 0 0 4px transparent; }
+}
+.is-flash { animation: hl-flash 1.4s ease-out; }

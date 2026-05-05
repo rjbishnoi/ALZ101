@@ -75,6 +75,7 @@
             <table class="data-table">
               <thead>
                 <tr>
+                  <th style="width:28px;" data-sort="off"></th>
                   <th>NCT</th>
                   <th>Trial</th>
                   <th>Phase</th>
@@ -157,6 +158,8 @@
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/sortable.js"></script>
+  <script src="js/watchlist.js"></script>
+  <script src="js/sortable.js"></script>
   <script>
     NV_LAYOUT.mount('trials');
 
@@ -191,6 +194,7 @@
       document.getElementById('trialCount').textContent = rows.length + ' trials';
       document.getElementById('trialRows').innerHTML = rows.map(t => `
         <tr>
+          <td><span data-pin-tag="TRIAL" data-pin-id="${t.nct}" data-pin-name="${t.title}" data-pin-url="trials.html"></span></td>
           <td class="id-cell"><a href="https://clinicaltrials.gov/study/${t.nct}" target="_blank">${t.nct}</a></td>
           <td><b>${t.title}</b></td>
           <td>${phasePill(t.phase)}</td>
@@ -202,6 +206,8 @@
           <td class="mono">${t.completion}</td>
         </tr>
       `).join('');
+      if (window.NV_SORT) NV_SORT.refresh();
+      if (window.NV_WL) NV_WL.attachAll();
     }
 
     function renderTimeline(rows) {

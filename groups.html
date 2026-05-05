@@ -14,8 +14,10 @@
         <h1>Dementia Type Groups</h1>
       </div>
       <div class="meta">
-        ${0} TYPES INDEXED<br/>
-        Updated weekly
+        <span id="typeCount">—</span> TYPES INDEXED<br/>
+        <span class="aud-phys">Sortable · pin to watchlist · click row for detail</span>
+        <span class="aud-pat">Click any row to learn more about that type</span>
+        <span class="aud-care">Click any row for caregiver-relevant detail</span>
       </div>
     </div>
 
@@ -29,6 +31,8 @@
           <option value="vasc">Vascular</option>
           <option value="lewy">Lewy body</option>
           <option value="ftd">FTD spectrum</option>
+          <option value="park">Parkinsonian</option>
+          <option value="mixed">Mixed</option>
           <option value="other">Other / rare</option>
         </select>
       </div>
@@ -50,11 +54,10 @@
         </select>
       </div>
       <div class="filter-group">
-        <label>Sort by</label>
-        <select id="sortBy">
-          <option value="prev">Prevalence</option>
-          <option value="name">Name</option>
-          <option value="stage">Severity stage</option>
+        <label>View</label>
+        <select id="filterView">
+          <option value="table">Dense table</option>
+          <option value="cards">Cards</option>
         </select>
       </div>
       <div class="filter-actions">
@@ -63,31 +66,110 @@
       </div>
     </div>
 
-    <!-- Types grid -->
-    <div id="typeGrid"></div>
+    <!-- Dense Finviz-style table -->
+    <div class="panel" id="panelTable">
+      <div class="panel-head">
+        <h2>Type catalog</h2>
+        <div class="panel-actions">
+          <span class="muted">Click ★ to pin · click any column to sort · click row for detail</span>
+        </div>
+      </div>
+      <div class="panel-body tight">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:28px;" data-sort="off"></th>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th class="num">Prevalence %</th>
+              <th>Age onset</th>
+              <th class="num">Stage</th>
+              <th>Severity gradient</th>
+              <th>Key features</th>
+            </tr>
+          </thead>
+          <tbody id="typesRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Cards view (alternate) -->
+    <div id="typeGrid" hidden></div>
+
+    <!-- Detail drawer -->
+    <div class="panel" id="detailPanel" hidden style="margin-top:14px;">
+      <div class="panel-head">
+        <h2 id="detailTitle">—</h2>
+        <div class="panel-actions">
+          <a href="diagnosis.html">Diagnostic path →</a>
+          <a href="trials.html" id="detailTrials">Active trials →</a>
+        </div>
+      </div>
+      <div class="panel-body" id="detailBody"></div>
+    </div>
   </main>
 
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/sortable.js"></script>
+  <script src="js/watchlist.js"></script>
   <script>
     NV_LAYOUT.mount('groups');
 
-    function renderTypes(types) {
-      const grid = document.getElementById('typeGrid');
-      grid.innerHTML = types.map(t => `
+    const TRIAL_COUNTS = { AD: 847, MIX: 142, DLB: 94, FTD: 76, VAD: 68, PDD: 54, PCA: 21, PPA: 38, NPH: 12, HD: 63, CJD: 8, WK: 4 };
+    const CAT_LABEL = { ad:'AD spectrum', vasc:'Vascular', lewy:'Lewy body', ftd:'FTD', park:'Parkinsonian', mixed:'Mixed', other:'Other' };
+
+    function prevColor(p) {
+      if (p >= 50) return 'v-good';
+      if (p >= 5)  return 'v-mid';
+      return 'v-low';
+    }
+
+    function renderTable(rows) {
+      document.getElementById('typeCount').textContent = rows.length;
+      document.getElementById('typesRows').innerHTML = rows.map(t => `
+        <tr class="dt-types-row" data-type="${t.id}">
+          <td>
+            <span data-pin-tag="TYPE" data-pin-id="${t.id}" data-pin-name="${t.name}" data-pin-url="groups.html#${t.id}"></span>
+          </td>
+          <td><span class="type-chip type-${t.typeClass}">${t.code}</span></td>
+          <td class="dt-name"><a href="#${t.id}" data-detail="${t.id}">${t.name}</a></td>
+          <td><span class="chip">${CAT_LABEL[t.typeClass] || '—'}</span></td>
+          <td class="num"><span class="${prevColor(t.prevalencePct)}">${t.prevalencePct}%</span></td>
+          <td class="muted" style="font-size:11px;">${t.ageOnset}</td>
+          <td class="num mono">${t.stage}/5</td>
+          <td class="dt-stage-bar">
+            <div class="bar-track">
+              <div class="bar-marker" style="left:${(t.stage/5)*100}%;"></div>
+            </div>
+          </td>
+          <td class="dt-features" title="${t.keyFeatures.join(', ')}">${t.keyFeatures.slice(0,2).join(' · ')}</td>
+        </tr>
+      `).join('');
+      if (window.NV_SORT) NV_SORT.refresh();
+      if (window.NV_WL)   NV_WL.attachAll();
+    }
+
+    function renderCards(rows) {
+      document.getElementById('typeCount').textContent = rows.length;
+      document.getElementById('typeGrid').innerHTML = rows.map(t => `
         <div class="panel" id="${t.id}" style="margin-bottom:14px;">
           <div class="panel-head">
             <div style="display:flex; gap:10px; align-items:baseline;">
+              <span data-pin-tag="TYPE" data-pin-id="${t.id}" data-pin-name="${t.name}" data-pin-url="groups.html#${t.id}"></span>
               <span class="type-chip type-${t.typeClass}">${t.code}</span>
               <h2 style="font-style:italic;">${t.name}</h2>
             </div>
             <div class="panel-actions">
               <span class="mono tiny muted">PREVALENCE</span>
-              <span class="mono" style="color:var(--ink-primary); font-weight:600;">${t.prevalencePct}%</span>
+              <span class="mono ${prevColor(t.prevalencePct)}" style="font-weight:600;">${t.prevalencePct}%</span>
               ·
               <span class="mono tiny muted">STAGE</span>
               <span class="mono" style="color:var(--ink-primary); font-weight:600;">${t.stage}/5</span>
+              ·
+              <span class="mono tiny muted">TRIALS</span>
+              <span class="mono" style="color:var(--accent-deep); font-weight:600;">${TRIAL_COUNTS[t.id] || 0}</span>
             </div>
           </div>
           <div class="panel-body" style="padding:0;">
@@ -95,37 +177,74 @@
               <div style="padding:14px 16px; border-right:1px solid var(--rule);">
                 <div class="mono tiny muted uppercase mb-8">Pathology</div>
                 <div style="font-size:13px; line-height:1.5; margin-bottom:14px;">${t.hallmark}</div>
-
                 <div class="mono tiny muted uppercase mb-8">Age of onset</div>
                 <div style="font-size:13px; margin-bottom:14px;">${t.ageOnset}</div>
-
                 <div class="mono tiny muted uppercase mb-8">Progression</div>
                 <div style="font-size:13px; line-height:1.5;">${t.progression}</div>
               </div>
               <div style="padding:14px 16px; background: var(--bg-cell);">
                 <div class="mono tiny muted uppercase mb-8">Prevalence</div>
                 <div style="font-size:13px; margin-bottom:14px;">${t.prevalenceText}</div>
-
                 <div class="mono tiny muted uppercase mb-8">Key clinical features</div>
                 <ul style="font-size:12px; line-height:1.55; list-style:none;">
                   ${t.keyFeatures.map(f => `
                     <li style="padding:3px 0; padding-left:14px; position:relative;">
                       <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">›</span>${f}
-                    </li>
-                  `).join('')}
+                    </li>`).join('')}
                 </ul>
               </div>
-            </div>
-            <div style="padding: 8px 14px; background:var(--bg-rail); color:var(--ink-inverse); display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase;">
-              <span>Severity gradient</span>
-              <div style="flex:1; max-width:300px; height:6px; margin:0 14px; background:linear-gradient(to right, var(--sev-0), var(--sev-1), var(--sev-2), var(--sev-3), var(--sev-4), var(--sev-5)); position:relative; border:1px solid var(--bg-strip);">
-                <div style="position:absolute; left:${t.stage * 20}%; top:-3px; bottom:-3px; width:2px; background:white; border:1px solid var(--bg-rail);"></div>
-              </div>
-              <a href="diagnosis.html" style="color:var(--accent);">DIAGNOSTIC PATH →</a>
             </div>
           </div>
         </div>
       `).join('');
+      if (window.NV_WL) NV_WL.attachAll();
+    }
+
+    function showDetail(id) {
+      const t = NV_DATA.dementiaTypes.find(x => x.id === id);
+      if (!t) return;
+      const panel = document.getElementById('detailPanel');
+      panel.hidden = false;
+      document.getElementById('detailTitle').textContent = t.name + ' (' + t.code + ')';
+      document.getElementById('detailBody').innerHTML = `
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px;">
+          <div class="stat-cell" style="padding: 12px; position:relative;">
+            <div class="stat-label">PREVALENCE</div>
+            <div class="stat-value">${t.prevalencePct}%</div>
+            <div class="stat-detail muted">${t.prevalenceText}</div>
+          </div>
+          <div class="stat-cell" style="padding: 12px;">
+            <div class="stat-label">SEVERITY STAGE</div>
+            <div class="stat-value">${t.stage}/5</div>
+          </div>
+          <div class="stat-cell" style="padding: 12px;">
+            <div class="stat-label">AGE OF ONSET</div>
+            <div class="stat-value mono" style="font-size:18px;">${t.ageOnset}</div>
+          </div>
+          <div class="stat-cell" style="padding: 12px;">
+            <div class="stat-label">ACTIVE TRIALS</div>
+            <div class="stat-value">${TRIAL_COUNTS[t.id] || 0}</div>
+            <div class="stat-detail muted">on ClinicalTrials.gov</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+          <div>
+            <div class="mono tiny muted uppercase mb-8">Pathology</div>
+            <p style="font-size:13px; line-height:1.6; margin-bottom: 14px;">${t.hallmark}</p>
+            <div class="mono tiny muted uppercase mb-8">Progression</div>
+            <p style="font-size:13px; line-height:1.6;">${t.progression}</p>
+          </div>
+          <div>
+            <div class="mono tiny muted uppercase mb-8">Key features</div>
+            <ul style="font-size:13px; line-height:1.7; list-style:none;">
+              ${t.keyFeatures.map(f => `<li style="padding-left:14px; position:relative;">
+                <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">›</span>${f}
+              </li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     let current = [...NV_DATA.dementiaTypes];
@@ -134,7 +253,7 @@
       const cat = document.getElementById('filterCat').value;
       const age = document.getElementById('filterAge').value;
       const prev = +document.getElementById('filterPrev').value;
-      const sort = document.getElementById('sortBy').value;
+      const view = document.getElementById('filterView').value;
 
       current = NV_DATA.dementiaTypes.filter(t => {
         if (cat !== 'all' && t.typeClass !== cat) return false;
@@ -143,24 +262,36 @@
         if (t.prevalencePct < prev) return false;
         return true;
       });
+      current.sort((a,b) => b.prevalencePct - a.prevalencePct);
 
-      if (sort === 'prev') current.sort((a,b) => b.prevalencePct - a.prevalencePct);
-      else if (sort === 'name') current.sort((a,b) => a.name.localeCompare(b.name));
-      else if (sort === 'stage') current.sort((a,b) => b.stage - a.stage);
+      document.getElementById('panelTable').hidden = view !== 'table';
+      document.getElementById('typeGrid').hidden   = view !== 'cards';
+      if (view === 'table') renderTable(current); else renderCards(current);
 
-      renderTypes(current);
-      // jump to anchor if hash present
       if (location.hash) {
+        const id = location.hash.slice(1);
         const el = document.querySelector(location.hash);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          el.classList.add('is-flash');
+          setTimeout(() => el.classList.remove('is-flash'), 1500);
+        }
+        if (view === 'table') showDetail(id);
       }
     }
 
     document.getElementById('applyFilter').addEventListener('click', applyFilters);
     document.getElementById('resetFilter').addEventListener('click', () => {
       ['filterCat','filterAge','filterPrev'].forEach(id => document.getElementById(id).value = id === 'filterPrev' ? '0' : 'all');
-      document.getElementById('sortBy').value = 'prev';
+      document.getElementById('filterView').value = 'table';
       applyFilters();
+    });
+
+    document.getElementById('typesRows').addEventListener('click', e => {
+      const link = e.target.closest('a[data-detail]');
+      if (link) { e.preventDefault(); showDetail(link.dataset.detail); return; }
+      const row = e.target.closest('tr[data-type]');
+      if (row && !e.target.closest('.pin-star')) showDetail(row.dataset.type);
     });
 
     applyFilters();

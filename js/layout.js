@@ -35,6 +35,7 @@ const NV_LAYOUT = {
             <button id="nvSearchBtn">GO</button>
           </div>
           <nav class="user-rail">
+            <span class="nv-clock" id="nvClock"><span class="clock-pulse"></span><span class="clock-time">--:--:--</span></span>
             <a href="#" id="nvHelpBtn" title="Keyboard shortcuts">? Help</a>
             <a href="news.html">News</a>
             <a href="caregivers.html">Caregivers</a>
@@ -135,6 +136,22 @@ const NV_LAYOUT = {
     this.attachAudienceToggle();
     this.attachSearch();
     this.attachKeyboard();
+    this.startClock();
+  },
+
+  startClock() {
+    const el = document.getElementById('nvClock');
+    if (!el) return;
+    const t = el.querySelector('.clock-time');
+    const tick = () => {
+      const d = new Date();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      const ss = String(d.getSeconds()).padStart(2, '0');
+      t.textContent = `${hh}:${mm}:${ss} ${Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop().replace('_',' ').slice(0,7)}`;
+    };
+    tick();
+    setInterval(tick, 1000);
   },
 
   renderHelpOverlay() {
