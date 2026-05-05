@@ -1,0 +1,117 @@
+============================================================
+NeuroViz — Cognitive Health Atlas
+HOW TO RUN LOCALLY
+============================================================
+
+QUICKEST WAY (macOS / Linux)
+============================
+1. Open Terminal (Applications -> Utilities -> Terminal on Mac).
+2. Type "cd " (the letters c, d, then a SPACE), then drag this
+   NeuroViz_Project folder into the Terminal window. The full path
+   will be pasted automatically. Press Return.
+3. Type the following and press Return:
+
+       bash start.sh
+
+4. Your default browser will open to http://localhost:8765/ within
+   1-2 seconds.
+5. To stop the server later, click back in the Terminal and press
+   Control + C.
+
+
+QUICKEST WAY (Windows)
+======================
+1. Open the NeuroViz_Project folder in File Explorer.
+2. Double-click start.bat
+3. A black command window will appear. Your browser will open to
+   http://localhost:8765/ within 2 seconds.
+4. To stop the server, press Control + C in the command window,
+   then type "y" and press Return.
+
+
+IF SOMETHING GOES WRONG
+=======================
+
+"command not found: bash"
+   You're already on macOS or Linux — bash is built in. The error
+   means you're either typing the wrong command or there's a
+   character that shouldn't be there. Try just:
+       sh start.sh
+
+"python3: command not found"
+   Mac users — python3 is built into macOS Sequoia and Sonoma. If
+   it's missing, the simplest fix:
+   1. Open Terminal
+   2. Type:    xcode-select --install
+   3. Click "Install" in the dialog that appears
+   4. Wait for it to finish (~5 minutes)
+   5. Try start.sh again
+
+"Address already in use" / "port 8765 in use"
+   Another program is using that port. start.sh will automatically
+   try the next ports up to 8800. If they're ALL busy, restart your
+   computer or close other dev tools running on those ports.
+
+Browser doesn't open automatically
+   No problem — just type or paste this URL into your browser:
+       http://localhost:8765/
+
+Files in your terminal arrive as "[start.sh](http://...)"
+   Some chat apps auto-link filenames. Don't copy-paste the command
+   from chat — TYPE the command by hand. It's only 13 characters:
+       bash start.sh
+
+
+WITHOUT THE SCRIPT (manual)
+===========================
+If you want to run the server yourself without using start.sh:
+
+   cd /path/to/NeuroViz_Project
+   python3 -m http.server 8765
+
+Then open http://localhost:8765/ in your browser.
+
+
+WHAT'S INSIDE THIS FOLDER
+=========================
+start.sh, start.bat .... helper scripts to launch the server
+index.html ............. the dashboard (entry point)
+maps.html .............. 3D brain atlas
+groups.html ............ dementia type catalog
+screener.html .......... cognitive risk assessment
+diagnosis.html ......... diagnostic methods + workup pathway
+treatments.html ........ treatment atlas
+trials.html ............ clinical trials browser
+caregivers.html ........ caregiver toolkit
+community.html ......... community care services
+news.html .............. latest research feed
+
+css/ ................... stylesheet
+data/ .................. data files (dementia types, drugs, evidence base)
+js/ .................... interactive features (3D brain, charts, search)
+README.md .............. project documentation
+
+
+REQUIREMENTS
+============
+* Python 3 (bundled with macOS, free download for Windows from
+  python.org)
+* A modern browser: Chrome, Edge, Firefox, or Safari
+* Internet connection (the 3D brain atlas loads Three.js from a CDN
+  the first time you open the maps page; after that it's cached)
+
+
+PUSH TO GITHUB
+==============
+The folder is a git repository. To publish it on GitHub:
+
+1. Create an empty repository at github.com (no README, no license,
+   no .gitignore).
+2. In Terminal, from inside this folder:
+
+       git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
+       git push -u origin main
+
+3. When prompted for a password, paste a Personal Access Token from
+   github.com/settings/tokens with the "repo" scope ticked.
+   (GitHub stopped accepting account passwords for git in 2021.)
