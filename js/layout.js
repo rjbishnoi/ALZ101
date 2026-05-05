@@ -8,15 +8,64 @@ const NV_LAYOUT = {
   renderTicker() {
     if (!window.NV_DATA) return '';
     const items = window.NV_DATA.ticker;
-    const itemHtml = items.map(t => `
-      <span class="ticker-fact">
+    // Each quote is a separate slot; the rotator JS shows one at a time.
+    const slots = items.map((t, i) => `
+      <div class="ticker-slot${i === 0 ? ' is-active' : ''}" data-idx="${i}">
         <span class="ticker-bullet">●</span>
         <span class="fact-text">${t.fact}</span>
         <span class="fact-source">— ${t.source}</span>
-      </span>
+      </div>
     `).join('');
-    // Duplicate for seamless scroll loop
-    return `<div class="ticker"><div class="ticker-track">${itemHtml}${itemHtml}</div></div>`;
+    return `
+      <div class="ticker" aria-live="polite" aria-atomic="true">
+        <div class="ticker-stage">${slots}</div>
+        <div class="ticker-dots" aria-hidden="true">
+          ${items.map((_, i) =>
+            `<span class="ticker-dot${i === 0 ? ' is-active' : ''}" data-idx="${i}"></span>`
+          ).join('')}
+        </div>
+      </div>
+    `;
+  },
+
+  /**
+   * Cycle the ticker: hold each quote for ~5s, fade between them.
+   * Pauses when the user hovers the ticker.
+   */
+  startTickerRotation() {
+    const stage = document.querySelector('.ticker-stage');
+    const ticker = document.querySelector('.ticker');
+    if (!stage || !ticker) return;
+    const slots = stage.querySelectorAll('.ticker-slot');
+    const dots  = document.querySelectorAll('.ticker-dot');
+    if (slots.length <= 1) return;
+
+    let idx = 0;
+    const HOLD_MS = 5000;
+
+    function show(n) {
+      slots.forEach((s, i) => s.classList.toggle('is-active', i === n));
+      dots.forEach((d, i)  => d.classList.toggle('is-active', i === n));
+      idx = n;
+    }
+
+    function tick() {
+      if (ticker.matches(":hover")) return;
+      show((idx + 1) % slots.length);
+    }
+
+    let timer = setInterval(tick, HOLD_MS);
+
+    // Pause-on-hover is handled via :hover check inside tick()
+
+    // Click any dot to jump to that quote and reset the timer
+    dots.forEach(d => {
+      d.addEventListener('click', () => {
+        clearInterval(timer);
+        show(parseInt(d.dataset.idx, 10));
+        timer = setInterval(tick, HOLD_MS);
+      });
+    });
   },
 
   renderMasthead() {
@@ -24,7 +73,7 @@ const NV_LAYOUT = {
       <header class="masthead">
         <div class="masthead-row">
           <a class="brand" href="index.html">
-            <span class="brand-mark">Neuro<span class="accent">Viz</span></span>
+            <span class="brand-mark">ALZ<span class="accent">101</span></span>
             <span class="brand-tag">Cognitive Health Atlas</span>
           </a>
           <div class="search-box">
@@ -81,7 +130,7 @@ const NV_LAYOUT = {
       <footer class="footer">
         <div class="footer-inner">
           <div>
-            <h4>NeuroViz</h4>
+            <h4>ALZ101</h4>
             <p style="line-height:1.6;color:var(--ink-faint)">
               An open data-visualization platform for neurocognitive disorders.
               Built for clinicians, patients, and caregivers — modeled after
@@ -134,6 +183,7 @@ const NV_LAYOUT = {
       this.renderPrimaryNav(active)
     );
     document.body.insertAdjacentHTML('beforeend', this.renderFooter() + this.renderHelpOverlay() + this.renderAskOverlay());
+    this.startTickerRotation();
     this.attachAudienceToggle();
     this.attachSearch();
     this.attachKeyboard();
@@ -349,18 +399,30 @@ const NV_LAYOUT = {
 
   attachAudienceToggle() {
     const buttons = document.querySelectorAll('.audience-toggle button');
-    const saved = localStorage.getItem('nv-audience') || 'phys';
+    // Prefer the new alz101_role key from NV_ROLE; fall back to legacy nv-audience key
+    let saved = (window.NV_ROLE && NV_ROLE.get())
+              || localStorage.getItem('alz101_role')
+              || localStorage.getItem('nv-audience')
+              || 'phys';
+    function applyActive(aud) {
+      buttons.forEach(b => b.classList.toggle('is-active', b.dataset.aud === aud));
+    }
+    applyActive(saved);
     buttons.forEach(b => {
-      b.classList.toggle('is-active', b.dataset.aud === saved);
       b.addEventListener('click', () => {
-        buttons.forEach(x => x.classList.remove('is-active'));
-        b.classList.add('is-active');
-        localStorage.setItem('nv-audience', b.dataset.aud);
-        document.body.dataset.audience = b.dataset.aud;
-        // dispatch event for pages that respond to audience changes
-        window.dispatchEvent(new CustomEvent('nv-audience-change', { detail: b.dataset.aud }));
+        applyActive(b.dataset.aud);
+        // Write through NV_ROLE so the chip updates and role gate stays in sync
+        if (window.NV_ROLE) {
+          NV_ROLE.set(b.dataset.aud, NV_ROLE.getName());
+        } else {
+          localStorage.setItem('alz101_role', b.dataset.aud);
+          document.body.dataset.audience = b.dataset.aud;
+          window.dispatchEvent(new CustomEvent('nv-audience-change', { detail: b.dataset.aud }));
+        }
       });
     });
+    // Stay in sync if role-gate or another tab changes the role
+    window.addEventListener('nv-audience-change', e => applyActive(e.detail));
     document.body.dataset.audience = saved;
   }
 };

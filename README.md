@@ -1,10 +1,10 @@
-# NeuroViz — Cognitive Health Atlas
+# ALZ101 — Cognitive Health Atlas
 
 A data-visualization atlas for **neurocognitive disorders** (Alzheimer's disease and other dementias) — a single, dense, information-rich workspace built for clinicians, patients, and caregivers.
 
 🔗 **Live demo:** _After enabling GitHub Pages, this site will live at `https://<your-username>.github.io/neuroviz/`_
 
-NeuroViz is built for three audiences — **physicians, patients, and caregivers** — with a toggle in the top nav that lets each audience tune the language and emphasis of what they see. Every page emphasizes visualization: heatmaps, sensitivity/specificity scatter plots, brain-region atlases, treatment efficacy comparisons, prevalence maps, risk-factor bars, and trial timelines.
+ALZ101 is built for three audiences — **physicians, patients, and caregivers** — with a toggle in the top nav that lets each audience tune the language and emphasis of what they see. Every page emphasizes visualization: heatmaps, sensitivity/specificity scatter plots, brain-region atlases, treatment efficacy comparisons, prevalence maps, risk-factor bars, and trial timelines.
 
 > ⚠ **Educational reference only.** Not a substitute for medical advice, diagnosis, or treatment. All clinical content is curated from public sources (Lancet Commission 2024, NIA-AA framework, FDA approvals, ClinicalTrials.gov, Cochrane reviews) and may be out of date. Always consult a qualified clinician.
 
@@ -52,7 +52,7 @@ Ten primary tabs across the cognitive-health workspace:
 
 ## Running locally
 
-NeuroViz is **plain HTML, CSS, and JavaScript** with no build step and no dependencies.
+ALZ101 is **plain HTML, CSS, and JavaScript** with no build step and no dependencies.
 
 ### Option 1 — Just open the file
 Open `index.html` in any modern browser (Chrome, Firefox, Safari, Edge).

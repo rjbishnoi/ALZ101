@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diagnostics · NeuroViz</title>
+  <title>Diagnostics · ALZ101</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -241,6 +241,7 @@
 
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/role-gate.js"></script>
   <script src="js/medical-terms.js"></script>
   <script src="js/sortable.js"></script>
   <script src="js/watchlist.js"></script>
@@ -248,6 +249,7 @@
   <script src="js/ask-evidence.js"></script>
   <script>
     NV_LAYOUT.mount('diagnosis');
+    NV_ROLE.maybeGate();
 
     document.querySelectorAll('#subnav button').forEach(b => {
       b.addEventListener('click', () => {

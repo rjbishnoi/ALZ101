@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cognitive Screener · NeuroViz</title>
+  <title>Cognitive Screener · ALZ101</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -31,7 +31,7 @@
         <div>
           <div class="panel">
             <div class="panel-head">
-              <h2>NeuroViz Risk Assessment</h2>
+              <h2>ALZ101 Risk Assessment</h2>
               <div class="panel-actions"><span class="mono tiny muted">12 ITEMS · ~3 MIN</span></div>
             </div>
             <div class="panel-body">
@@ -318,6 +318,7 @@
 
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/role-gate.js"></script>
   <script src="js/medical-terms.js"></script>
   <script src="js/sortable.js"></script>
   <script src="js/screener.js"></script>
@@ -325,6 +326,7 @@
   <script src="js/ask-evidence.js"></script>
   <script>
     NV_LAYOUT.mount('screener');
+    NV_ROLE.maybeGate();
 
     // Tab switching
     document.querySelectorAll('#subnav button').forEach(b => {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Caregivers · NeuroViz</title>
+  <title>Caregivers · ALZ101</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -278,12 +278,14 @@
 
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/role-gate.js"></script>
   <script src="js/medical-terms.js"></script>
   <script src="js/sortable.js"></script>
   <script src="data/nv-evidence.js"></script>
   <script src="js/ask-evidence.js"></script>
   <script>
     NV_LAYOUT.mount('caregivers');
+    NV_ROLE.maybeGate();
 
     // ===== Tab switching =====
     const tabs = document.querySelectorAll('.subnav a');

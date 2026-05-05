@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dementia Types · NeuroViz</title>
+  <title>Dementia Types · ALZ101</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -110,11 +110,13 @@
 
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/role-gate.js"></script>
   <script src="js/medical-terms.js"></script>
   <script src="js/sortable.js"></script>
   <script src="js/watchlist.js"></script>
   <script>
     NV_LAYOUT.mount('groups');
+    NV_ROLE.maybeGate();
 
     const TRIAL_COUNTS = { AD: 847, MIX: 142, DLB: 94, FTD: 76, VAD: 68, PDD: 54, PCA: 21, PPA: 38, NPH: 12, HD: 63, CJD: 8, WK: 4 };
     const CAT_LABEL = { ad:'AD spectrum', vasc:'Vascular', lewy:'Lewy body', ftd:'FTD', park:'Parkinsonian', mixed:'Mixed', other:'Other' };

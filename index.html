@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeuroViz — Cognitive Health Atlas</title>
+  <title>ALZ101 — Cognitive Health Atlas</title>
   <meta name="description" content="Data-visualization atlas for neurocognitive disorders. For physicians, patients, and caregivers." />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -315,6 +315,7 @@
 
   <script src="data/nv-data.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/role-gate.js"></script>
   <script src="js/medical-terms.js"></script>
   <script src="js/people-grid.js"></script>
   <script src="js/trajectory.js"></script>
@@ -324,6 +325,7 @@
   <script src="js/ask-evidence.js"></script>
   <script>
     NV_LAYOUT.mount('home');
+    NV_ROLE.refreshChip();
 
     // ---- Top stat strip with sparklines (purely illustrative trend lines)
     function buildSpark(seedKey) {
