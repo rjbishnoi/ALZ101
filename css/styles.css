@@ -74,7 +74,7 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 /* ============================================
-   TICKER BAR — top live data strip (full-sentence facts)
+   FACT BAR — scrolling top strip with full-sentence facts
    ============================================ */
 .ticker {
   background: var(--bg-rail-deep);
@@ -203,7 +203,7 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 .user-rail a:hover { color: var(--accent); text-decoration: none; }
 
 /* ============================================
-   PRIMARY NAV — Finviz-style tabs
+   PRIMARY NAV — top tab strip
    ============================================ */
 .primary-nav {
   background: var(--bg-strip);
@@ -523,7 +523,7 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 }
 
 /* ============================================
-   HEATMAP — the iconic Finviz-style visualization
+   HEATMAP — squarified treemap visualization
    ============================================ */
 .heatmap-controls {
   display: flex;
@@ -616,7 +616,7 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 .sev-5 { background: var(--sev-5); }
 
 /* ============================================
-   DATA TABLE — Finviz screener style
+   DATA TABLE — dense screener-style
    ============================================ */
 .data-table {
   width: 100%;
@@ -1086,7 +1086,7 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 
 /* ============================================
-   FINVIZ-STYLE UPGRADES (added after build review)
+   DENSITY UPGRADES (added after build review)
    ============================================ */
 
 /* --- Sticky chrome: ticker + masthead + primary nav stay visible on scroll --- */
@@ -1173,13 +1173,13 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
   color: var(--accent);
 }
 
-/* --- Tighter universal density (Finviz vibe) --- */
+/* --- Tighter universal density --- */
 .data-table tbody td { padding: 4px 8px; font-size: 11px; line-height: 1.4; }
 .data-table thead th { padding: 6px 8px; }
 .panel-body { padding: 10px; }
 .panel-head { padding: 7px 10px; }
 
-/* --- Finviz-style stat cells: bold mono numbers, compact deltas --- */
+/* --- Stat cells: bold mono numbers, compact change indicators --- */
 .stat-cell {
   padding: 8px 12px;
   border-right: 1px solid var(--rule);
@@ -1337,16 +1337,16 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 .num-mid    { color: var(--signal-watch);    font-weight: 600; }
 .num-bad    { color: var(--signal-concern);  font-weight: 600; }
 
-/* --- Movers panel (top dashboard) --- */
-.movers {
+/* --- Spotlight panel (top dashboard) --- */
+.spotlight {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1px;
   background: var(--rule);
   border: 1px solid var(--rule);
 }
-.movers-col { background: var(--bg-paper); }
-.movers-head {
+.spotlight-col { background: var(--bg-paper); }
+.spotlight-head {
   padding: 6px 10px;
   font-family: var(--font-mono);
   font-size: 9px;
@@ -1355,7 +1355,7 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
   color: var(--ink-inverse);
   background: var(--bg-strip);
 }
-.mover-row {
+.spotlight-row {
   display: grid;
   grid-template-columns: 60px 1fr 70px;
   gap: 8px;
@@ -1365,9 +1365,9 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
   border-bottom: 1px solid var(--rule-soft);
   align-items: center;
 }
-.mover-row:nth-child(even) { background: var(--bg-cell); }
-.mover-row .m-code { color: var(--ink-primary); font-weight: 600; }
-.mover-row .m-name {
+.spotlight-row:nth-child(even) { background: var(--bg-cell); }
+.spotlight-row .m-code { color: var(--ink-primary); font-weight: 600; }
+.spotlight-row .m-name {
   color: var(--ink-body);
   white-space: nowrap;
   overflow: hidden;
@@ -1375,9 +1375,9 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
   font-family: var(--font-body);
   font-size: 11px;
 }
-.mover-row .m-val { text-align: right; }
-.mover-row .m-val.up   { color: var(--signal-positive); }
-.mover-row .m-val.down { color: var(--signal-concern); }
+.spotlight-row .m-val { text-align: right; }
+.spotlight-row .m-val.up   { color: var(--signal-positive); }
+.spotlight-row .m-val.down { color: var(--signal-concern); }
 
 /* --- Mini sparkline area for stats --- */
 .spark-svg { display: block; }
@@ -1387,7 +1387,7 @@ a:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 
 /* ============================================
-   FINVIZ POLISH PASS — Value coding, watchlist, audience-aware
+   POLISH PASS — value coding, pin items, audience-aware
    ============================================ */
 
 /* --- Value-coded numbers (sens/spec, prevalence, evidence) --- */
@@ -1403,7 +1403,7 @@ td.v-good, td.v-mid, td.v-low { font-family: var(--font-mono); }
 .cost-3 { color: #b8893d; font-weight: 600; }
 .cost-4 { color: #a44d3a; font-weight: 600; }
 
-/* --- Watchlist pin star --- */
+/* --- Pin star (saved items) --- */
 .pin-star {
   display: inline-block;
   width: 14px; height: 14px;
@@ -1422,7 +1422,7 @@ td.v-good, td.v-mid, td.v-low { font-family: var(--font-mono); }
 .pin-star::before { content: '☆'; }
 .pin-star.is-pinned::before { content: '★'; }
 
-/* Watchlist panel on dashboard */
+/* Pinned items panel on dashboard */
 .watchlist-empty {
   padding: 16px 12px;
   text-align: center;
@@ -1511,15 +1511,15 @@ body[data-audience="care"] .aud-pat {
 }
 @keyframes pulse-dot { 0%,100% { opacity:1 } 50% { opacity:0.3 } }
 
-/* --- Movers w/ inline bars --- */
-.mover-row.with-bar { grid-template-columns: 50px 1fr 50px 60px; }
-.mover-row .m-bar {
+/* --- Spotlight rows w/ inline bars --- */
+.spotlight-row.with-bar { grid-template-columns: 50px 1fr 50px 60px; }
+.spotlight-row .m-bar {
   height: 6px;
   background: var(--bg-cell);
   border: 1px solid var(--rule-soft);
   position: relative;
 }
-.mover-row .m-bar > span {
+.spotlight-row .m-bar > span {
   display: block;
   height: 100%;
   background: var(--accent);
@@ -1570,7 +1570,7 @@ body[data-audience="care"] .aud-pat {
   font-family: var(--font-mono);
 }
 
-/* --- Dense type-table for groups page (Finviz-style) --- */
+/* --- Dense type-table for groups page --- */
 .dt-types-row td.dt-name { font-family: var(--font-display); font-style: italic; font-weight: 500; color: var(--ink-primary); }
 .dt-types-row td.dt-features { font-size: 11px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px; }
 .dt-types-row td.dt-stage-bar { width: 100px; }

@@ -1,6 +1,6 @@
-# NeuroViz — Cognitive Health Terminal
+# NeuroViz — Cognitive Health Atlas
 
-A data-visualization terminal for **neurocognitive disorders** (Alzheimer's disease and other dementias) modeled on the dense, information-rich layout of *Finviz*.
+A data-visualization atlas for **neurocognitive disorders** (Alzheimer's disease and other dementias) — a single, dense, information-rich workspace built for clinicians, patients, and caregivers.
 
 NeuroViz is built for three audiences — **physicians, patients, and caregivers** — with a toggle in the top nav that lets each audience tune the language and emphasis of what they see. Every page emphasizes visualization: heatmaps, sensitivity/specificity scatter plots, brain-region atlases, treatment efficacy comparisons, prevalence maps, risk-factor bars, and trial timelines.
 
@@ -10,7 +10,7 @@ NeuroViz is built for three audiences — **physicians, patients, and caregivers
 
 ## What's inside
 
-Ten primary tabs, mirroring the Finviz top-nav pattern:
+Ten primary tabs across the cognitive-health workspace:
 
 | Tab | Page | What it shows |
 |---|---|---|
@@ -83,8 +83,8 @@ neuroviz/
 │   └── styles.css          # Full design system (tokens, components, layouts)
 │
 ├── js/
-│   ├── layout.js           # Ticker, masthead, nav, footer, audience toggle
-│   ├── heatmap.js          # Finviz-style dementia heatmap
+│   ├── layout.js           # Top fact bar, masthead, nav, footer, audience toggle
+│   ├── heatmap.js          # Squarified-treemap dementia heatmap
 │   └── screener.js         # Interactive risk assessment with pattern recognition
 │
 ├── data/
@@ -100,7 +100,7 @@ neuroviz/
 
 ## Design language
 
-**Reference points:** Bloomberg Terminal density × NEJM editorial typography × Finviz layout.
+**Reference points:** dense data dashboards × NEJM editorial typography × clean clinical UI.
 
 - **Display:** Fraunces (serif, headlines)
 - **Body:** IBM Plex Sans
@@ -129,7 +129,7 @@ Common customizations:
 
 ## Versioning
 
-This repository is intended to be a **starting point** for a more comprehensive clinical-data terminal. The data included is representative — for production use, every clinical claim should be re-verified against current literature, and prevalence/cost figures should be tied to live data sources.
+This repository is intended to be a **starting point** for a more comprehensive clinical-data workspace. The data included is representative — for production use, every clinical claim should be re-verified against current literature, and prevalence/cost figures should be tied to live data sources.
 
 ---
 

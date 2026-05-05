@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeuroViz — Cognitive Health Terminal</title>
-  <meta name="description" content="Data-visualization terminal for neurocognitive disorders. For physicians, patients, and caregivers." />
+  <title>NeuroViz — Cognitive Health Atlas</title>
+  <meta name="description" content="Data-visualization atlas for neurocognitive disorders. For physicians, patients, and caregivers." />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -47,7 +47,7 @@
       <!-- Sidebar: signals & quick actions -->
       <div>
         <div class="aside-panel">
-          <div class="ap-head">★ My Watchlist</div>
+          <div class="ap-head">★ My Pinned Items</div>
           <div id="watchlistBox"></div>
         </div>
 
@@ -86,21 +86,21 @@
       </div>
     </div>
 
-    <!-- Movers row: Finviz-style top-of-attention list -->
+    <!-- Spotlight row: top-of-attention treatments and biomarkers -->
     <div class="grid-2 mt-16">
       <div class="panel">
         <div class="panel-head">
           <h2>Pharmacotherapy spotlight</h2>
           <div class="panel-actions"><a href="treatments.html">ALL TREATMENTS →</a></div>
         </div>
-        <div class="movers">
-          <div class="movers-col">
-            <div class="movers-head">DISEASE-MODIFYING (NEW ERA)</div>
-            <div id="moversDMT"></div>
+        <div class="spotlight">
+          <div class="spotlight-col">
+            <div class="spotlight-head">DISEASE-MODIFYING (NEW ERA)</div>
+            <div id="spotDMT"></div>
           </div>
-          <div class="movers-col">
-            <div class="movers-head">SYMPTOMATIC STANDARD-OF-CARE</div>
-            <div id="moversStd"></div>
+          <div class="spotlight-col">
+            <div class="spotlight-head">SYMPTOMATIC STANDARD-OF-CARE</div>
+            <div id="spotStd"></div>
           </div>
         </div>
       </div>
@@ -110,14 +110,14 @@
           <h2>Diagnostic biomarkers — by accuracy</h2>
           <div class="panel-actions"><a href="diagnosis.html">ALL DIAGNOSTICS →</a></div>
         </div>
-        <div class="movers">
-          <div class="movers-col">
-            <div class="movers-head">HIGHEST SENSITIVITY</div>
-            <div id="moversSens"></div>
+        <div class="spotlight">
+          <div class="spotlight-col">
+            <div class="spotlight-head">HIGHEST SENSITIVITY</div>
+            <div id="spotSens"></div>
           </div>
-          <div class="movers-col">
-            <div class="movers-head">HIGHEST SPECIFICITY</div>
-            <div id="moversSpec"></div>
+          <div class="spotlight-col">
+            <div class="spotlight-head">HIGHEST SPECIFICITY</div>
+            <div id="spotSpec"></div>
           </div>
         </div>
       </div>
@@ -371,18 +371,18 @@
     document.getElementById('heatmapMetric').addEventListener('change', renderHM);
     window.addEventListener('resize', () => { clearTimeout(window._hmT); window._hmT = setTimeout(renderHM, 150); });
 
-    // ---- Movers panels
+    // ---- Spotlight panels (top treatments / top diagnostics)
     const dmt = NV_DATA.treatmentsPharm.filter(d => /Anti-amyloid/i.test(d.class));
     const std = NV_DATA.treatmentsPharm.filter(d => /Cholinesterase|NMDA/i.test(d.class));
-    const moverHTML = (rows, valKey, fmt) => rows.slice(0, 6).map(r => `
-      <div class="mover-row">
+    const spotlightHTML = (rows, valKey, fmt) => rows.slice(0, 6).map(r => `
+      <div class="spotlight-row">
         <span class="m-code">${r.id}</span>
         <span class="m-name">${r.name}</span>
         <span class="m-val">${fmt(r)}</span>
       </div>
     `).join('');
-    document.getElementById('moversDMT').innerHTML = moverHTML(dmt, 'cost', r => r.cost);
-    document.getElementById('moversStd').innerHTML = moverHTML(std, 'cost', r => r.cost);
+    document.getElementById('spotDMT').innerHTML = spotlightHTML(dmt, 'cost', r => r.cost);
+    document.getElementById('spotStd').innerHTML = spotlightHTML(std, 'cost', r => r.cost);
 
     const sensRanked = NV_DATA.diagnostics
       .filter(d => typeof d.sensitivity === 'number')
@@ -391,14 +391,14 @@
       .filter(d => typeof d.specificity === 'number')
       .sort((a, b) => b.specificity - a.specificity);
     const dxColor = v => v >= 90 ? 'up' : (v >= 75 ? '' : 'down');
-    document.getElementById('moversSens').innerHTML = sensRanked.slice(0, 6).map(d => `
-      <div class="mover-row">
+    document.getElementById('spotSens').innerHTML = sensRanked.slice(0, 6).map(d => `
+      <div class="spotlight-row">
         <span class="m-code">${d.id}</span>
         <span class="m-name">${d.name}</span>
         <span class="m-val ${dxColor(d.sensitivity)}">${d.sensitivity}%</span>
       </div>`).join('');
-    document.getElementById('moversSpec').innerHTML = specRanked.slice(0, 6).map(d => `
-      <div class="mover-row">
+    document.getElementById('spotSpec').innerHTML = specRanked.slice(0, 6).map(d => `
+      <div class="spotlight-row">
         <span class="m-code">${d.id}</span>
         <span class="m-name">${d.name}</span>
         <span class="m-val ${dxColor(d.specificity)}">${d.specificity}%</span>
@@ -436,7 +436,7 @@
       </tr>
     `).join('');
 
-    // ---- Watchlist sidebar
+    // ---- Pinned items sidebar
     if (window.NV_WL) NV_WL.renderInto(document.getElementById('watchlistBox'));
     window.addEventListener('nv-watchlist-change', () => {
       if (window.NV_WL) NV_WL.renderInto(document.getElementById('watchlistBox'));

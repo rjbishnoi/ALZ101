@@ -1,7 +1,7 @@
 /* ============================================
    NeuroViz — Heatmap (real squarified treemap)
    Cells are sized proportional to selected metric (prevalence/trials),
-   colored by severity. Modeled on Finviz's industry heatmap.
+   colored by severity. Squarified-treemap layout.
    ============================================ */
 
 const NV_HEATMAP = {

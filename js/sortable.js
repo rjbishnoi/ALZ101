@@ -1,5 +1,5 @@
 /* ============================================
-   NeuroViz — Sortable tables (Finviz-style)
+   NeuroViz — Sortable tables
    Auto-attaches to any .data-table on the page.
    - Click column header to sort asc/desc, alternating
    - Numeric detection from data-sort-type or content

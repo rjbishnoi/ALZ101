@@ -1,7 +1,8 @@
 /* ============================================
-   NeuroViz — Watchlist
+   NeuroViz — Saved items (★ pin)
    localStorage-backed pin/star feature for any item type.
    Items are { tag, id, name, url } stored under 'nv-watchlist'.
+   (Internal storage key kept for backward compatibility.)
    ============================================ */
 
 const NV_WL = {
@@ -51,8 +52,8 @@ const NV_WL = {
 
       const btn = document.createElement('button');
       btn.className = 'pin-star';
-      btn.title = 'Add to watchlist';
-      btn.setAttribute('aria-label', 'Pin to watchlist');
+      btn.title = 'Save this item';
+      btn.setAttribute('aria-label', 'Save to my pinned items');
       if (this.has(tag, id)) btn.classList.add('is-pinned');
       btn.addEventListener('click', e => {
         e.stopPropagation();
@@ -65,7 +66,7 @@ const NV_WL = {
   },
 
   /**
-   * Render the watchlist into a container. Pass an empty-state HTML string for empty.
+   * Render the saved-items list into a container. Pass an empty-state HTML string for empty.
    */
   renderInto(target, emptyHtml) {
     const items = this.read();
@@ -73,8 +74,8 @@ const NV_WL = {
       target.innerHTML = emptyHtml || `
         <div class="watchlist-empty">
           <div style="font-size:18px; color:var(--ink-faint); margin-bottom:6px;">☆</div>
-          <div>Your watchlist is empty.</div>
-          <div class="mono" style="font-size:10px; margin-top:6px;">Click ☆ on any drug, trial, or biomarker to pin it.</div>
+          <div>You haven't saved any items yet.</div>
+          <div class="mono" style="font-size:10px; margin-top:6px;">Click ☆ next to any drug, trial, or biomarker to save it here.</div>
         </div>`;
       return;
     }

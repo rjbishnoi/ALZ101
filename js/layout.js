@@ -1,6 +1,6 @@
 /* ============================================
    NeuroViz — Shared Layout Components
-   Masthead, ticker, primary nav, footer
+   Masthead, fact bar, primary nav, footer
    ============================================ */
 
 const NV_LAYOUT = {
@@ -25,7 +25,7 @@ const NV_LAYOUT = {
         <div class="masthead-row">
           <a class="brand" href="index.html">
             <span class="brand-mark">Neuro<span class="accent">Viz</span></span>
-            <span class="brand-tag">Cognitive Health Terminal</span>
+            <span class="brand-tag">Cognitive Health Atlas</span>
           </a>
           <div class="search-box">
             <div class="search-input-wrap">
@@ -85,7 +85,7 @@ const NV_LAYOUT = {
             <p style="line-height:1.6;color:var(--ink-faint)">
               An open data-visualization platform for neurocognitive disorders.
               Built for clinicians, patients, and caregivers — modeled after
-              financial terminal interfaces, applied to brain health.
+              dense, information-rich data interfaces, applied to brain health.
             </p>
           </div>
           <div>
