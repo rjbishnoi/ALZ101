@@ -2360,3 +2360,25 @@ body[data-audience="care"] .aud-pat {
 @media (max-width: 900px) {
   .cogdom-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================
+   Diagnostics — sub-divided category headers
+   ============================================ */
+.dx-group-head {
+  border-left: 4px solid var(--accent);
+  padding-left: 12px;
+}
+.dx-group-head h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.dx-group-icon {
+  font-size: 18px;
+  filter: grayscale(0.2);
+}
+.panel-head.dx-blood    { border-left-color: #c75a3c; }
+.panel-head.dx-imaging  { border-left-color: #3c6e9a; }
+.panel-head.dx-csf      { border-left-color: #6b1f1a; }
+.panel-head.dx-genetic  { border-left-color: #5a4a7a; }
+.panel-head.dx-other    { border-left-color: #4a7c59; }

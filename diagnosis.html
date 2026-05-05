@@ -26,69 +26,125 @@
     </div>
 
     <div id="tab-all" class="tab-panel">
-      <!-- Filter -->
-      <div class="filter-bar">
-        <div class="filter-group">
-          <label>Tier</label>
-          <select id="fTier">
-            <option value="all">All</option>
-            <option value="Blood biomarker">Blood biomarkers</option>
-            <option value="CSF">CSF</option>
-            <option value="Imaging">Imaging</option>
-            <option value="Genetic">Genetic</option>
-            <option value="Neurophysiology">Neurophysiology</option>
-          </select>
+      <p style="margin: 0 0 14px; font-size:13px; line-height:1.6; color: var(--ink-body);">
+        Diagnostic tests for cognitive impairment fall into clear families. The grouped tables below show the
+        most commonly used methods in each category, organized by what kind of evidence they collect from the body.
+        Sensitivity and specificity values are from the published literature for each test.
+      </p>
+
+      <!-- Blood biomarkers -->
+      <div class="panel">
+        <div class="panel-head dx-group-head dx-blood">
+          <h2><span class="dx-group-icon">🩸</span> Blood biomarkers</h2>
+          <div class="panel-actions"><span class="muted">Minimally invasive · increasingly first-line</span></div>
         </div>
-        <div class="filter-group">
-          <label>Cost ≤</label>
-          <select id="fCost">
-            <option value="4">Any</option>
-            <option value="1">$ (under $200)</option>
-            <option value="2">$$ ($200–800)</option>
-            <option value="3">$$$ ($800–2000)</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Min sensitivity</label>
-          <select id="fSens">
-            <option value="0">Any</option>
-            <option value="80">≥80%</option>
-            <option value="90">≥90%</option>
-          </select>
-        </div>
-        <div class="filter-actions">
-          <button class="btn" id="applyDx">Apply</button>
+        <div class="scroll-x">
+          <table class="data-table">
+            <thead><tr>
+              <th style="width:28px;" data-sort="off"></th>
+              <th>Test</th>
+              <th class="num">Sens.</th>
+              <th class="num">Spec.</th>
+              <th>Cost</th>
+              <th>Access</th>
+              <th>Use case</th>
+            </tr></thead>
+            <tbody id="dxBloodBody"></tbody>
+          </table>
         </div>
       </div>
 
-      <div class="panel">
-        <div class="panel-head">
-          <h2>Diagnostic Test Catalog</h2>
-          <div class="panel-actions"><span class="mono tiny muted">SORT BY ANY COLUMN</span></div>
+      <!-- Imaging -->
+      <div class="panel mt-16">
+        <div class="panel-head dx-group-head dx-imaging">
+          <h2><span class="dx-group-icon">🧠</span> Brain imaging</h2>
+          <div class="panel-actions"><span class="muted">Structural and molecular imaging</span></div>
         </div>
         <div class="scroll-x">
-          <table class="data-table" id="dxTable">
-            <thead>
-              <tr>
-                <th style="width:28px;" data-sort="off"></th>
-                <th>Method</th>
-                <th>Tier</th>
-                <th class="num">Sens.</th>
-                <th class="num">Spec.</th>
-                <th>Cost</th>
-                <th>Access</th>
-                <th>Indication</th>
-                <th>Stage</th>
-              </tr>
-            </thead>
-            <tbody id="dxBody"></tbody>
+          <table class="data-table">
+            <thead><tr>
+              <th style="width:28px;" data-sort="off"></th>
+              <th>Modality</th>
+              <th class="num">Sens.</th>
+              <th class="num">Spec.</th>
+              <th>Cost</th>
+              <th>Access</th>
+              <th>Use case</th>
+            </tr></thead>
+            <tbody id="dxImagingBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CSF -->
+      <div class="panel mt-16">
+        <div class="panel-head dx-group-head dx-csf">
+          <h2><span class="dx-group-icon">💧</span> Cerebrospinal fluid (CSF)</h2>
+          <div class="panel-actions"><span class="muted">Lumbar puncture · gold standard for several pathologies</span></div>
+        </div>
+        <div class="scroll-x">
+          <table class="data-table">
+            <thead><tr>
+              <th style="width:28px;" data-sort="off"></th>
+              <th>Test</th>
+              <th class="num">Sens.</th>
+              <th class="num">Spec.</th>
+              <th>Cost</th>
+              <th>Access</th>
+              <th>Use case</th>
+            </tr></thead>
+            <tbody id="dxCsfBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Genetic -->
+      <div class="panel mt-16">
+        <div class="panel-head dx-group-head dx-genetic">
+          <h2><span class="dx-group-icon">🧬</span> Genetic testing</h2>
+          <div class="panel-actions"><span class="muted">Risk stratification + diagnostic confirmation</span></div>
+        </div>
+        <div class="scroll-x">
+          <table class="data-table">
+            <thead><tr>
+              <th style="width:28px;" data-sort="off"></th>
+              <th>Test</th>
+              <th class="num">Sens.</th>
+              <th class="num">Spec.</th>
+              <th>Cost</th>
+              <th>Access</th>
+              <th>Use case</th>
+            </tr></thead>
+            <tbody id="dxGeneticBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Other -->
+      <div class="panel mt-16">
+        <div class="panel-head dx-group-head dx-other">
+          <h2><span class="dx-group-icon">⚡</span> Other (neurophysiology, tissue)</h2>
+          <div class="panel-actions"><span class="muted">Specialized tests</span></div>
+        </div>
+        <div class="scroll-x">
+          <table class="data-table">
+            <thead><tr>
+              <th style="width:28px;" data-sort="off"></th>
+              <th>Test</th>
+              <th class="num">Sens.</th>
+              <th class="num">Spec.</th>
+              <th>Cost</th>
+              <th>Access</th>
+              <th>Use case</th>
+            </tr></thead>
+            <tbody id="dxOtherBody"></tbody>
           </table>
         </div>
       </div>
 
       <!-- Performance heatmap -->
       <div class="panel mt-16">
-        <div class="panel-head"><h2>Performance Matrix · Sensitivity × Specificity</h2></div>
+        <div class="panel-head"><h2>Performance overview · Sensitivity × Specificity</h2></div>
         <div class="panel-body">
           <div id="dxScatter"></div>
         </div>
@@ -166,8 +222,16 @@
 
     <div id="tab-path" class="tab-panel" style="display:none;">
       <div class="panel">
-        <div class="panel-head"><h2>Stepwise Diagnostic Workup</h2></div>
+        <div class="panel-head">
+          <h2>Stepwise Diagnostic Workup</h2>
+          <div class="panel-actions"><span class="muted">Brief screen → Extended assessment → Pattern-based subspecialty workup</span></div>
+        </div>
         <div class="panel-body">
+          <p style="margin: 0 0 14px; font-size:13px; line-height:1.6;">
+            A modern memory-clinic workup follows three stages. The brief screen flags whether further evaluation is needed.
+            The extended assessment characterizes what is wrong. Once a clinical pattern is recognized, targeted biomarker
+            and imaging tests are chosen by syndrome.
+          </p>
           <div id="pathDiagram"></div>
         </div>
       </div>
@@ -194,40 +258,46 @@
       });
     });
 
-    function renderDx(items) {
+    function rowHtml(d) {
       const vClass = v => typeof v !== 'number' ? 'v-na' : (v >= 90 ? 'v-good' : (v >= 75 ? 'v-mid' : 'v-low'));
       const costClass = c => 'cost-' + c.length;
-      document.getElementById('dxBody').innerHTML = items.map(d => `
+      return `
         <tr>
           <td><span data-pin-tag="DX" data-pin-id="${d.id}" data-pin-name="${d.name}" data-pin-url="diagnosis.html#methods"></span></td>
           <td class="id-cell">${d.name}</td>
-          <td><span class="pill pill-info">${d.tier}</span></td>
           <td class="num"><span class="${vClass(d.sensitivity)}">${typeof d.sensitivity === 'number' ? d.sensitivity + '%' : '—'}</span></td>
           <td class="num"><span class="${vClass(d.specificity)}">${typeof d.specificity === 'number' ? d.specificity + '%' : '—'}</span></td>
           <td class="mono"><span class="${costClass(d.cost)}">${d.cost}</span></td>
           <td>${d.accessibility}</td>
           <td style="font-size:11px;">${d.indication}</td>
-          <td>${d.stage}</td>
         </tr>
-      `).join('');
+      `;
+    }
+
+    function renderDxByTier() {
+      const groups = {
+        'Blood biomarker':  'dxBloodBody',
+        'Imaging':          'dxImagingBody',
+        'CSF':              'dxCsfBody',
+        'Genetic':          'dxGeneticBody'
+      };
+      // Categorize each diagnostic by its tier
+      Object.keys(groups).forEach(tier => {
+        const items = NV_DATA.diagnostics.filter(d => d.tier === tier);
+        document.getElementById(groups[tier]).innerHTML =
+          items.length ? items.map(rowHtml).join('')
+                       : '<tr><td colspan="7" style="text-align:center; padding:14px; color:var(--ink-faint); font-size:11px;">No tests in this category.</td></tr>';
+      });
+      // "Other" = anything not in the 4 main groups
+      const others = NV_DATA.diagnostics.filter(d => !Object.keys(groups).includes(d.tier));
+      document.getElementById('dxOtherBody').innerHTML =
+        others.length ? others.map(rowHtml).join('')
+                      : '<tr><td colspan="7" style="text-align:center; padding:14px; color:var(--ink-faint); font-size:11px;">No tests in this category.</td></tr>';
+
       if (window.NV_SORT) NV_SORT.refresh();
       if (window.NV_WL) NV_WL.attachAll();
     }
-    renderDx(NV_DATA.diagnostics);
-
-    document.getElementById('applyDx').addEventListener('click', () => {
-      const tier = document.getElementById('fTier').value;
-      const cost = +document.getElementById('fCost').value;
-      const sens = +document.getElementById('fSens').value;
-      const filtered = NV_DATA.diagnostics.filter(d => {
-        if (tier !== 'all' && d.tier !== tier) return false;
-        if (d.cost.length > cost) return false;
-        if (typeof d.sensitivity === 'number' && d.sensitivity < sens) return false;
-        if (typeof d.sensitivity !== 'number' && sens > 0) return false;
-        return true;
-      });
-      renderDx(filtered);
-    });
+    renderDxByTier();
 
     // Scatter plot SVG for diagnostic performance
     const dx = NV_DATA.diagnostics.filter(d => typeof d.sensitivity === 'number');
@@ -276,105 +346,148 @@
     </svg>`;
     document.getElementById('dxScatter').innerHTML = scatterSvg;
 
-    // Pathway flowchart SVG
+    // Pathway flowchart SVG — restructured per user request
     document.getElementById('pathDiagram').innerHTML = `
-    <svg viewBox="0 0 1100 480" style="width:100%; height:auto;" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 1200 700" style="width:100%; height:auto;" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-          <polygon points="0 0, 8 4, 0 8" fill="#2a3838"/>
+        <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+          <polygon points="0 0, 9 4.5, 0 9" fill="#2a3838"/>
         </marker>
       </defs>
       <style>
-        .node-text { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: #0a1f1f; font-weight: 500; }
-        .node-sub  { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #6b7878; }
-        .node-rect { fill: white; stroke: #2a3838; stroke-width: 1.5; }
-        .node-decision { fill: #f5f2ec; }
-        .node-action { fill: #fae8e0; }
-        .arrow { stroke: #2a3838; stroke-width: 1.5; fill: none; }
+        .pf-title { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; font-weight: 600; fill: #0a1f1f; }
+        .pf-text  { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; fill: #0a1f1f; }
+        .pf-sub   { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #6b7878; }
+        .pf-stage-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; fill: #c75a3c; font-weight: 700; }
+        .pf-rect  { fill: white; stroke: #2a3838; stroke-width: 1.5; }
+        .pf-action  { fill: #fae8e0; stroke: #c75a3c; }
+        .pf-decision{ fill: #f5f2ec; stroke: #5a4a3a; }
+        .pf-final  { fill: white; stroke-width: 2; }
+        .pf-arrow { stroke: #2a3838; stroke-width: 1.5; fill: none; }
       </style>
 
-      <!-- Step 1 -->
-      <rect x="20" y="20" width="200" height="60" class="node-rect" rx="2"/>
-      <text x="120" y="45" class="node-text" text-anchor="middle">Cognitive Concern</text>
-      <text x="120" y="62" class="node-sub" text-anchor="middle">Pt / family / clinician</text>
+      <!-- ========== Stage 1 banner ========== -->
+      <text x="60" y="40" class="pf-stage-label">STAGE 1 · BRIEF SCREEN</text>
+      <line x1="60" y1="48" x2="1140" y2="48" stroke="#c75a3c" stroke-dasharray="3 4" stroke-width="0.7"/>
 
-      <line x1="220" y1="50" x2="270" y2="50" class="arrow" marker-end="url(#arrow)"/>
+      <!-- Cognitive concern entry -->
+      <rect x="60" y="65" width="220" height="55" class="pf-rect" rx="2"/>
+      <text x="170" y="89" class="pf-text" text-anchor="middle" font-weight="600">Cognitive concern</text>
+      <text x="170" y="105" class="pf-sub" text-anchor="middle">From patient · family · clinician</text>
 
-      <!-- Step 2 -->
-      <rect x="270" y="20" width="200" height="60" class="node-rect node-action" rx="2"/>
-      <text x="370" y="45" class="node-text" text-anchor="middle">Brief Screen</text>
-      <text x="370" y="62" class="node-sub" text-anchor="middle">Mini-Cog / GPCOG</text>
+      <line x1="280" y1="92" x2="320" y2="92" class="pf-arrow" marker-end="url(#arrow)"/>
 
-      <line x1="470" y1="50" x2="520" y2="50" class="arrow" marker-end="url(#arrow)"/>
+      <!-- Brief Screen box — three options -->
+      <rect x="320" y="55" width="500" height="80" class="pf-rect pf-action" rx="2"/>
+      <text x="570" y="76" class="pf-title" text-anchor="middle">Brief screen — choose one</text>
+      <text x="380"  y="100" class="pf-text" text-anchor="start"   font-weight="600">Mini-Cog</text>
+      <text x="380"  y="116" class="pf-sub"  text-anchor="start">3 min · primary care</text>
+      <text x="555"  y="100" class="pf-text" text-anchor="start"   font-weight="600">MMSE</text>
+      <text x="555"  y="116" class="pf-sub"  text-anchor="start">10 min · 30-pt classic</text>
+      <text x="700"  y="100" class="pf-text" text-anchor="start"   font-weight="600">MoCA</text>
+      <text x="700"  y="116" class="pf-sub"  text-anchor="start">10 min · MCI-sensitive</text>
+
+      <line x1="820" y1="92" x2="870" y2="92" class="pf-arrow" marker-end="url(#arrow)"/>
 
       <!-- Decision: positive? -->
-      <polygon points="620,20 720,50 620,80 520,50" class="node-rect node-decision"/>
-      <text x="620" y="48" class="node-text" text-anchor="middle">Positive?</text>
-      <text x="620" y="62" class="node-sub" text-anchor="middle">Mini-Cog &lt;3</text>
+      <polygon points="870,55 980,92 870,135 760,92" stroke-width="0" fill="transparent"/>
+      <polygon points="970,92 1050,55 1130,92 1050,135" class="pf-rect pf-decision"/>
+      <text x="1050" y="89" class="pf-text" text-anchor="middle" font-weight="600">Concerning?</text>
+      <text x="1050" y="105" class="pf-sub" text-anchor="middle">Below cutoff +/- informant</text>
 
-      <!-- Yes branch -->
-      <line x1="720" y1="50" x2="780" y2="50" class="arrow" marker-end="url(#arrow)"/>
-      <text x="745" y="42" class="node-sub" fill="#4a7c59">YES</text>
+      <!-- NO branch (loop down) -->
+      <line x1="1050" y1="135" x2="1050" y2="170" class="pf-arrow"/>
+      <text x="1060" y="155" class="pf-sub" fill="#3a7a3a">NO</text>
+      <rect x="950" y="170" width="200" height="48" class="pf-rect" rx="2" stroke="#3a7a3a"/>
+      <text x="1050" y="194" class="pf-text" text-anchor="middle" font-weight="600">Reassure</text>
+      <text x="1050" y="208" class="pf-sub" text-anchor="middle">Re-screen at 12 months</text>
 
-      <rect x="780" y="20" width="200" height="60" class="node-rect node-action" rx="2"/>
-      <text x="880" y="45" class="node-text" text-anchor="middle">Extended Assessment</text>
-      <text x="880" y="62" class="node-sub" text-anchor="middle">MoCA + AD8 informant</text>
+      <!-- ========== Stage 2 banner ========== -->
+      <text x="60" y="265" class="pf-stage-label">STAGE 2 · EXTENDED ASSESSMENT  (if Stage-1 concerning)</text>
+      <line x1="60" y1="273" x2="1140" y2="273" stroke="#c75a3c" stroke-dasharray="3 4" stroke-width="0.7"/>
 
-      <!-- No branch -->
-      <line x1="620" y1="80" x2="620" y2="120" class="arrow" marker-end="url(#arrow)"/>
-      <text x="630" y="100" class="node-sub" fill="#a44d3a">NO</text>
-      <rect x="520" y="120" width="200" height="50" class="node-rect" rx="2"/>
-      <text x="620" y="148" class="node-text" text-anchor="middle">Reassure · Re-screen 1yr</text>
+      <!-- YES branch curving down to extended -->
+      <path d="M 1050 135 Q 1050 250 600 250 Q 60 250 60 290" class="pf-arrow" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+      <text x="540" y="245" class="pf-sub" fill="#a44d3a" text-anchor="middle">YES — concerning</text>
 
-      <!-- Down from extended -->
-      <line x1="880" y1="80" x2="880" y2="140" class="arrow" marker-end="url(#arrow)"/>
+      <!-- Extended Assessment box — 3 components side by side -->
+      <rect x="60" y="290" width="240" height="160" class="pf-rect pf-action" rx="2"/>
+      <text x="180" y="312" class="pf-title" text-anchor="middle">Clinical evaluation</text>
+      <text x="75"  y="335" class="pf-sub">› Detailed cognitive history</text>
+      <text x="75"  y="352" class="pf-sub">› Functional status (FAQ, IADLs)</text>
+      <text x="75"  y="369" class="pf-sub">› Informant interview (AD8, IQCODE)</text>
+      <text x="75"  y="386" class="pf-sub">› Psychiatric / mood screen (PHQ-9)</text>
+      <text x="75"  y="403" class="pf-sub">› Medication review (anticholinergic)</text>
+      <text x="75"  y="420" class="pf-sub">› Family / genetic history</text>
+      <text x="75"  y="437" class="pf-sub">› Behavioral inventory (NPI)</text>
 
-      <!-- Reversible workup -->
-      <rect x="780" y="140" width="200" height="60" class="node-rect node-action" rx="2"/>
-      <text x="880" y="165" class="node-text" text-anchor="middle">Rule Out Reversible</text>
-      <text x="880" y="182" class="node-sub" text-anchor="middle">CBC CMP TSH B12 D PHQ-9</text>
+      <rect x="320" y="290" width="240" height="160" class="pf-rect pf-action" rx="2"/>
+      <text x="440" y="312" class="pf-title" text-anchor="middle">Physical &amp; neuro exam</text>
+      <text x="335" y="335" class="pf-sub">› Vital signs · orthostatics</text>
+      <text x="335" y="352" class="pf-sub">› Cranial nerves · cerebellar</text>
+      <text x="335" y="369" class="pf-sub">› Motor: tone, bradykinesia, tremor</text>
+      <text x="335" y="386" class="pf-sub">› Gait + balance assessment</text>
+      <text x="335" y="403" class="pf-sub">› Sensation · primitive reflexes</text>
+      <text x="335" y="420" class="pf-sub">› Hearing &amp; vision check</text>
+      <text x="335" y="437" class="pf-sub">› Vascular exam (carotid bruits)</text>
 
-      <line x1="880" y1="200" x2="880" y2="240" class="arrow" marker-end="url(#arrow)"/>
+      <rect x="580" y="290" width="240" height="160" class="pf-rect pf-action" rx="2"/>
+      <text x="700" y="312" class="pf-title" text-anchor="middle">Reversible-cause workup</text>
+      <text x="595" y="335" class="pf-sub">› CBC, CMP, TSH</text>
+      <text x="595" y="352" class="pf-sub">› B12, folate · methylmalonic acid</text>
+      <text x="595" y="369" class="pf-sub">› RPR · HIV (if at risk)</text>
+      <text x="595" y="386" class="pf-sub">› Vitamin D · homocysteine</text>
+      <text x="595" y="403" class="pf-sub">› Sleep apnea screen (STOP-BANG)</text>
+      <text x="595" y="420" class="pf-sub">› MRI brain (atrophy, vascular, NPH)</text>
+      <text x="595" y="437" class="pf-sub">› Plasma p-tau217 if available</text>
 
-      <!-- Imaging -->
-      <rect x="780" y="240" width="200" height="60" class="node-rect node-action" rx="2"/>
-      <text x="880" y="265" class="node-text" text-anchor="middle">Brain Imaging</text>
-      <text x="880" y="282" class="node-sub" text-anchor="middle">MRI preferred · CT acceptable</text>
+      <!-- Pattern decision -->
+      <line x1="700" y1="450" x2="700" y2="500" class="pf-arrow" marker-end="url(#arrow)"/>
+      <polygon points="630,500 770,500 850,540 770,580 630,580 550,540" class="pf-rect pf-decision"/>
+      <text x="700" y="535" class="pf-text" text-anchor="middle" font-weight="600">Clinical pattern?</text>
+      <text x="700" y="552" class="pf-sub" text-anchor="middle">Synthesize history, exam, and test data</text>
 
-      <line x1="780" y1="270" x2="730" y2="270" class="arrow" marker-end="url(#arrow)"/>
+      <!-- ========== Stage 3 banner ========== -->
+      <text x="60" y="615" class="pf-stage-label">STAGE 3 · PATTERN-BASED SUBSPECIALTY WORKUP</text>
+      <line x1="60" y1="623" x2="1140" y2="623" stroke="#c75a3c" stroke-dasharray="3 4" stroke-width="0.7"/>
 
-      <!-- Differential decision -->
-      <polygon points="620,240 720,270 620,300 520,270" class="node-rect node-decision"/>
-      <text x="620" y="268" class="node-text" text-anchor="middle">Pattern?</text>
-      <text x="620" y="282" class="node-sub" text-anchor="middle">Imaging + clinical</text>
+      <!-- 5 pattern branches -->
+      <line x1="700" y1="580" x2="700" y2="635" class="pf-arrow"/>
+      <path d="M 700 600 Q 700 605 110 635" class="pf-arrow"/>
+      <path d="M 700 600 Q 700 605 365 635" class="pf-arrow"/>
+      <path d="M 700 600 Q 700 605 880 635" class="pf-arrow"/>
+      <path d="M 700 600 Q 700 605 1135 635" class="pf-arrow"/>
 
-      <!-- Branches to types -->
-      <line x1="520" y1="270" x2="470" y2="270" class="arrow" marker-end="url(#arrow)"/>
-      <rect x="270" y="240" width="200" height="60" class="node-rect" rx="2" stroke="#6b1f1a"/>
-      <text x="370" y="265" class="node-text" text-anchor="middle" fill="#6b1f1a">AD pattern</text>
-      <text x="370" y="282" class="node-sub" text-anchor="middle">→ p-tau217, amyloid PET</text>
+      <!-- Branch 1: AD -->
+      <rect x="20" y="635" width="180" height="55" class="pf-rect pf-final" rx="2" stroke="#c75a3c"/>
+      <text x="110" y="657" class="pf-text" text-anchor="middle" font-weight="700" fill="#c75a3c">Alzheimer's</text>
+      <text x="110" y="675" class="pf-sub" text-anchor="middle">CSF Aβ42/p-tau · amyloid PET</text>
+      <text x="110" y="688" class="pf-sub" text-anchor="middle">APOE if anti-amyloid candidate</text>
 
-      <line x1="620" y1="300" x2="620" y2="340" class="arrow" marker-end="url(#arrow)"/>
-      <rect x="520" y="340" width="200" height="60" class="node-rect" rx="2" stroke="#5a4a7a"/>
-      <text x="620" y="365" class="node-text" text-anchor="middle" fill="#5a4a7a">DLB pattern</text>
-      <text x="620" y="382" class="node-sub" text-anchor="middle">→ DaT-SPECT, sleep study</text>
+      <!-- Branch 2: Vascular -->
+      <rect x="225" y="635" width="180" height="55" class="pf-rect pf-final" rx="2" stroke="#3c6e9a"/>
+      <text x="315" y="657" class="pf-text" text-anchor="middle" font-weight="700" fill="#3c6e9a">Vascular</text>
+      <text x="315" y="675" class="pf-sub" text-anchor="middle">MRI vascular burden</text>
+      <text x="315" y="688" class="pf-sub" text-anchor="middle">Carotid US · ECHO · BP/lipids</text>
 
-      <line x1="720" y1="270" x2="770" y2="270" class="arrow" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
-      <rect x="20" y="340" width="200" height="60" class="node-rect" rx="2" stroke="#7a4a2d"/>
-      <text x="120" y="365" class="node-text" text-anchor="middle" fill="#7a4a2d">FTD pattern</text>
-      <text x="120" y="382" class="node-sub" text-anchor="middle">→ FDG-PET, neuropsych</text>
+      <!-- Branch 3: DLB -->
+      <rect x="430" y="635" width="180" height="55" class="pf-rect pf-final" rx="2" stroke="#8a6a3c"/>
+      <text x="520" y="657" class="pf-text" text-anchor="middle" font-weight="700" fill="#8a6a3c">Lewy body / DLB</text>
+      <text x="520" y="675" class="pf-sub" text-anchor="middle">DaT-SPECT · sleep study (RBD)</text>
+      <text x="520" y="688" class="pf-sub" text-anchor="middle">Skin α-synuclein · MIBG</text>
 
-      <line x1="370" y1="300" x2="370" y2="340" class="arrow" stroke-dasharray="4 3"/>
-      <rect x="270" y="340" width="200" height="60" class="node-rect" rx="2" stroke="#2d5a7a"/>
-      <text x="370" y="365" class="node-text" text-anchor="middle" fill="#2d5a7a">Vascular pattern</text>
-      <text x="370" y="382" class="node-sub" text-anchor="middle">→ Vascular workup</text>
+      <!-- Branch 4: FTD -->
+      <rect x="635" y="635" width="180" height="55" class="pf-rect pf-final" rx="2" stroke="#3c8a6a"/>
+      <text x="725" y="657" class="pf-text" text-anchor="middle" font-weight="700" fill="#3c8a6a">FTD</text>
+      <text x="725" y="675" class="pf-sub" text-anchor="middle">FDG-PET frontal/temporal</text>
+      <text x="725" y="688" class="pf-sub" text-anchor="middle">Genetics: C9orf72, MAPT, GRN</text>
 
-      <!-- Final action -->
-      <rect x="780" y="340" width="200" height="60" class="node-rect node-action" rx="2"/>
-      <text x="880" y="365" class="node-text" text-anchor="middle">Diagnosis &amp; Treatment</text>
-      <text x="880" y="382" class="node-sub" text-anchor="middle">Stage · plan · refer</text>
-      <line x1="980" y1="320" x2="980" y2="340" class="arrow" stroke-dasharray="4 3"/>
-      <line x1="720" y1="370" x2="780" y2="370" class="arrow" marker-end="url(#arrow)"/>
+      <!-- Branch 5: Other -->
+      <rect x="840" y="635" width="180" height="55" class="pf-rect pf-final" rx="2" stroke="#5a4a3a"/>
+      <text x="930" y="657" class="pf-text" text-anchor="middle" font-weight="700" fill="#5a4a3a">Other</text>
+      <text x="930" y="675" class="pf-sub" text-anchor="middle">NPH · CJD · HD · autoimmune</text>
+      <text x="930" y="688" class="pf-sub" text-anchor="middle">→ targeted workup per cause</text>
+
     </svg>
     `;
   </script>
